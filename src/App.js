@@ -30,7 +30,7 @@ function App() {
         <Route path="/" element={ <div>메인페이지임</div> } />
 
         {/* 회원가입페이지 */}
-        <Route path="/" element={ <Join /> } />
+        <Route path="/join" element={ <Join /> } />
       </Routes>
 
     </div>

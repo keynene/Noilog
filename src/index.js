@@ -10,13 +10,13 @@ import store from './store.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
+  // <Provider store={store}>
     <BrowserRouter>
       {/* <React.StrictMode> */}
         <App />
       {/* </React.StrictMode> */}
     </BrowserRouter>
-  </Provider>
+  // </Provider>
 );
 
 // If you want your app to work offline and load faster, you can change
