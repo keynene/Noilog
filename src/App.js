@@ -5,8 +5,9 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 
+
 /* 컴포넌트 import */
-import { Join } from './routes/Join.js';
+import  Join  from './routes/Join.js';
 
 function App() {
 
@@ -27,7 +28,7 @@ function App() {
 
       <Routes>
         {/* 메인페이지 */}
-        <Route path="/" element={ <div>메인페이지임</div> } />
+        <Route path="/" element={ <div>메인페이지임</div> }></Route>
 
         {/* 회원가입페이지 */}
         <Route path="/join" element={ <Join /> } />
