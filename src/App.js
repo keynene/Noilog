@@ -17,7 +17,7 @@ function App() {
     <div className="App">
       <Navbar bg="light" variant="light">
         <Container>
-          <Navbar.Brand href="#home">T-Board</Navbar.Brand>
+          <Navbar.Brand href="#home">Noven</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
             <Nav.Link href="#features">Features</Nav.Link>
