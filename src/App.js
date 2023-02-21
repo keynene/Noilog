@@ -7,7 +7,7 @@ import './App.css';
 
 
 /* 컴포넌트 import */
-import  Join  from './routes/Join.js';
+import  Join  from './components/Join.js';
 
 function App() {
 
@@ -17,11 +17,10 @@ function App() {
     <div className="App">
       <Navbar bg="light" variant="light">
         <Container>
-          <Navbar.Brand href="#home">Noven</Navbar.Brand>
+          <Navbar.Brand href="#home">No ·_· ven</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/join') }}>Join Us</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
