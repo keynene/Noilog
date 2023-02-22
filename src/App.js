@@ -1,5 +1,5 @@
 /* eslint-disable */ //warning 제거
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -10,7 +10,9 @@ function App() {
 
   let navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    
 
   return (
     <div className="App">
@@ -25,8 +27,14 @@ function App() {
               :
                 <Nav.Link onClick={()=>{ navigate('mypage') }}>MyPage</Nav.Link>
             }
-            <Nav.Link onClick={()=>{ setIsLoggedIn(false) }}>LogOut</Nav.Link>
-            <Nav.Link onClick={()=>{ setIsLoggedIn(true) }}>LogIn</Nav.Link>
+            <Nav.Link onClick={()=>{ 
+              setIsLoggedIn(false) 
+              navigate('/')
+            }}>LogOut</Nav.Link>
+            <Nav.Link onClick={()=>{ 
+              setIsLoggedIn(true) 
+              navigate('/')
+            }}>LogIn</Nav.Link>
 
           </Nav>
         </Container>

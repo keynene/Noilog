@@ -13,13 +13,13 @@ function AppRouter({ isLoggedIn }){
 			<Route path="/" element={ <Home /> }></Route>
 
 			{/* 회원가입페이지 */}
-			<Route path="/join" element={ <Join /> } />
+			<Route path="/join" element={ <Join isLoggedIn={isLoggedIn} /> } />
 
 			{/* 마이페이지 */}
-			{ isLoggedIn == true ? 
+			{ isLoggedIn === true ? 
 				<Route path="/mypage" element={ <MyPage /> } />
 				:
-				<Route path="/join" element={ <Join /> } />
+				<Route path="/join" element={ <Join isLoggedIn={isLoggedIn} /> } />
 			}
 			
 		</Routes>

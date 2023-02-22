@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 
-function Join(){
+function Join({ isLoggedIn }){
 	const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
 	const [nickname, setNickname] = useState("");
+	let localStorage = window.localStorage;
+	const [userObj, setUserObj] = useState({
+    id:"",
+    password:"",
+    nickname:"",
+    name:"",
+    email:""
+  });
 	// const [error, setError] = useState("");
 
 	const onChange = (e) => {
@@ -30,10 +38,19 @@ function Join(){
 		e.preventDefault();
 	}
 
+
 	const submitOnClick = () => {
 		if (id !== "" && password !== "" && email !== "" && name !== "" && nickname !== ""){
-			console.log('회원가입완료!')
+			setUserObj({
+				id:id,
+				password:password,
+				email:email,
+				name:name,
+				nickname:nickname
+			})
+			localStorage.setItem(JSON.stringify(id), JSON.stringify(userObj))
 		}
+		
 	}
 
 	return(

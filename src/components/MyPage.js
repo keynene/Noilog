@@ -1,9 +1,11 @@
 import React from 'react';
 
-function MyPage(){
+function MyPage({ userObj }){
 	return(
 		<div>
-			마이페이지임
+				<div>
+
+				</div>
 		</div>
 	)
 }
