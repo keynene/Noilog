@@ -9,10 +9,8 @@ import AppRouter from './components/Router';
 function App() {
 
   let navigate = useNavigate();
-
+  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    
 
   return (
     <div className="App">
@@ -31,10 +29,13 @@ function App() {
               setIsLoggedIn(false) 
               navigate('/')
             }}>LogOut</Nav.Link>
+
+            <Nav.Link onClick={()=>{ navigate('/login') }}>Login</Nav.Link>
+
             <Nav.Link onClick={()=>{ 
               setIsLoggedIn(true) 
               navigate('/')
-            }}>LogIn</Nav.Link>
+            }}>자동로그인</Nav.Link>
 
           </Nav>
         </Container>

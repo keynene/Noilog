@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Join({ isLoggedIn }){
 	const [id, setId] = useState("");
@@ -6,6 +7,8 @@ function Join({ isLoggedIn }){
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
 	const [nickname, setNickname] = useState("");
+	
+	let navigate = useNavigate();
 	let localStorage = window.localStorage;
 	const [userObj, setUserObj] = useState({
     id:"",
@@ -38,8 +41,7 @@ function Join({ isLoggedIn }){
 		e.preventDefault();
 	}
 
-
-	const submitOnClick = () => {
+	const submitOnClick = async() => {
 		if (id !== "" && password !== "" && email !== "" && name !== "" && nickname !== ""){
 			setUserObj({
 				id:id,
@@ -48,13 +50,35 @@ function Join({ isLoggedIn }){
 				name:name,
 				nickname:nickname
 			})
-			localStorage.setItem(JSON.stringify(id), JSON.stringify(userObj))
+			alert(`${nickname}님! 회원가입이 완료되었습니다!🎉`)
+			await localStorage.setItem(JSON.stringify(id), JSON.stringify(userObj))
+			navigate('/login')
+			// complete();
 		}
-		
+		else if (id === ""){
+			alert('아이디를 입력해주세요!')
+		}
+		else if (password === ""){
+			alert('비밀번호를 입력해주세요!')
+		}
+		else if (email === ""){
+			alert('이메일을 입력해주세요!')
+		}
+		else if (name === ""){
+			alert('이름을 입력해주세요!')
+		}
+		else if (nickname === ""){
+			alert('닉네임을 입력해주세요!')
+		}
 	}
+
+	// const complete = async() => {
+		
+	// }
 
 	return(
 		<div>
+			<h4 style={{marginBottom:30, marginTop:30}} >Join</h4>
 			<form onSubmit={onSubmit}>
 				<input type="text" name="id" placeholder="Id" value={id} onChange={onChange} /> 
 				<input type="password" name="password" placeholder="Password" value={password} onChange={onChange} />
@@ -62,7 +86,7 @@ function Join({ isLoggedIn }){
 				<input type="text" name="name" placeholder="Name" value={name} onChange={onChange} />
 				<input type="text" name="nickname" placeholder="Nickname" value={nickname} onChange={onChange} />
 				
-				<input type="submit" value="Join us" onClick={submitOnClick} />
+				<input style={{marginTop:30}} type="submit" value="Join us" onClick={submitOnClick} />
 			</form>
 		</div>
 	)
