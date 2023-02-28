@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-function Login(){
-	const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
+function Login({ isLoggedIn }){
+	const [uid, setUid] = useState("");
+  const [upassword, setUpassword] = useState("");
 
 	const onChange = (e) => {
 		const {
@@ -10,9 +10,9 @@ function Login(){
 		} = e
 
 		if (name === 'id'){
-			setId(value)
+			setUid(value)
 		} else if (name === 'password'){
-			setPassword(value)
+			setUpassword(value)
 		}
 	}
 
@@ -20,10 +20,13 @@ function Login(){
 		e.preventdefault();
 	}
 
-	const submitOnClick = (e) => {
-		if (id !== "" && password !== ""){
-			//아이디값에 맞는 password 확인 후 로그인
-			// console.log(localStorage.getItem('id'))
+	const submitOnClick = () => {
+		if (uid !== "" && upassword !== ""){
+			compId = localStorage.getItem(uid.id)
+			compPassword = localStorage.getItem(uid.password)
+			if (compId === uid && compPassword === upassword){
+				
+			}
 
 		}
 	}
@@ -32,8 +35,8 @@ function Login(){
 		<div>
 			<h4 style={{marginBottom:30, marginTop:30}} >Login</h4>
 			<form onSubmit={onSubmit} >
-				<input type="text" name="id" placeholder="Id" value={id} onChange={onChange} /> 
-				<input type="password" name="password" placeholder="Password" value={password} onChange={onChange} />
+				<input type="text" name="id" placeholder="Id" value={uid} onChange={onChange} /> 
+				<input type="password" name="password" placeholder="Password" value={upassword} onChange={onChange} />
 				
 				<input type="submit" value="Join us" onClick={submitOnClick} />
 			</form>

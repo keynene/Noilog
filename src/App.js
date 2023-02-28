@@ -11,6 +11,11 @@ function App() {
   let navigate = useNavigate();
   
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userObj, setUserObj] = useState(null);
+
+  useEffect(()=>{
+    if 
+  })
 
   return (
     <div className="App">
@@ -41,7 +46,7 @@ function App() {
         </Container>
       </Navbar>
 
-      <AppRouter isLoggedIn={isLoggedIn} />
+      <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
     </div>
   );
 }

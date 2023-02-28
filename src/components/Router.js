@@ -7,7 +7,7 @@ import Home from './Home.js';
 import MyPage from './MyPage.js';
 import Login from './Login.js';
 
-function AppRouter({ isLoggedIn }){
+function AppRouter({ isLoggedIn, userObj }){
 	return(
 		<Routes>
 			{/* 메인페이지 */}
@@ -20,11 +20,11 @@ function AppRouter({ isLoggedIn }){
 			{ isLoggedIn === true ? 
 				<Route path="/mypage" element={ <MyPage /> } />
 				:
-				<Route path="/join" element={ <Join isLoggedIn={isLoggedIn} /> } />
+				<Route path="/join" element={ <Join /> } />
 			}
 
 			{/* 로그인페이지 */}
-			<Route path="/login" element={ <Login /> } /> 
+			<Route path="/login" element={ <Login userObj={userObj} /> } /> 
 			
 		</Routes>
 	)
