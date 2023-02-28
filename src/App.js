@@ -11,11 +11,11 @@ function App() {
   let navigate = useNavigate();
   
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const loginChange = () => {
+    setIsLoggedIn(true)
+    navigate("/")
+  }
   const [userObj, setUserObj] = useState(null);
-
-  useEffect(()=>{
-    if 
-  })
 
   return (
     <div className="App">
@@ -36,17 +36,17 @@ function App() {
             }}>LogOut</Nav.Link>
 
             <Nav.Link onClick={()=>{ navigate('/login') }}>Login</Nav.Link>
-
+{/* 
             <Nav.Link onClick={()=>{ 
               setIsLoggedIn(true) 
               navigate('/')
-            }}>자동로그인</Nav.Link>
+            }}>자동로그인</Nav.Link> */}
 
           </Nav>
         </Container>
       </Navbar>
 
-      <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+      <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} loginChange={loginChange} />
     </div>
   );
 }

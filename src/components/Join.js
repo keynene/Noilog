@@ -31,40 +31,43 @@ function Join(){
 		}
 	}
 
-	const onSubmit = (e) => {
+	const onSubmit = async(e) => {
 		e.preventDefault();
+		try{
+			if (uid !== "" && upassword !== "" && uemail !== "" && uname !== "" && unickname !== ""){
+				setUserObj({
+					id:uid,
+					password:upassword,
+					email:uemail,
+					name:uname,
+					nickname:unickname
+				})
+				alert(`${userObj.nickname}님! 회원가입이 완료되었습니다!🎉`)
+				await localStorage.setItem(JSON.stringify(userObj.id), JSON.stringify(userObj))
+				setUserObj(null)
+				navigate('/login')
+			}
+			else if (uid === ""){
+				alert('아이디를 입력해주세요!')
+			}
+			else if (upassword === ""){
+				alert('비밀번호를 입력해주세요!')
+			}
+			else if (uemail === ""){
+				alert('이메일을 입력해주세요!')
+			}
+			else if (uname === ""){
+				alert('이름을 입력해주세요!')
+			}
+			else if (unickname === ""){
+				alert('닉네임을 입력해주세요!')
+			}
+		} catch{}
 	}
 
-	const submitOnClick = async() => {
-		if (uid !== "" && upassword !== "" && uemail !== "" && uname !== "" && unickname !== ""){
-			setUserObj({
-				id:uid,
-				password:upassword,
-				email:uemail,
-				name:uname,
-				nickname:unickname
-			})
-			alert(`${userObj.nickname}님! 회원가입이 완료되었습니다!🎉`)
-			await localStorage.setItem(JSON.stringify(userObj.id), JSON.stringify(userObj))
-			setUserObj(null)
-			navigate('/login')
-		}
-		else if (uid === ""){
-			alert('아이디를 입력해주세요!')
-		}
-		else if (upassword === ""){
-			alert('비밀번호를 입력해주세요!')
-		}
-		else if (uemail === ""){
-			alert('이메일을 입력해주세요!')
-		}
-		else if (uname === ""){
-			alert('이름을 입력해주세요!')
-		}
-		else if (unickname === ""){
-			alert('닉네임을 입력해주세요!')
-		}
-	}
+	// const submitOnClick = async() => {
+		
+	// }
 
 	// const complete = async() => {
 		
@@ -74,13 +77,13 @@ function Join(){
 		<div>
 			<h4 style={{marginBottom:30, marginTop:30}} >Join</h4>
 			<form onSubmit={onSubmit}>
-				<input type="text" name="id" placeholder="Id" value={uid} onChange={onChange} /> 
-				<input type="password" name="password" placeholder="Password" value={upassword} onChange={onChange} />
-				<input type="email" name="email" placeholder="Email" value={uemail} onChange={onChange} />
-				<input type="text" name="name" placeholder="Name" value={uname} onChange={onChange} />
-				<input type="text" name="nickname" placeholder="Nickname" value={unickname} onChange={onChange} />
+				<p><input type="text" name="id" placeholder="Id" value={uid} onChange={onChange} /> </p>
+				<p><input type="password" name="password" placeholder="Password" value={upassword} onChange={onChange} /></p>
+				<p><input type="email" name="email" placeholder="Email" value={uemail} onChange={onChange} /></p>
+				<p><input type="text" name="name" placeholder="Name" value={uname} onChange={onChange} /></p>
+				<p><input type="text" name="nickname" placeholder="Nickname" value={unickname} onChange={onChange} /></p>
 				
-				<input style={{marginTop:30}} type="submit" value="Join us" onClick={submitOnClick} />
+				<input style={{marginTop:30}} type="submit" value="Join us" />
 			</form>
 		</div>
 	)

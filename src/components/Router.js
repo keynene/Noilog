@@ -7,7 +7,7 @@ import Home from './Home.js';
 import MyPage from './MyPage.js';
 import Login from './Login.js';
 
-function AppRouter({ isLoggedIn, userObj }){
+function AppRouter({ isLoggedIn, userObj,loginChange }){
 	return(
 		<Routes>
 			{/* 메인페이지 */}
@@ -24,7 +24,7 @@ function AppRouter({ isLoggedIn, userObj }){
 			}
 
 			{/* 로그인페이지 */}
-			<Route path="/login" element={ <Login userObj={userObj} /> } /> 
+			<Route path="/login" element={ <Login loginChange={loginChange} /> } /> 
 			
 		</Routes>
 	)
