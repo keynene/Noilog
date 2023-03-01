@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
-function Login({ loginChange }){
+/* Actions */
+import {LoggedIn} from '../store.js';
+
+function Login(){
 
 	const [uid, setUid] = useState("");
   const [upassword, setUpassword] = useState("");
-	// const [error, setError] = useState("");
+
+	let dispatch = useDispatch()
+	let navigate = useNavigate();
 
 	const onChange = (e) => {
 		const {
@@ -18,35 +25,36 @@ function Login({ loginChange }){
 		}
 	}
 
-	const handleLogin = () => {
-		loginChange()
-	}
-
 	const onSubmit = (e) => {
 		e.preventDefault();
 		try {
 			if (uid !== "" && upassword !== ""){
 				let compId = JSON.parse(localStorage.getItem(JSON.stringify(uid))).id
-				let compPassword = JSON.parse(localStorage.getItem(JSON.stringify(upassword))).password
+				let compPassword = JSON.parse(localStorage.getItem(JSON.stringify(uid))).password
+
 				if (compId === uid && compPassword === upassword){
-					handleLogin()
+					dispatch(LoggedIn())
+					navigate("/")
+				} 
+				
+				else if (compId === uid && compPassword !== upassword) { 
+					alert('비밀번호를 다시 확인해주세요!')
+				} 
+				
+				else if(compId !== uid && compPassword === upassword) {
+					alert('없는 아이디입니다.')
 				}
-				else { alert('뭔가잘못됨') }
 			}
-		} catch {  }
+		} catch(error) { console.log(error.message) }
 		
 	}
-
-	// const submitOnClick = () => {
-		
-	// }
 
 	return(
 		<div>
 			<h4 style={{marginBottom:30, marginTop:30}} >Login</h4>
 			<form onSubmit={onSubmit} >
 				<p><input type="text" name="id" placeholder="Id" value={uid} onChange={onChange} /> </p>
-				<p><input type="password" name="password" placeholder="Password" value={upassword} onChange={onChange} /></p>
+				<p><input type="password" name="password" placeholder="Password" value={upassword} onChange={onChange} autoComplete="on" /></p>
 				
 				<input type="submit" value="Login" />
 				<br />

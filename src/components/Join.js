@@ -78,7 +78,7 @@ function Join(){
 			<h4 style={{marginBottom:30, marginTop:30}} >Join</h4>
 			<form onSubmit={onSubmit}>
 				<p><input type="text" name="id" placeholder="Id" value={uid} onChange={onChange} /> </p>
-				<p><input type="password" name="password" placeholder="Password" value={upassword} onChange={onChange} /></p>
+				<p><input type="password" name="password" placeholder="Password" value={upassword} onChange={onChange} autoComplete="on" /></p>
 				<p><input type="email" name="email" placeholder="Email" value={uemail} onChange={onChange} /></p>
 				<p><input type="text" name="name" placeholder="Name" value={uname} onChange={onChange} /></p>
 				<p><input type="text" name="nickname" placeholder="Nickname" value={unickname} onChange={onChange} /></p>

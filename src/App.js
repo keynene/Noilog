@@ -1,20 +1,22 @@
 /* eslint-disable */ //warning 제거
 import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Container, Nav } from 'react-bootstrap';
-import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Navbar, Container, Nav } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
 import AppRouter from './components/Router';
+
+/* Actions */
+import {LoggedOut} from 'store.js';
 
 function App() {
 
   let navigate = useNavigate();
-  
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const loginChange = () => {
-    setIsLoggedIn(true)
-    navigate("/")
-  }
+  let state = useSelector((state) => {return state})
+  let dispatch = useDispatch();
+
   const [userObj, setUserObj] = useState(null);
 
   return (
@@ -25,28 +27,28 @@ function App() {
           <Nav className="me-auto">
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
             {
-              isLoggedIn === false ? 
+              state.isLoggedIn === false ? 
                 <Nav.Link onClick={()=>{ navigate('/join') }}>Join Us</Nav.Link>
               :
                 <Nav.Link onClick={()=>{ navigate('mypage') }}>MyPage</Nav.Link>
             }
             <Nav.Link onClick={()=>{ 
-              setIsLoggedIn(false) 
+              dispatch(LoggedOut()) 
               navigate('/')
             }}>LogOut</Nav.Link>
 
-            <Nav.Link onClick={()=>{ navigate('/login') }}>Login</Nav.Link>
-{/* 
-            <Nav.Link onClick={()=>{ 
-              setIsLoggedIn(true) 
-              navigate('/')
-            }}>자동로그인</Nav.Link> */}
+            { 
+              state.isLoggedIn === true ? 
+                null
+              :
+                <Nav.Link onClick={()=>{ navigate('/login') }}>Login</Nav.Link>
+            }
 
           </Nav>
         </Container>
       </Navbar>
 
-      <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} loginChange={loginChange} />
+      <AppRouter />
     </div>
   );
 }
