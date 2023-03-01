@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AppRouter from './components/Router';
 
 /* Actions */
-import {LoggedOut} from 'store.js';
+import {LoggedIn, LoggedOut} from 'store.js';
 
 function App() {
 
@@ -18,6 +18,12 @@ function App() {
   let dispatch = useDispatch();
 
   const [userObj, setUserObj] = useState(null);
+
+  useEffect(()=>{
+    if (localStorage.getItem('login') === 'true'){
+      dispatch(LoggedIn())
+    }
+  },[])
 
   return (
     <div className="App">
@@ -33,7 +39,7 @@ function App() {
                 <Nav.Link onClick={()=>{ navigate('mypage') }}>MyPage</Nav.Link>
             }
             <Nav.Link onClick={()=>{ 
-              dispatch(LoggedOut()) 
+              dispatch(LoggedOut())
               navigate('/')
             }}>LogOut</Nav.Link>
 
