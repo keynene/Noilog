@@ -45,6 +45,12 @@ function Login(){
 					alert('없는 아이디입니다.')
 				}
 			}
+			else if (uid === ""){
+				alert('아이디를 입력해주세요')
+			}
+			else if (upassword === ""){
+				alert('비밀번호를 입력해주세요')
+			}
 		} catch(error) { console.log(error.message) }
 		
 	}
