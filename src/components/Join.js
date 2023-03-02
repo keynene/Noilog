@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+
+/* Actions */
+import { createUserObj } from '../store.js';
+import { LoggedIn } from '../store.js';
 
 function Join(){
 	const [uid, setUid] = useState("");
@@ -9,9 +14,9 @@ function Join(){
 	const [unickname, setUnickname] = useState("");
 	
 	let navigate = useNavigate();
-	let localStorage = window.localStorage;
-	const [userObj, setUserObj] = useState(null);
-	// const [error, setError] = useState("");
+	const [joinUserObj, setJoinUserObj] = useState(null);
+
+	let dispatch = useDispatch();
 
 	const onChange = (e) => {
 		const {
@@ -35,17 +40,17 @@ function Join(){
 		e.preventDefault();
 		try{
 			if (uid !== "" && upassword !== "" && uemail !== "" && uname !== "" && unickname !== ""){
-				setUserObj({
+				setJoinUserObj({
 					id:uid,
 					password:upassword,
 					email:uemail,
 					name:uname,
 					nickname:unickname
 				})
-				alert(`${userObj.nickname}님! 회원가입이 완료되었습니다!🎉`)
-				await localStorage.setItem(JSON.stringify(userObj.id), JSON.stringify(userObj))
-				setUserObj(null)
-				navigate('/login')
+				dispatch(createUserObj(joinUserObj))
+				dispatch(LoggedIn(joinUserObj.id))
+				setJoinUserObj(null)
+				navigate('/')
 			}
 			else if (uid === ""){
 				alert('아이디를 입력해주세요!')
@@ -64,14 +69,6 @@ function Join(){
 			}
 		} catch{}
 	}
-
-	// const submitOnClick = async() => {
-		
-	// }
-
-	// const complete = async() => {
-		
-	// }
 
 	return(
 		<div>

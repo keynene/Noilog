@@ -27,7 +27,6 @@ function AppRouter(){
 
 			{/* 로그인페이지 */}
 			<Route path="/login" element={ <Login /> } /> 
-			{/* <Route path="/login" element={ <Login loginChange={loginChange} /> } />  */}
 			
 		</Routes>
 	)

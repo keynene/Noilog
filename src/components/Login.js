@@ -33,7 +33,7 @@ function Login(){
 				let compPassword = JSON.parse(localStorage.getItem(JSON.stringify(uid))).password
 
 				if (compId === uid && compPassword === upassword){
-					dispatch(LoggedIn())
+					dispatch(LoggedIn(uid))
 					navigate("/")
 				} 
 				

@@ -5,11 +5,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
 import AppRouter from './components/Router';
 
+import { useDispatch, useSelector } from "react-redux";
+
 /* Actions */
-import {LoggedIn, LoggedOut} from 'store.js';
+import {LoggedIn, LoggedOut, logOutUserObj } from 'store.js';
 
 function App() {
 
@@ -17,11 +18,10 @@ function App() {
   let state = useSelector((state) => {return state})
   let dispatch = useDispatch();
 
-  const [userObj, setUserObj] = useState(null);
-
   useEffect(()=>{
-    if (localStorage.getItem('login') === 'true'){
-      dispatch(LoggedIn())
+    if (JSON.parse(localStorage.getItem('login')).login === true){
+      let userId = JSON.parse(localStorage.getItem('login')).loginId
+      dispatch(LoggedIn(userId))
     }
   },[])
 
@@ -40,6 +40,7 @@ function App() {
             }
             <Nav.Link onClick={()=>{ 
               dispatch(LoggedOut())
+              dispatch(logOutUserObj())
               navigate('/')
             }}>LogOut</Nav.Link>
 
