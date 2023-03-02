@@ -36,7 +36,7 @@ function App() {
               state.isLoggedIn === false ? 
                 <Nav.Link onClick={()=>{ navigate('/join') }}>Join Us</Nav.Link>
               :
-                <Nav.Link onClick={()=>{ navigate('mypage') }}>MyPage</Nav.Link>
+                <Nav.Link onClick={()=>{ navigate('/mypage') }}>MyPage</Nav.Link>
             }
             <Nav.Link onClick={()=>{ 
               dispatch(LoggedOut())
