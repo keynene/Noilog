@@ -39,7 +39,7 @@ function App() {
                 <Nav.Link onClick={()=>{ navigate('/mypage') }}>MyPage</Nav.Link>
             }
             <Nav.Link onClick={()=>{ 
-              dispatch(LoggedOut())
+              dispatch(LoggedOut(null))
               dispatch(logOutUserObj())
               navigate('/')
             }}>LogOut</Nav.Link>

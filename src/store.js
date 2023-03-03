@@ -47,13 +47,6 @@ const userObj = createSlice({
 
 		logOutUserObj(state){
 			return state = null
-		},
-
-		deleteUserObj(state,action){
-			if(window.confirm("정말 회원 탈퇴하실껀가요? 😥")){
-				localStorage.removeItem(JSON.stringify(action))
-				state = null
-			}
 		}
 	}
 
