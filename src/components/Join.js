@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 
 /* Actions */
-import { createUserObj } from '../store.js';
 import { LoggedIn } from '../store.js';
 
 function Join(){
@@ -36,21 +35,33 @@ function Join(){
 		}
 	}
 
-	const onSubmit = async(e) => {
+	const onSubmit = (e) => {
 		e.preventDefault();
+		/* Join us 버튼 1번 클릭 시 콘솔 "1 2" 
+		               2번째 클릭 시  콘솔 "1 2 3" */
+		// console.log('1')
 		try{
 			if (uid !== "" && upassword !== "" && uemail !== "" && uname !== "" && unickname !== ""){
-				setJoinUserObj({
-					id:uid,
-					password:upassword,
-					email:uemail,
-					name:uname,
-					nickname:unickname
-				})
-				dispatch(createUserObj(joinUserObj))
-				dispatch(LoggedIn(joinUserObj.id))
-				setJoinUserObj(null)
-				navigate('/')
+				if (localStorage.getItem(JSON.stringify(uid)) !== null){
+					alert('이미 존재하는 아이디입니다.')
+				}
+				else {
+					setJoinUserObj({
+						id:uid,
+						password:upassword,
+						email:uemail,
+						name:uname,
+						nickname:unickname
+					})
+					// console.log('2')
+					// dispatch(createUserObj(joinUserObj))
+					alert(`${joinUserObj.nickname}님! 회원가입이 완료되었습니다!🎉`)
+					localStorage.setItem(JSON.stringify(joinUserObj.id), JSON.stringify(joinUserObj))
+					// console.log('3')
+					dispatch(LoggedIn(joinUserObj.id))
+					setJoinUserObj(null)
+					navigate('/')
+				}
 			}
 			else if (uid === ""){
 				alert('아이디를 입력해주세요!')

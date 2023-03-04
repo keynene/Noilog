@@ -33,7 +33,7 @@ const userObj = createSlice({
 		createUserObj(state,action){
 			alert(`${action.payload.nickname}님! 회원가입이 완료되었습니다!🎉`)
 			localStorage.setItem(JSON.stringify(action.payload.id), JSON.stringify(action.payload))
-
+			
 			return (
 				state = {
 					id:action.payload.id,
