@@ -28,10 +28,15 @@ function MyPage(){
 						<p>{userInfo.email}</p>
 						<button onClick={()=>{
 							if(window.confirm("정말 회원 탈퇴하실껀가요? 😥")){
-								alert('회원탈퇴가 완료되었습니다.')
-								dispatch(LoggedOut(null))
-								localStorage.removeItem(JSON.stringify(userId))
-								navigate("/")
+								const prompId = prompt("아이디를 입력해주세요")
+								if (prompId === userInfo.id){
+									alert('회원탈퇴가 완료되었습니다.')
+									dispatch(LoggedOut(null))
+									localStorage.removeItem(JSON.stringify(userId))
+									navigate("/")
+								} else {
+									alert('아이디가 일치하지 않습니다.')
+								}
 							}}}>회원탈퇴</button>
 					</Col>
 				</Row>
