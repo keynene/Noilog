@@ -32,8 +32,7 @@ function MyPage(){
 								dispatch(LoggedOut(null))
 								localStorage.removeItem(JSON.stringify(userId))
 								navigate("/")
-							}
-						}}>회원탈퇴</button>
+							}}}>회원탈퇴</button>
 					</Col>
 				</Row>
 			</Container>

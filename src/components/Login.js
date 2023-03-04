@@ -51,7 +51,8 @@ function Login(){
 			else if (upassword === ""){
 				alert('비밀번호를 입력해주세요')
 			}
-		} catch(error) { console.log(error.message) }
+		} catch { alert('없는 아이디입니다!') }
+		// catch(error) { console.log(error.message) }
 		
 	}
 
