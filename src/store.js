@@ -49,14 +49,35 @@ const userObj = createSlice({
 			return state = null
 		}
 	}
+})
+
+const feedObj = createSlice({
+	name : 'feedObj',
+	initialState : [],
+
+	reducers : {
+		createFeedObj(state,action){
+			let copy = [{
+				text : action.text,
+				createAt : Date.now(),
+				creatorId : action.creatorId,
+				creatorNickname : action.creatorNickname,
+			}]
+			console.log(feedObj)
+
+			return state = [...copy, ...state]
+		}
+	}
 
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
+export let { createFeedObj } = feedObj.actions 
 export default configureStore({
 	reducer: {
 		isLoggedIn : isLoggedIn.reducer,
-		userObj : userObj.reducer
+		userObj : userObj.reducer,
+		feedObj : feedObj.reducer,
 	}
 })
