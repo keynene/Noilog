@@ -2,5 +2,5 @@
 	"compilerOptions": {
 		"baseUrl": "src"
 	},
-	"include": ["src"]
+	"include": ["src", "src/routes/Home.js", "src/routes/Feed.js", "src/routes/MyPage.js"]
 }

@@ -4,9 +4,12 @@ import {useSelector} from "react-redux";
 
 /* 컴포넌트 import */
 import Join from './Join.js';
-import Home from './Home.js';
-import MyPage from './MyPage.js';
 import Login from './Login.js';
+
+/* Routes import */
+import Home from 'routes/Home.js';
+import MyPage from 'routes/MyPage.js';
+import Feed from 'routes/Feed.js';
 
 function AppRouter(){
 	let state = useSelector((state) => state)
@@ -27,6 +30,9 @@ function AppRouter(){
 
 			{/* 로그인페이지 */}
 			<Route path="/login" element={ <Login /> } /> 
+
+			{/* 피드페이지 */}
+			<Route path="/feed" element={ <Feed /> } /> 
 			
 		</Routes>
 	)
