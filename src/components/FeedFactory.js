@@ -49,7 +49,6 @@ function FeedFactory(){
 				<input type="text" placeholder="여기입력해봐" onChange={onChange} value={feed} />
 				<input type="submit" value="글작성하기" />
 			</form>
-			{console.log(feeds)}
 		</div>
 	)
 }

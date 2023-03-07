@@ -57,14 +57,7 @@ const feedObj = createSlice({
 
 	reducers : {
 		createFeedObj(state,action){
-			let copy = [{
-				text : action.text,
-				createAt : Date.now(),
-				creatorId : action.creatorId,
-				creatorNickname : action.creatorNickname,
-			}]
-			console.log(feedObj)
-
+			let copy = [...action.payload]
 			return state = [...copy, ...state]
 		}
 	}
