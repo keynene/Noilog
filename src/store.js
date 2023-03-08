@@ -25,6 +25,16 @@ const isLoggedIn = createSlice({
 	}
 })
 
+const userId = createSlice({
+	name : 'userId',
+	initialState : JSON.parse(localStorage.getItem('login')).loginId
+})
+
+const userInfo = createSlice({
+	name : 'userInfo',
+	initialState : JSON.parse(localStorage.getItem(JSON.stringify(JSON.parse(localStorage.getItem('login')).loginId)))
+})
+
 const userObj = createSlice({
 	name : 'userObj',
 	initialState : null,
@@ -57,20 +67,42 @@ const feedObj = createSlice({
 
 	reducers : {
 		createFeedObj(state,action){
-			let copy = [...action.payload]
-			return state = [...copy, ...state]
+			let copy = {...action.payload}
+			state.unshift(copy)
+		},
+
+		addViewCount(state,action){
+			let index = state.findIndex((x)=> x.postNumber === action.payload )
+			state[index].viewCount ++;
+		},
+
+		addLikeCount(state,action){
+			let index = state.findIndex((x)=> x.postNumber === action.payload )
+			state[index].likeCount ++;
 		}
 	}
+})
 
+const commentObj = createSlice({
+	name : 'commentObj',
+	initialState: [],
+
+	reducers : {
+		createCommentObj(state,action){
+
+		}
+	}
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
-export let { createFeedObj } = feedObj.actions 
+export let { createFeedObj, addViewCount, addLikeCount } = feedObj.actions 
 export default configureStore({
 	reducer: {
 		isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
 		feedObj : feedObj.reducer,
+		userId : userId.reducer,
+		userInfo : userInfo.reducer,
 	}
 })

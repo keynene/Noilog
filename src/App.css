@@ -19,3 +19,23 @@ body {
   left: 0;
   right: 0;
 }
+
+
+/* comment */
+.comment_container {
+  display:flex;
+  justify-content:top;
+}
+.comment_textarea {
+  border:0;
+  width:95%;
+  height:80px;
+  outline:none;
+  resize: none;
+}
+
+.comment_submit{
+  border:0;
+  width:5%;
+  height:80px;
+}
