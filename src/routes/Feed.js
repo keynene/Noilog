@@ -26,13 +26,11 @@ function Feed(){
 	return(
 		<div>
 			<FeedFactory />
-			<div>
 			{
 				feeds.map((a,i) =>
 					<Feeds i={i} feeds={feeds} comments={comments} key={i} />
 				)
 			}
-			</div>
 		</div>
 	)
 }

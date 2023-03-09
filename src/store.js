@@ -27,7 +27,7 @@ const isLoggedIn = createSlice({
 
 const userId = createSlice({
 	name : 'userId',
-	initialState : JSON.parse(localStorage.getItem('login')).loginId
+	initialState : JSON.parse(localStorage.getItem('login')).loginId,
 })
 
 const userInfo = createSlice({
