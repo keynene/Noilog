@@ -89,7 +89,22 @@ const commentObj = createSlice({
 
 	reducers : {
 		createCommentObj(state,action){
+			let copy = {...action.payload}
+			state.push(copy)
+		},
 
+		findCommentObjIndex(state,action){
+			let i = 0
+			let index = []
+
+			for(i=0; i<state.length; i++){
+				if (state[i].postNumber === action.payload.postNumber){
+					index.push(i)
+					break;
+				}
+			}
+			if (index === 0){ return null } 
+			else { return index}
 		}
 	}
 })
@@ -97,6 +112,8 @@ const commentObj = createSlice({
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
 export let { createFeedObj, addViewCount, addLikeCount } = feedObj.actions 
+export let { createCommentObj, findCommentObjIndex } = commentObj.actions 
+
 export default configureStore({
 	reducer: {
 		isLoggedIn : isLoggedIn.reducer,
@@ -104,5 +121,6 @@ export default configureStore({
 		feedObj : feedObj.reducer,
 		userId : userId.reducer,
 		userInfo : userInfo.reducer,
+		commentObj : commentObj.reducer,
 	}
 })

@@ -74,7 +74,6 @@ function FeedFactory(){
 		}
 
 		setPostNumber(postNumber+1)
-		console.log(state.userInfo)
 
 		let createdFeedObj = {
 			postNumber,
