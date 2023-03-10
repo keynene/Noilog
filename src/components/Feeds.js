@@ -12,48 +12,12 @@ import sampleImgUrl2 from '../img/sample2.jpg'
 import { FcLikePlaceholder } from "react-icons/fc";
 import { BiCommentDetail } from "react-icons/bi";
 
+import CommentFactory from './CommentFactory';
+
 function Feeds({a, i, feeds, comments}){
 	
 	let state = useSelector((state) => state)
 	let dispatch = useDispatch();
-	
-	let [comment, setComment] = useState("");
-	let [commentId, setCommentId] = useState(0);
-	
-	// useEffect(()=>{
-	// 	setCommentId(commentId)
-	// },[commentId])
-
-	const onCommentChange = (e) => {
-		const {
-			target: { value },
-		} = e;
-		setComment(value);
-	}
-	
-	const onCommentSubmit = (e) => {
-		e.preventDefault();
-	}
-
-	const onCommentButtonClick = (i) => {
-		if (comment === ""){
-			return alert('댓글 내용을 입력해주세요!')
-		}
-		
-		setCommentId(commentId+1)
-		
-		let createdCommentObj = {
-			commentId,
-			postNumber : state.feedObj[i].postNumber,
-			content : comment,
-			writer : state.userInfo.nickname
-		}
-
-		dispatch(createCommentObj(createdCommentObj))
-		setComment("")
-
-		createdCommentObj = null
-	}
 	
 	return (
 		<Container style={{marginTop:50, maxWidth:700}}>
@@ -105,17 +69,10 @@ function Feeds({a, i, feeds, comments}){
 					)}
 				</Col>
 			</Row>
-			<Row>
-				<Col style={{paddingTop:20, textAlign:'left'}}>
-					<form onSubmit={onCommentSubmit} className="comment_container" >
-						<textarea className="comment_textarea" placeholder="댓글 달기..." color="gray" value={comment} onChange={onCommentChange} />
-						<input className="comment_submit" type="submit" value="↑" onClick={()=>{
-							onCommentButtonClick(i)
-							dispatch(addCommentCount(feeds[i].postNumber))
-							}} />
-					</form>
-				</Col>
-			</Row>
+
+			{/* 댓글 달기 컴포넌트 */}
+			<CommentFactory feeds={feeds} i={i} />
+
 			<Row style={{marginTop:30, marginLeft:0, marginRight:0, marginBottom:0, width:'100%'}}><hr style={{border:'dashed 1px gray'}} /> </Row>
 		</Container>
 	)
