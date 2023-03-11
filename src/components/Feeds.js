@@ -2,21 +2,21 @@ import React, { useEffect, useState } from 'react';
 
 import { Container, Row, Col } from 'react-bootstrap';
 
-import { useSelector, useDispatch } from "react-redux";
-import { addLikeCount, createCommentObj, addCommentCount } from 'store.js';
+import { useDispatch } from "react-redux";
+import { addLikeCount } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
-import sampleImgUrl2 from '../img/sample2.jpg'
 
 // import { FaRegEye } from "react-icons/fa";
 import { FcLikePlaceholder } from "react-icons/fc";
 import { BiCommentDetail } from "react-icons/bi";
 
 import CommentFactory from './CommentFactory';
+import Comments from './Comments';
 
 function Feeds({a, i, feeds, comments}){
 	
-	let state = useSelector((state) => state)
+	
 	let dispatch = useDispatch();
 	
 	return (
@@ -52,20 +52,7 @@ function Feeds({a, i, feeds, comments}){
 			<Row style={{marginTop:30}}>
 				<Col style={{backgroundColor:'#F0F0F0', borderRadius:15}}>
 					{comments.map((ca,ci)=>
-						<Container style={{marginTop:30, marginBottom:30}} key={ci} >
-							{
-								feeds[i].postNumber === comments[ci].postNumber ? (
-									<Row>
-										<Col sm={2}><img src={sampleImgUrl2} alt="sampleImg2" style={{width:50, height:50, borderRadius:50}} /></Col>
-										<Col sm={2} style={{textAlign:'left', color:'gray'}}>{state.userInfo.nickname}</Col>
-										<Col sm={8} style={{textAlign:'left'}}> {comments[ci].content} </Col> 
-										{/* 원래 ↑ 이거 sm={8} */}
-										{/* <Col sm={3} style={{textAlign:'left'}}> postNumber={comments[ci].postNumber} </Col> */}
-										{/* <Col sm={3} style={{textAlign:'left'}}> commentId={comments[ci].commentId} </Col> */}
-									</Row>
-								) : null
-							}
-						</Container>
+						<Comments feeds={feeds} i={i} comments={comments} ci={ci} />
 					)}
 				</Col>
 			</Row>
