@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -15,8 +15,6 @@ import CommentFactory from './CommentFactory';
 import Comments from './Comments';
 
 function Feeds({a, i, feeds, comments}){
-	
-	
 	let dispatch = useDispatch();
 	
 	return (
@@ -52,7 +50,8 @@ function Feeds({a, i, feeds, comments}){
 			<Row style={{marginTop:30}}>
 				<Col style={{backgroundColor:'#F0F0F0', borderRadius:15}}>
 					{comments.map((ca,ci)=>
-						<Comments feeds={feeds} i={i} comments={comments} ci={ci} />
+						//댓글출력
+						<Comments feeds={feeds} i={i} comments={comments} ci={ci} key={ci} />
 					)}
 				</Col>
 			</Row>
