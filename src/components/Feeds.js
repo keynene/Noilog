@@ -25,7 +25,7 @@ function Feeds({a, i, feeds, comments}){
 			<Row>
 				<Col sm={2}><img src={sampleImgUrl} alt="sampleImg" style={{width:50, height:50, borderRadius:50}} /></Col>
 				<Col sm={2} style={{color:'gray', textAlign:'left'}} >{feeds[i].creatorNickname}</Col>
-				<Col sm={8} style={{textAlign:'right', color:'gray'}}><span style={{fontSize:20}}>·</span>{feeds[i].createDate}</Col>
+				<Col sm={8} style={{textAlign:'right', color:'gray', whiteSpace:'pre'}}>{feeds[i].createDate}</Col>
 			</Row>
 			<Row>
 				<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>{feeds[i].title}</Col>

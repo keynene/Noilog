@@ -14,7 +14,7 @@ function Comments({ feeds, i, comments, ci }){
 					<Row>
 						<Col sm={2}><img src={sampleImgUrl2} alt="sampleImg2" style={{width:50, height:50, borderRadius:50}} /></Col>
 						<Col sm={2} style={{textAlign:'left', color:'gray'}}>{state.userInfo.nickname}</Col>
-						<Col sm={8} style={{textAlign:'left'}}> {comments[ci].content} </Col> 
+						<Col sm={8} style={{textAlign:'left', whiteSpace:'pre'}}> {comments[ci].content} </Col> 
 						{/* 원래 ↑ 이거 sm={8} */}
 						{/* <Col sm={3} style={{textAlign:'left'}}> postNumber={comments[ci].postNumber} </Col> */}
 						{/* <Col sm={3} style={{textAlign:'left'}}> commentId={comments[ci].commentId} </Col> */}
