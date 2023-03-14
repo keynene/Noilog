@@ -79,7 +79,12 @@ const feedObj = createSlice({
 		addLikeCount(state,action){
 			let index = state.findIndex((x)=> x.postNumber === action.payload )
 			state[index].likeCount ++;
-		}
+		},
+
+		addCommentCount(state,action){
+			let index = state.findIndex((x)=> x.postNumber === action.payload )
+			state[index].commentCount ++;
+		},
 	}
 })
 
@@ -111,7 +116,7 @@ const commentObj = createSlice({
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
-export let { createFeedObj, addViewCount, addLikeCount } = feedObj.actions 
+export let { createFeedObj, addViewCount, addLikeCount, addCommentCount } = feedObj.actions 
 export let { createCommentObj } = commentObj.actions 
 
 export default configureStore({

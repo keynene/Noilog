@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import { useSelector, useDispatch } from "react-redux";
-import { addLikeCount, createCommentObj } from 'store.js';
+import { addLikeCount, createCommentObj, addCommentCount } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
 import sampleImgUrl2 from '../img/sample2.jpg'
@@ -94,10 +94,10 @@ function Feeds({a, i, feeds, comments}){
 									<Row>
 										<Col sm={2}><img src={sampleImgUrl2} alt="sampleImg2" style={{width:50, height:50, borderRadius:50}} /></Col>
 										<Col sm={2} style={{textAlign:'left', color:'gray'}}>{state.userInfo.nickname}</Col>
-										<Col sm={2} style={{textAlign:'left'}}> {comments[ci].content} </Col> 
+										<Col sm={8} style={{textAlign:'left'}}> {comments[ci].content} </Col> 
 										{/* 원래 ↑ 이거 sm={8} */}
-										<Col sm={3} style={{textAlign:'left'}}> postNumber={comments[ci].postNumber} </Col>
-										<Col sm={3} style={{textAlign:'left'}}> commentId={comments[ci].commentId} </Col>
+										{/* <Col sm={3} style={{textAlign:'left'}}> postNumber={comments[ci].postNumber} </Col> */}
+										{/* <Col sm={3} style={{textAlign:'left'}}> commentId={comments[ci].commentId} </Col> */}
 									</Row>
 								) : null
 							}
@@ -109,7 +109,10 @@ function Feeds({a, i, feeds, comments}){
 				<Col style={{paddingTop:20, textAlign:'left'}}>
 					<form onSubmit={onCommentSubmit} className="comment_container" >
 						<textarea className="comment_textarea" placeholder="댓글 달기..." color="gray" value={comment} onChange={onCommentChange} />
-						<input className="comment_submit" type="submit" value="↑" onClick={()=>{onCommentButtonClick(i)}} />
+						<input className="comment_submit" type="submit" value="↑" onClick={()=>{
+							onCommentButtonClick(i)
+							dispatch(addCommentCount(feeds[i].postNumber))
+							}} />
 					</form>
 				</Col>
 			</Row>
