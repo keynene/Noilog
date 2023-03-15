@@ -2,14 +2,12 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import {useSelector} from "react-redux";
 
-/* 컴포넌트 import */
-import Join from './Join.js';
-import Login from './Login.js';
-
 /* Routes import */
 import Home from 'routes/Home.js';
 import MyPage from 'routes/MyPage.js';
 import Feed from 'routes/Feed.js';
+import Join from '../routes/Join.js';
+import Login from '../routes/Login.js';
 
 function AppRouter(){
 	let state = useSelector((state) => state)
