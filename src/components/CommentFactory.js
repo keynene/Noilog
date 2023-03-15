@@ -22,6 +22,27 @@ function CommentFactory({ feeds, i }){
 		e.preventDefault();
 	}
 
+	const getDate = () => {
+		let date = new Date();
+		let year = date.getFullYear();
+		let month = ("0" + (1+date.getMonth())).slice(-2);
+		let day = ("0"+date.getDate()).slice(-2);
+		let hours = ('0' + date.getHours()).slice(-2); 
+		let minutes = ('0' + date.getMinutes()).slice(-2);
+		// let seconds = ('0' + date.getSeconds()).slice(-2); 
+		let ampm = '오전'
+
+		if (hours >= 12){
+			ampm = '오후'
+			if (hours > 12){
+				hours -= 12
+			}
+
+		}
+
+		return `${year}년 ${month}월 ${day}일\n${ampm} ${hours}시 ${minutes}분`;
+	}
+
 	const onCommentButtonClick = (i) => {
 		if (comment === ""){
 			return alert('댓글 내용을 입력해주세요!')
@@ -33,7 +54,8 @@ function CommentFactory({ feeds, i }){
 			commentId,
 			postNumber : state.feedObj[i].postNumber,
 			content : comment,
-			writer : state.userInfo.nickname
+			writer : state.userInfo.nickname,
+			createDate : getDate()
 		}
 
 		dispatch(createCommentObj(createdCommentObj))
