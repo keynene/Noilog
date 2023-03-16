@@ -27,7 +27,8 @@ const isLoggedIn = createSlice({
 
 const userId = createSlice({
 	name : 'userId',
-	initialState : JSON.parse(localStorage.getItem('login')).loginId,
+	initialState : '',
+	// initialState : JSON.parse(localStorage.getItem('login')).loginId,
 
 	reducers : {
 		handleUserId(state,action){
@@ -38,7 +39,8 @@ const userId = createSlice({
 
 const userInfo = createSlice({
 	name : 'userInfo',
-	initialState : JSON.parse(localStorage.getItem(JSON.stringify(JSON.parse(localStorage.getItem('login')).loginId))),
+	initialState : '',
+	// initialState : JSON.parse(localStorage.getItem(JSON.stringify(JSON.parse(localStorage.getItem('login')).loginId))),
 
 	reducers : {
 		handleUserInfo(state,action){

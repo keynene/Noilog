@@ -9,13 +9,22 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedIn } from 'store.js';
+import { LoggedIn, handleUserId, handleUserInfo } from 'store.js';
 
 function App() {
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
 
+  let data = {
+    login : false,
+    loginId : ''
+  }
+
   useEffect(()=>{
+    if (localStorage.length === 0){
+      localStorage.setItem('login',JSON.stringify(data))
+    }
+
     if (JSON.parse(localStorage.getItem('login')).login === true){
       dispatch(LoggedIn(state.userId))
     }
