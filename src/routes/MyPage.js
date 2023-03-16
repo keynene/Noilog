@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import sampleImgUrl from '../img/sample.jpg'
 
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedOut } from 'store.js';
+import { LoggedOut, handleUserId, handleUserInfo } from 'store.js';
 
 function MyPage(){
 	let state = useSelector((state) => {return state})
@@ -25,7 +25,7 @@ function MyPage(){
 						<h4>
 							{state.userInfo.nickname} ({state.userInfo.id})
 							<button style={{fontSize:14, marginLeft:10}} onClick={()=>{
-								dispatch(LoggedOut(null))
+								dispatch(LoggedOut(''), handleUserId(''), handleUserInfo(''))
 								navigate("/")
 								alert('로그아웃 되었습니다.')
 							}}>로그아웃</button>

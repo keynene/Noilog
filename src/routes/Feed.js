@@ -22,13 +22,12 @@ function Feed(){
 		setComments(state.commentObj)
 	},[state.commentObj])
 	
-
 	return(
 		<div>
 			<FeedFactory />
 			{
 				feeds.map((a,i) =>
-					<Feeds i={i} feeds={feeds} comments={comments} key={i} />
+					<Feeds i={i} feeds={feeds} comments={comments} key={i} isFeedOwner={feeds[i].writer === state.userId} />
 				)
 			}
 		</div>

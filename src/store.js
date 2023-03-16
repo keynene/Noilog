@@ -28,11 +28,26 @@ const isLoggedIn = createSlice({
 const userId = createSlice({
 	name : 'userId',
 	initialState : JSON.parse(localStorage.getItem('login')).loginId,
+
+	reducers : {
+		handleUserId(state,action){
+			state = action.payload
+		}
+	}
 })
 
 const userInfo = createSlice({
 	name : 'userInfo',
-	initialState : JSON.parse(localStorage.getItem(JSON.stringify(JSON.parse(localStorage.getItem('login')).loginId)))
+	initialState : JSON.parse(localStorage.getItem(JSON.stringify(JSON.parse(localStorage.getItem('login')).loginId))),
+
+	reducers : {
+		handleUserInfo(state,action){
+			if (action.payload !== ''){
+				state = localStorage.getItem(action.payload)
+			}
+			else state = ''
+		}
+	}
 })
 
 const userObj = createSlice({
@@ -115,6 +130,8 @@ const commentObj = createSlice({
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
+export let { handleUserId } = userId.actions 
+export let { handleUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
 export let { createFeedObj, addViewCount, addLikeCount, addCommentCount } = feedObj.actions 
 export let { createCommentObj } = commentObj.actions 

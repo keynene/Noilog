@@ -10,11 +10,13 @@ import sampleImgUrl from '../img/sample.jpg'
 // import { FaRegEye } from "react-icons/fa";
 import { FcLikePlaceholder } from "react-icons/fc";
 import { BiCommentDetail } from "react-icons/bi";
+import { GrEdit } from "react-icons/gr";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 import CommentFactory from './CommentFactory';
 import Comments from './Comments';
 
-function Feeds({a, i, feeds, comments}){
+function Feeds({a, i, feeds, comments, isFeedOwner}){
 	let dispatch = useDispatch();
 	
 	return (
@@ -33,8 +35,8 @@ function Feeds({a, i, feeds, comments}){
 			<Row>
 				<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>{feeds[i].content}</Col>
 			</Row>
-			<Row>
-				<Col style={{fontSize:20, textAlign:'left'}}>
+			<Row style={{fontSize:20}}>
+				<Col style={{textAlign:'left'}}>
 					{/* 
 					피드버전은 조회수 필요없어서 주석처리함
 					<span onClick={()=>{
@@ -46,6 +48,13 @@ function Feeds({a, i, feeds, comments}){
 					}} ><FcLikePlaceholder /> {feeds[i].likeCount}</span>
 					<span><BiCommentDetail style={{marginLeft:30}}/> {feeds[i].commentCount}</span>
 				</Col>
+				{isFeedOwner ? (
+					<Col style={{textAlign:'right'}}>
+						<span ><GrEdit/></span>
+						<span style={{marginLeft:15, color:'black'}}><RiDeleteBin6Line/></span>
+					</Col>
+					) : null
+				}
 			</Row>
 			<Row style={{marginTop:30}}>
 				<Col style={{backgroundColor:'#F0F0F0', borderRadius:15}}>
