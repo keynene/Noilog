@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -8,11 +8,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import sampleImgUrl from '../img/sample.jpg'
 
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedOut, handleUserId, handleUserInfo } from 'store.js';
+import { LoggedOut, popUserInfo } from 'store.js';
 
 function MyPage(){
 	let state = useSelector((state) => {return state})
-	
 	let dispatch = useDispatch();
 	let navigate = useNavigate();
 
@@ -23,11 +22,14 @@ function MyPage(){
 					<Col><img src={sampleImgUrl} alt="" width="133px" height="158px" /></Col>
 					<Col style={{paddingTop:20}}>
 						<h4>
-							{state.userInfo.nickname} ({state.userInfo.id})
+							{state.userInfo[0].nickname} ({state.userInfo[0].id})
 							<button style={{fontSize:14, marginLeft:10}} onClick={()=>{
-								dispatch(LoggedOut(''), handleUserId(''), handleUserInfo(''))
+								dispatch(LoggedOut(''))
+								dispatch(popUserInfo())
+								console.log(state.userInfo)
 								navigate("/")
 								alert('로그아웃 되었습니다.')
+								console.log(state.userInfo)
 							}}>로그아웃</button>
 						</h4>
 						<p>{state.userInfo.email}</p>

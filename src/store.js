@@ -25,30 +25,33 @@ const isLoggedIn = createSlice({
 	}
 })
 
-const userId = createSlice({
-	name : 'userId',
-	initialState : '',
-	// initialState : JSON.parse(localStorage.getItem('login')).loginId,
+// const userId = createSlice({
+// 	name : 'userId',
+// 	initialState : {
+// 		id : ''
+// 	},
+// 	// initialState : JSON.parse(localStorage.getItem('login')).loginId,
 
-	reducers : {
-		handleUserId(state,action){
-			state = action.payload
-		}
-	}
-})
+// 	reducers : {
+// 		handleUserId(state,action){
+// 			state.id = action.payload
+// 		}
+// 	}
+// })
 
 const userInfo = createSlice({
 	name : 'userInfo',
-	initialState : '',
+	initialState : [],
 	// initialState : JSON.parse(localStorage.getItem(JSON.stringify(JSON.parse(localStorage.getItem('login')).loginId))),
 
 	reducers : {
-		handleUserInfo(state,action){
-			if (action.payload !== ''){
-				state = localStorage.getItem(action.payload)
-			}
-			else state = ''
-		}
+		pushUserInfo(state,action){
+			let copy = {...action.payload}
+			state.push(copy)
+		},
+		popUserInfo(state){
+			state.pop()
+		},
 	}
 })
 
@@ -132,8 +135,8 @@ const commentObj = createSlice({
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
-export let { handleUserId } = userId.actions 
-export let { handleUserInfo } = userInfo.actions 
+// export let { handleUserId } = userId.actions 
+export let { pushUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
 export let { createFeedObj, addViewCount, addLikeCount, addCommentCount } = feedObj.actions 
 export let { createCommentObj } = commentObj.actions 
@@ -143,7 +146,7 @@ export default configureStore({
 		isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
 		feedObj : feedObj.reducer,
-		userId : userId.reducer,
+		// userId : userId.reducer,
 		userInfo : userInfo.reducer,
 		commentObj : commentObj.reducer,
 	}

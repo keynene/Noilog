@@ -9,7 +9,7 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedIn, handleUserId, handleUserInfo } from 'store.js';
+import { LoggedIn, LoggedOut } from 'store.js';
 
 function App() {
   let dispatch = useDispatch();
@@ -26,14 +26,17 @@ function App() {
     }
 
     if (JSON.parse(localStorage.getItem('login')).login === true){
-      dispatch(LoggedIn(state.userId))
+      let nowLoggedInId = JSON.parse(localStorage.getItem('login')).loginId
+      dispatch(LoggedIn(nowLoggedInId))
     }
   },[])
 
   return (
     <div className="App">
+      {console.log(state.userInfo)}
       <Navigation />
       <AppRouter />
+      {/* <button onClick={()=>{dispatch(LoggedOut(''))}}>로그아웃</button> */}
     </div>
   );
 }
