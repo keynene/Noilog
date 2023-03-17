@@ -117,20 +117,6 @@ const commentObj = createSlice({
 			let copy = {...action.payload}
 			state.push(copy)
 		},
-
-		// findCommentObjIndex(state,action){
-		// 	let i = 0
-		// 	let index = []
-
-		// 	for(i=0; i<state.length; i++){
-		// 		if (state[i].postNumber === action.payload.postNumber){
-		// 			index.push(i)
-		// 			break;
-		// 		}
-		// 	}
-		// 	if (index === 0){ return null } 
-		// 	else { return index}
-		// }
 	}
 })
 

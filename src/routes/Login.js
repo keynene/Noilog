@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 /* Actions */
-import { LoggedIn, handleUserId, handleUserInfo } from '../store.js';
+import { LoggedIn, pushUserInfo } from '../store.js';
 
 function Login(){
 
@@ -33,7 +33,9 @@ function Login(){
 				let compPassword = JSON.parse(localStorage.getItem(JSON.stringify(uid))).password
 				
 				if (compId === uid && compPassword === upassword){
-					dispatch(LoggedIn(uid),handleUserId(uid),handleUserInfo(uid))
+					dispatch(LoggedIn(uid))
+					let loginInfo = JSON.parse(localStorage.getItem(JSON.stringify(uid)))
+					dispatch(pushUserInfo(loginInfo))
 					navigate("/")
 				} 
 				

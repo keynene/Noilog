@@ -91,12 +91,12 @@ function FeedFactory(){
 			postNumber,
 			title : feedTitle,
 			content : feedContent,
-			writer : state.userId,
+			writer : state.userInfo[0].id,
 			viewCount : 0,
 			likeCount : 0,
 			commentCount : 0,
 			createDate : getDate(),
-			creatorNickname : state.userInfo.nickname,
+			creatorNickname : state.userInfo[0].nickname,
 		}
 		
 		dispatch(createFeedObj(createdFeedObj));

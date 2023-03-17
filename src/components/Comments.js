@@ -16,13 +16,13 @@ function Comments({ feeds, i, comments, ci }){
 				feeds[i].postNumber === comments[ci].postNumber ? (
 					<Row>
 						<Col sm={2}><img src={sampleImgUrl2} alt="sampleImg2" style={{width:50, height:50, borderRadius:50}} /></Col>
-						<Col sm={2} style={{textAlign:'left', color:'gray'}}>{state.userInfo.nickname}</Col>
+						<Col sm={2} style={{textAlign:'left', color:'gray'}}>{comments[ci].creatorNickname}</Col>
 						<Col sm={5} style={{textAlign:'left', whiteSpace:'pre'}}> {comments[ci].content} </Col> 
 						<Col sm={3} style={{textAlign:'right', whiteSpace:'pre', fontSize:13, color:'gray'}}>
 							<Row style={{textAlign:'right'}}>
 								<Col>{comments[ci].createDate}</Col>
 							</Row>
-							{state.userInfo.nickname === comments[ci].writer ? (
+							{state.userInfo[0].id === comments[ci].writer ? (
 								<Row style={{textAlign:'right', fontSize:18}}>
 									<Col style={{textAlign:'right'}}>
 										<span><GrEdit /></span>

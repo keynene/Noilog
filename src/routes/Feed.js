@@ -27,7 +27,7 @@ function Feed(){
 			<FeedFactory />
 			{
 				feeds.map((a,i) =>
-					<Feeds i={i} feeds={feeds} comments={comments} key={i} isFeedOwner={feeds[i].writer === state.userId} />
+					<Feeds i={i} feeds={feeds} comments={comments} key={i} isFeedOwner={feeds[i].writer === state.userInfo[0].id} />
 				)
 			}
 		</div>
