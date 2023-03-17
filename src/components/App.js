@@ -9,7 +9,7 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedIn, LoggedOut } from 'store.js';
+import { LoggedIn } from 'store.js';
 
 function App() {
   let dispatch = useDispatch();
@@ -33,10 +33,8 @@ function App() {
 
   return (
     <div className="App">
-      {console.log(state.userInfo)}
       <Navigation />
       <AppRouter />
-      {/* <button onClick={()=>{dispatch(LoggedOut(''))}}>로그아웃</button> */}
     </div>
   );
 }

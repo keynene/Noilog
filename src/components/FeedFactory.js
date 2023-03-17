@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import { createFeedObj } from 'store.js';
 
 function FeedFactory(){
 	
 	let state = useSelector((state) => state)
 	let dispatch = useDispatch();
+	let Navigate = useNavigate();
 	
 	const [feedTitle, setFeedTitle] = useState("");
 	const [feedContent, setFeedContent] = useState("");
@@ -83,6 +85,12 @@ function FeedFactory(){
 		
 		else if (feedContent === ""){
 			return alert('내용을 입력해주세요')
+		}
+
+		else if (state.userInfo.length === 0){
+			if (window.confirm('로그인 후 이용해주세요! 로그인 화면으로 이동할까요?')){
+				Navigate("/login")
+			}
 		}
 
 		setPostNumber(postNumber+1)
