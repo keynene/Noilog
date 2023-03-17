@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container, Row, Col } from 'react-bootstrap';
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addLikeCount } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
@@ -18,6 +18,7 @@ import Comments from './Comments';
 
 function Feeds({a, i, feeds, comments, isFeedOwner}){
 	let dispatch = useDispatch();
+	let state = useSelector((state) => state)
 	
 	return (
 		<Container style={{marginTop:50, maxWidth:700}}>
@@ -60,7 +61,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 				<Col style={{backgroundColor:'#F0F0F0', borderRadius:15}}>
 					{comments.map((ca,ci)=>
 						//댓글출력
-						<Comments feeds={feeds} i={i} comments={comments} ci={ci} key={ci} />
+						<Comments feeds={feeds} i={i} comments={comments} ci={ci} key={ci} isCommentOwner={state.userInfo[0].id === comments[ci].writer} />
 					)}
 				</Col>
 			</Row>

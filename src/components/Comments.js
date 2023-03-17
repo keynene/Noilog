@@ -7,7 +7,7 @@ import { GrEdit } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 
-function Comments({ feeds, i, comments, ci }){
+function Comments({ feeds, i, comments, ci, isCommentOwner }){
 	let state = useSelector((state) => state)
 
 	return (
@@ -22,7 +22,7 @@ function Comments({ feeds, i, comments, ci }){
 							<Row style={{textAlign:'right'}}>
 								<Col>{comments[ci].createDate}</Col>
 							</Row>
-							{state.userInfo[0].id === comments[ci].writer ? (
+							{isCommentOwner ? (
 								<Row style={{textAlign:'right', fontSize:18}}>
 									<Col style={{textAlign:'right'}}>
 										<span><GrEdit /></span>

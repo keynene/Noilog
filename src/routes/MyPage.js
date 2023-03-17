@@ -26,7 +26,6 @@ function MyPage(){
 							<button style={{fontSize:14, marginLeft:10}} onClick={()=>{
 								dispatch(LoggedOut(''))
 								dispatch(popUserInfo())
-								console.log(state.userInfo)
 								navigate("/")
 								alert('로그아웃 되었습니다.')
 								console.log(state.userInfo)
