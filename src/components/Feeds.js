@@ -3,7 +3,7 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLikeCount } from 'store.js';
+import { addLikeCount, deleteFeedObj, deleteCommentObj } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
 
@@ -15,6 +15,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 
 import CommentFactory from './CommentFactory';
 import Comments from './Comments';
+import { Navigate } from 'react-router-dom';
 
 function Feeds({a, i, feeds, comments, isFeedOwner}){
 	let dispatch = useDispatch();
@@ -52,7 +53,17 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 				{isFeedOwner ? (
 					<Col style={{textAlign:'right'}}>
 						<span ><GrEdit/></span>
-						<span style={{marginLeft:15, color:'black'}}><RiDeleteBin6Line/></span>
+						<span 
+							onClick={()=>{
+								if (window.confirm('정말 피드를 삭제하시겠습니까?')){
+									dispatch(deleteFeedObj(feeds[i].postNumber))
+									dispatch(deleteCommentObj(feeds[i].postNumber))
+									Navigate("/feed")
+								}
+							}} 
+							style={{marginLeft:15, color:'black'}}>
+							<RiDeleteBin6Line/>
+						</span>
 					</Col>
 					) : null
 				}

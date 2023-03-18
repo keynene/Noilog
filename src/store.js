@@ -105,6 +105,11 @@ const feedObj = createSlice({
 			let index = state.findIndex((x)=> x.postNumber === action.payload )
 			state[index].commentCount ++;
 		},
+
+		deleteFeedObj(state,action){
+			let index = state.findIndex((x)=> x.postNumber === action.payload )
+			state.slice(index,1)
+		},
 	}
 })
 
@@ -117,6 +122,20 @@ const commentObj = createSlice({
 			let copy = {...action.payload}
 			state.push(copy)
 		},
+
+		deleteCommentObj(state,action){
+			let i = 0
+			let index = []
+			for (i=0; i<state.length; i++){
+				if(state[i].postNumber === action.payload){
+					index.push(i)
+				}
+			}
+			while (index.length !== 0){
+				state.slice(index[0],1)
+				index.unshift()
+			}
+		}
 	}
 })
 
@@ -124,8 +143,8 @@ export let { LoggedIn, LoggedOut } = isLoggedIn.actions
 // export let { handleUserId } = userId.actions 
 export let { pushUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
-export let { createFeedObj, addViewCount, addLikeCount, addCommentCount } = feedObj.actions 
-export let { createCommentObj } = commentObj.actions 
+export let { createFeedObj, addViewCount, addLikeCount, addCommentCount, deleteFeedObj } = feedObj.actions 
+export let { createCommentObj, deleteCommentObj } = commentObj.actions 
 
 export default configureStore({
 	reducer: {
