@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Container, Row, Col } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLikeCount, deleteFeedObj, deleteCommentObj } from 'store.js';
+import { addLikeCount, deleteFeedObj, deleteCommentObj, editingOn, editingOff, editFeedObj } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
 
@@ -20,6 +20,50 @@ import { Navigate } from 'react-router-dom';
 function Feeds({a, i, feeds, comments, isFeedOwner}){
 	let dispatch = useDispatch();
 	let state = useSelector((state) => state)
+	let [editTitle, setEditTitle] = useState("")
+	let [editContent, setEditContent] = useState("")
+
+	const onEditTitleChange = (e) => {
+		const {
+			target: { value },
+		} = e;
+		setEditTitle(value);
+	}
+	
+	const onEditContentChange = (e) => {
+		const {
+			target: { value },
+		} = e;
+		setEditContent(value);
+	}
+	
+	const onSubmit = (e) => {
+		e.preventDefault();
+		
+		if (editTitle === ""){
+			console.log(editTitle)
+			return alert('수정할 제목을 입력해주세요')
+		}
+
+		if (editContent === ""){
+			return alert('수정할 피드 내용을 입력해주세요')
+		}
+
+		dispatch(editingOff())
+
+		alert('수정이 완료되었습니다!')
+		setEditTitle('')
+		setEditContent('')
+	}
+
+	const onSubmitClick = (i) => {
+		let editData = {
+			postNumber : i,
+			editTitle,
+			editContent
+		}
+		dispatch(editFeedObj(editData))
+	}
 	
 	return (
 		<Container style={{marginTop:50, maxWidth:700}}>
@@ -31,12 +75,37 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 				<Col sm={2} style={{color:'gray', textAlign:'left'}} >{feeds[i].creatorNickname}</Col>
 				<Col sm={8} style={{textAlign:'right', color:'gray', whiteSpace:'pre'}}>{feeds[i].createDate}</Col>
 			</Row>
-			<Row>
-				<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>{feeds[i].title}</Col>
-			</Row>
-			<Row>
-				<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>{feeds[i].content}</Col>
-			</Row>
+			{
+				state.isEditing ? (
+				<form onSubmit={onSubmit}>
+					<Row className="editing_container">
+						<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>
+							<textarea className="editing_textarea" placeholder='게시글 제목을 수정해주세용' value={editTitle} onChange={onEditTitleChange} />
+						</Col>
+					</Row>
+					<Row>
+						<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>
+							<textarea className="editing_textarea" placeholder='게시글 내용을 수정해주세용' value={editContent} onChange={onEditContentChange} />
+						</Col>
+					</Row>
+					<Row>
+						<Col style={{textAlign:'right'}}>
+							<input type="submit" value="수정하기" onClick={()=>{onSubmitClick(i)}}/>
+						</Col>
+					</Row>
+				</form>
+				) : (
+				<>
+					<Row>
+						<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>{feeds[i].title}</Col>
+					</Row>
+					<Row>
+						<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>{feeds[i].content}</Col>
+					</Row>
+				</>
+				)
+			}
+				
 			<Row style={{fontSize:20}}>
 				<Col style={{textAlign:'left'}}>
 					{/* 
@@ -52,7 +121,11 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 				</Col>
 				{isFeedOwner ? (
 					<Col style={{textAlign:'right'}}>
-						<span ><GrEdit/></span>
+						<span onClick={()=>{ 
+							if (window.confirm('피드를 수정하시겠습니까?')){
+								dispatch(editingOn()) 
+							}
+						}} ><GrEdit/></span>
 						<span 
 							onClick={()=>{
 								if (window.confirm('정말 피드를 삭제하시겠습니까?')){

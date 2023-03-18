@@ -39,3 +39,16 @@ body {
   width:5%;
   height:80px;
 }
+
+/* editing form */
+.editing_container {
+  display:flex;
+  justify-content:top;
+}
+.editing_textarea {
+  border:0;
+  width:100%;
+  height:80px;
+  outline:none;
+  resize: none;
+}

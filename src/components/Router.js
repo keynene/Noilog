@@ -8,6 +8,7 @@ import MyPage from 'routes/MyPage.js';
 import Feed from 'routes/Feed.js';
 import Join from '../routes/Join.js';
 import Login from '../routes/Login.js';
+import FeedTest from 'routes/FeedTest.js';
 
 function AppRouter(){
 	let state = useSelector((state) => state)
@@ -31,6 +32,9 @@ function AppRouter(){
 
 			{/* 피드페이지 */}
 			<Route path="/feed" element={ <Feed /> } /> 
+
+			{/* 피드 파일입출력 테스트페이지 */}
+			<Route path="/feedtest" element={ <FeedTest /> } /> 
 			
 		</Routes>
 	)

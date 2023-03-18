@@ -43,6 +43,7 @@ function Navigation(){
               :
                 null
             }
+            <Nav.Link onClick={()=>{ navigate("/feedtest") }} >FeedTest</Nav.Link>
 
           </Nav>
         </Container>
