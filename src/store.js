@@ -27,15 +27,20 @@ const isLoggedIn = createSlice({
 
 const isEditing = createSlice({
 	name : 'editing',
-	initialState : false,
+	initialState : {
+		postNumber : null,
+		editState : false
+	},
 
 	reducers : {
-		editingOn(state){
-			return state = true
+		editingOn(state,action){
+			state.postNumber = action.payload
+			state.editState = true
 		},
-
+		
 		editingOff(state){
-			return state = false
+			state.postNumber = null
+			state.editState = false
 		},
 	}
 })

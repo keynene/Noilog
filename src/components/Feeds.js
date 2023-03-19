@@ -36,6 +36,16 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 		} = e;
 		setEditContent(value);
 	}
+
+	const EditingAndTruePostNumber = (i) => {
+		if (state.isEditing.editState){
+			if (state.isEditing.postNumber === i){
+				return true
+			}
+			return false
+		}
+		return false
+	}
 	
 	const onSubmit = (e) => {
 		e.preventDefault();
@@ -76,26 +86,28 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 				<Col sm={8} style={{textAlign:'right', color:'gray', whiteSpace:'pre'}}>{feeds[i].createDate}</Col>
 			</Row>
 			{
-				state.isEditing ? (
-				<form onSubmit={onSubmit}>
-					<Row className="editing_container">
-						<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>
-							<textarea className="editing_textarea" placeholder='게시글 제목을 수정해주세용' value={editTitle} onChange={onEditTitleChange} />
-						</Col>
-					</Row>
-					<Row>
-						<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>
-							<textarea className="editing_textarea" placeholder='게시글 내용을 수정해주세용' value={editContent} onChange={onEditContentChange} />
-						</Col>
-					</Row>
-					<Row>
-						<Col style={{textAlign:'right'}}>
-							<input type="submit" value="수정하기" onClick={()=>{onSubmitClick(i)}}/>
-						</Col>
-					</Row>
-				</form>
+				//수정버튼 눌렀고, i값과 postNumber가 일치하는 게시글만 수정폼 적용
+				EditingAndTruePostNumber ? (
+					<form onSubmit={onSubmit}>
+						<Row className="editing_container">
+							<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>
+								<textarea className="editing_textarea" placeholder='게시글 제목을 수정해주세용' value={editTitle} onChange={onEditTitleChange} />
+							</Col>
+						</Row>
+						<Row>
+							<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>
+								<textarea className="editing_textarea" placeholder='게시글 내용을 수정해주세용' value={editContent} onChange={onEditContentChange} />
+							</Col>
+						</Row>
+						<Row>
+							<Col style={{textAlign:'right'}}>
+								<input type="submit" value="수정하기" onClick={()=>{onSubmitClick(i)}}/>
+							</Col>
+						</Row>
+					</form>
 				) : (
-				<>
+					//수정상태 아니거나, 수정상태이지만 postNumber가 다른경우 게시글 그대로 출력
+					<>
 					<Row>
 						<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>{feeds[i].title}</Col>
 					</Row>
@@ -123,7 +135,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 					<Col style={{textAlign:'right'}}>
 						<span onClick={()=>{ 
 							if (window.confirm('피드를 수정하시겠습니까?')){
-								dispatch(editingOn()) 
+								dispatch(editingOn(i)) 
 							}
 						}} ><GrEdit/></span>
 						<span 
