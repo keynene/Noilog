@@ -38,6 +38,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 	}
 
 	const EditingAndTruePostNumber = (i) => {
+		console.log(state.isEditing.editState, state.isEditing.postNumber === i)
 		if (state.isEditing.editState){
 			if (state.isEditing.postNumber === i){
 				return true
@@ -87,7 +88,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 			</Row>
 			{
 				//수정버튼 눌렀고, i값과 postNumber가 일치하는 게시글만 수정폼 적용
-				EditingAndTruePostNumber ? (
+				EditingAndTruePostNumber(i) ? (
 					<form onSubmit={onSubmit}>
 						<Row className="editing_container">
 							<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>
