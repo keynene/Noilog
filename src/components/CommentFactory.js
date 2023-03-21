@@ -52,7 +52,7 @@ function CommentFactory({ feeds, i }){
 		
 		let createdCommentObj = {
 			commentId,
-			postNumber : state.feedObj[i].postNumber,
+			postNumber : feeds[i].postNumber,
 			content : comment,
 			writer : state.userInfo[0].id,
 			creatorNickname : state.userInfo[0].nickname,
