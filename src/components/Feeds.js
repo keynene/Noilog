@@ -38,7 +38,6 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 	}
 
 	const EditingAndTruePostNumber = (i) => {
-		console.log(state.isEditing.editState, state.isEditing.postNumber === i)
 		if (state.isEditing.editState){
 			if (state.isEditing.postNumber === i){
 				return true

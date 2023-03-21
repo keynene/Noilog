@@ -108,7 +108,7 @@ const feedObj = createSlice({
 	reducers : {
 		createFeedObj(state,action){
 			let copy = {...action.payload}
-			state.unshift(copy)
+			state.push(copy)
 		},
 
 		addViewCount(state,action){
@@ -132,9 +132,11 @@ const feedObj = createSlice({
 		},
 
 		editFeedObj(state,action){
+			let copy = [...state].reverse()
 			let index = state.findIndex((x)=> x.postNumber === action.payload.postNumber )
-			state[index].title = action.payload.editTitle
-			state[index].content = action.payload.editContent
+			copy[index].title = action.payload.editTitle
+			copy[index].content = action.payload.editContent
+			state = [...copy]
 		}
 	}
 })
