@@ -127,11 +127,17 @@ const feedObj = createSlice({
 		},
 
 		deleteFeedObj(state,action){
+			let copy = [...state].reverse()
 			let index = state.findIndex((x)=> x.postNumber === action.payload )
-			state.slice(index,1)
+			copy[index].title = ""
+			copy[index].content = ""
+			state = [...copy]
 		},
 
 		editFeedObj(state,action){
+			//feedObj를 push로 넣고, Feed컴포넌트에서 Feeds컴포넌트로 feeds={[...feeds].reverse()}로 넘겨서
+			//역순으로 출력한 상태이므로 (map에서 바로 reverse로 출력해주는 기능이 없기 때문에 reverse배열을 만들어서 그걸 출력해야함)
+			//copy에 state의 reverse배열을 대입하고, 거기서 postNumber에 맞는 index를 수정해야함
 			let copy = [...state].reverse()
 			let index = state.findIndex((x)=> x.postNumber === action.payload.postNumber )
 			copy[index].title = action.payload.editTitle
