@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLikeCount, deleteFeedObj, deleteCommentObj, editingOn, editingOff, editFeedObj } from 'store.js';
+import { addLikeCount, deleteFeedObj, editingOn, editingOff, editFeedObj } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
 

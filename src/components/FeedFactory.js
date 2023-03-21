@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { createFeedObj } from 'store.js';
+import { createFeedObj, addPostNumber } from 'store.js';
 
 function FeedFactory(){
 	
@@ -12,11 +12,7 @@ function FeedFactory(){
 	
 	const [feedTitle, setFeedTitle] = useState("");
 	const [feedContent, setFeedContent] = useState("");
-	let [postNumber, setPostNumber] = useState(0);
 
-	useEffect(()=>{
-		setPostNumber(postNumber)
-	},[postNumber])
 
 	const onFeedTitleChange = (e) => {
 		const {
@@ -93,10 +89,8 @@ function FeedFactory(){
 			}
 		}
 
-		setPostNumber(postNumber+1)
-
 		let createdFeedObj = {
-			postNumber,
+			postNumber : state.postNumber.num,
 			title : feedTitle,
 			content : feedContent,
 			writer : state.userInfo[0].id,
@@ -107,6 +101,7 @@ function FeedFactory(){
 			creatorNickname : state.userInfo[0].nickname,
 		}
 		
+		dispatch(addPostNumber());
 		dispatch(createFeedObj(createdFeedObj));
 
 		setFeedTitle("")

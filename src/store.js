@@ -45,19 +45,17 @@ const isEditing = createSlice({
 	}
 })
 
-// const userId = createSlice({
-// 	name : 'userId',
-// 	initialState : {
-// 		id : ''
-// 	},
-// 	// initialState : JSON.parse(localStorage.getItem('login')).loginId,
-
-// 	reducers : {
-// 		handleUserId(state,action){
-// 			state.id = action.payload
-// 		}
-// 	}
-// })
+const postNumber = createSlice({
+	name : 'postNumber',
+	initialState : {
+		num : 0
+	},
+	reducers : {
+		addPostNumber(state){
+			state.num = state.num+1
+		}
+	}
+})
 
 const userInfo = createSlice({
 	name : 'userInfo',
@@ -174,8 +172,8 @@ const commentObj = createSlice({
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
+export let { addPostNumber } = postNumber.actions 
 export let { editingOn, editingOff } = isEditing.actions 
-// export let { handleUserId } = userId.actions 
 export let { pushUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
 export let { createFeedObj, addViewCount, addLikeCount, addCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
@@ -186,9 +184,9 @@ export default configureStore({
 		isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
 		feedObj : feedObj.reducer,
-		// userId : userId.reducer,
 		userInfo : userInfo.reducer,
 		commentObj : commentObj.reducer,
 		isEditing : isEditing.reducer,
+		postNumber : postNumber.reducer,
 	}
 })
