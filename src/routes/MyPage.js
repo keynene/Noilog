@@ -22,14 +22,12 @@ function MyPage(){
 					<Col><img src={sampleImgUrl} alt="" width="133px" height="158px" /></Col>
 					<Col style={{paddingTop:20}}>
 						<h4>
-							{console.log(state.userInfo[0])}
 							{state.userInfo[0].nickname} ({state.userInfo[0].id})
 							<button style={{fontSize:14, marginLeft:10}} onClick={()=>{
 								dispatch(LoggedOut(''))
 								dispatch(popUserInfo())
 								navigate("/")
 								alert('로그아웃 되었습니다.')
-								console.log(state.userInfo)
 							}}>로그아웃</button>
 						</h4>
 						<p>{state.userInfo.email}</p>
