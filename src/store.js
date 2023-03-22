@@ -45,6 +45,26 @@ const isFeedEditing = createSlice({
 	}
 })
 
+const isCommentEditing = createSlice({
+	name : 'isCommentEditing',
+	initialState : {
+		commentNumber : null,
+		editState : false
+	},
+
+	reducers : {
+		commentEditingOn(state,action){
+			state.commentNumber = action.payload
+			state.editState = true
+		},
+		
+		commentEditingOff(state){
+			state.commentNumber = null
+			state.editState = false
+		},
+	}
+})
+
 const postNumber = createSlice({
 	name : 'postNumber',
 	initialState : {
@@ -52,6 +72,18 @@ const postNumber = createSlice({
 	},
 	reducers : {
 		addPostNumber(state){
+			state.num = state.num+1
+		}
+	}
+})
+
+const commentNumber = createSlice({
+	name : 'commentNumber',
+	initialState : {
+		num : 0
+	},
+	reducers : {
+		addCommentNumber(state){
 			state.num = state.num+1
 		}
 	}
@@ -125,22 +157,26 @@ const feedObj = createSlice({
 		},
 
 		deleteFeedObj(state,action){
-			let copy = [...state].reverse()
+			// let copy = [...state].reverse()
 			let index = state.findIndex((x)=> x.postNumber === action.payload )
-			copy[index].title = ""
-			copy[index].content = ""
-			state = [...copy]
+			// console.log(index)
+			// copy[index].title = ""
+			// copy[index].content = ""
+			// state = [...copy]
+			state[index].title = ""
+			state[index].content =""
 		},
 
 		editFeedObj(state,action){
 			//feedObj를 push로 넣고, Feed컴포넌트에서 Feeds컴포넌트로 feeds={[...feeds].reverse()}로 넘겨서
 			//역순으로 출력한 상태이므로 (map에서 바로 reverse로 출력해주는 기능이 없기 때문에 reverse배열을 만들어서 그걸 출력해야함)
 			//copy에 state의 reverse배열을 대입하고, 거기서 postNumber에 맞는 index를 수정해야함
+			//역순으로 출력해서 수정했으니 state에 역순으로(원래대로돌리기) 저장해줘야함
 			let copy = [...state].reverse()
 			let index = state.findIndex((x)=> x.postNumber === action.payload.postNumber )
 			copy[index].title = action.payload.editTitle
 			copy[index].content = action.payload.editContent
-			state = [...copy]
+			state = [...copy].reverse()
 		}
 	}
 })
@@ -155,19 +191,29 @@ const commentObj = createSlice({
 			state.push(copy)
 		},
 
-		editCommentObj(state){
+		deleteCommentObj(state,action){
+			let index = state.findIndex((x)=> x.commentNumber === action.payload )
+			state[index].content = ""
+		},
 
+		editCommentObj(state,action){
+			let copy = [...state]
+			let index = state.findIndex((x)=> x.commentNumber === action.payload.commentNumber )
+			copy[index].content = action.payload.editComment
+			state = [...copy]
 		}
 	}
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { addPostNumber } = postNumber.actions 
+export let { addCommentNumber } = commentNumber.actions 
 export let { feedEditingOn, feedEditingOff } = isFeedEditing.actions 
+export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 export let { pushUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
 export let { createFeedObj, addViewCount, addLikeCount, addCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
-export let { createCommentObj } = commentObj.actions 
+export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.actions 
 
 export default configureStore({
 	reducer: {
@@ -177,6 +223,8 @@ export default configureStore({
 		userInfo : userInfo.reducer,
 		commentObj : commentObj.reducer,
 		isFeedEditing : isFeedEditing.reducer,
+		isCommentEditing : isCommentEditing.reducer,
 		postNumber : postNumber.reducer,
+		commentNumber : commentNumber.reducer,
 	}
 })

@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { createCommentObj, addCommentCount } from 'store.js';
+import { createCommentObj, addCommentCount, addCommentNumber } from 'store.js';
 
 function CommentFactory({ feeds, i }){
 	let state = useSelector((state) => state)
 	let dispatch = useDispatch();
 
 	let [comment, setComment] = useState("");
-	let [commentId, setCommentId] = useState(0);
 
 	const onCommentChange = (e) => {
 		const {
@@ -48,10 +47,8 @@ function CommentFactory({ feeds, i }){
 			return alert('댓글 내용을 입력해주세요!')
 		}
 		
-		setCommentId(commentId+1)
-		
 		let createdCommentObj = {
-			commentId,
+			commentNumber : state.commentNumber.num,
 			postNumber : feeds[i].postNumber,
 			content : comment,
 			writer : state.userInfo[0].id,
@@ -59,7 +56,9 @@ function CommentFactory({ feeds, i }){
 			createDate : getDate()
 		}
 
+		dispatch(addCommentNumber())
 		dispatch(createCommentObj(createdCommentObj))
+		
 		setComment("")
 
 		createdCommentObj = null

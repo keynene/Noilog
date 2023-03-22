@@ -15,7 +15,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 
 import CommentFactory from './CommentFactory';
 import Comments from './Comments';
-import { Navigate } from 'react-router-dom';
 
 function Feeds({a, i, feeds, comments, isFeedOwner}){
 	let dispatch = useDispatch();
@@ -143,7 +142,6 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 								onClick={()=>{
 									if (window.confirm('정말 피드를 삭제하시겠습니까?')){
 										dispatch(deleteFeedObj(feeds[i].postNumber))
-										Navigate("/feed")
 									}
 								}} 
 								style={{marginLeft:15, color:'black'}}>
