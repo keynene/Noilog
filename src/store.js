@@ -25,20 +25,20 @@ const isLoggedIn = createSlice({
 	}
 })
 
-const isEditing = createSlice({
-	name : 'editing',
+const isFeedEditing = createSlice({
+	name : 'isFeedEditing',
 	initialState : {
 		postNumber : null,
 		editState : false
 	},
 
 	reducers : {
-		editingOn(state,action){
+		feedEditingOn(state,action){
 			state.postNumber = action.payload
 			state.editState = true
 		},
 		
-		editingOff(state){
+		feedEditingOff(state){
 			state.postNumber = null
 			state.editState = false
 		},
@@ -155,29 +155,19 @@ const commentObj = createSlice({
 			state.push(copy)
 		},
 
-		deleteCommentObj(state,action){
-			let i = 0
-			let index = []
-			for (i=0; i<state.length; i++){
-				if(state[i].postNumber === action.payload){
-					index.push(i)
-				}
-			}
-			while (index.length !== 0){
-				state.slice(index[0],1)
-				index.unshift()
-			}
+		editCommentObj(state){
+
 		}
 	}
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { addPostNumber } = postNumber.actions 
-export let { editingOn, editingOff } = isEditing.actions 
+export let { feedEditingOn, feedEditingOff } = isFeedEditing.actions 
 export let { pushUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
 export let { createFeedObj, addViewCount, addLikeCount, addCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
-export let { createCommentObj, deleteCommentObj } = commentObj.actions 
+export let { createCommentObj } = commentObj.actions 
 
 export default configureStore({
 	reducer: {
@@ -186,7 +176,7 @@ export default configureStore({
 		feedObj : feedObj.reducer,
 		userInfo : userInfo.reducer,
 		commentObj : commentObj.reducer,
-		isEditing : isEditing.reducer,
+		isFeedEditing : isFeedEditing.reducer,
 		postNumber : postNumber.reducer,
 	}
 })

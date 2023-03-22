@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLikeCount, deleteFeedObj, editingOn, editingOff, editFeedObj } from 'store.js';
+import { addLikeCount, deleteFeedObj, feedEditingOn, feedEditingOff, editFeedObj } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
 
@@ -38,8 +38,8 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 	}
 
 	const EditingAndTruePostNumber = (i) => {
-		if (state.isEditing.editState){
-			if (state.isEditing.postNumber === i){
+		if (state.isFeedEditing.editState){
+			if (state.isFeedEditing.postNumber === i){
 				return true
 			}
 			return false
@@ -51,7 +51,6 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 		e.preventDefault();
 		
 		if (editTitle === ""){
-			console.log(editTitle)
 			return alert('수정할 제목을 입력해주세요')
 		}
 
@@ -59,7 +58,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 			return alert('수정할 피드 내용을 입력해주세요')
 		}
 
-		dispatch(editingOff())
+		dispatch(feedEditingOff())
 
 		alert('수정이 완료되었습니다!')
 		setEditTitle('')
@@ -77,7 +76,6 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 	
 	return (
 		<Container style={{marginTop:50, maxWidth:700}}>
-		{console.log(feeds[i].title)}
 		{ feeds[i].title !== "" ? ( 
 				<div>
 					<Row>
@@ -138,7 +136,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 							<Col style={{textAlign:'right'}}>
 								<span onClick={()=>{ 
 									if (window.confirm('피드를 수정하시겠습니까?')){
-										dispatch(editingOn(i)) 
+										dispatch(feedEditingOn(i)) 
 								}
 							}} ><GrEdit/></span>
 							<span 
