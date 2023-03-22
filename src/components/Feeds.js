@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLikeCount, deleteFeedObj, feedEditingOn, feedEditingOff, editFeedObj } from 'store.js';
+import { increaseLikeCount, deleteFeedObj, feedEditingOn, feedEditingOff, editFeedObj } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
 
@@ -127,7 +127,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 							}}><FaRegEye/> {state.feedObj[i].viewCount}</span>  
 							*/}
 							<span onClick={()=>{
-								dispatch(addLikeCount(feeds[i].postNumber))
+								dispatch(increaseLikeCount(feeds[i].postNumber))
 							}} ><FcLikePlaceholder /> {feeds[i].likeCount}</span>
 							<span><BiCommentDetail style={{marginLeft:30}}/> {feeds[i].commentCount}</span>
 						</Col>

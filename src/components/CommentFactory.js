@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { createCommentObj, addCommentCount, addCommentNumber } from 'store.js';
+import { createCommentObj, increaseCommentCount, addCommentNumber } from 'store.js';
 
 function CommentFactory({ feeds, i }){
 	let state = useSelector((state) => state)
@@ -71,7 +71,7 @@ function CommentFactory({ feeds, i }){
 					<textarea className="comment_textarea" placeholder="댓글 달기..." color="gray" value={comment} onChange={onCommentChange} />
 					<input className="comment_submit" type="submit" value="↑" onClick={()=>{
 						onCommentButtonClick(i)
-						dispatch(addCommentCount(feeds[i].postNumber))
+						dispatch(increaseCommentCount(feeds[i].postNumber))
 						}} />
 				</form>
 			</Col>

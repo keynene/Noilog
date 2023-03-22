@@ -3,7 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 
 /* Redux state */
 import { useDispatch, useSelector } from 'react-redux';
-import { commentEditingOff, commentEditingOn, editCommentObj, deleteCommentObj } from 'store';
+import { commentEditingOff, commentEditingOn, editCommentObj, deleteCommentObj, decreaseCommentCount } from 'store';
 
 import sampleImgUrl2 from '../img/sample2.jpg'
 import { GrEdit } from "react-icons/gr";
@@ -102,6 +102,7 @@ function Comments({ feeds, i, comments, ci, isCommentOwner }){
 											<span onClick={()=>{
 												if (window.confirm('댓글을 삭제하시겠습니까?')){
 													dispatch(deleteCommentObj(ci))
+													dispatch(decreaseCommentCount(comments[ci].postNumber))
 												}
 											}} style={{marginLeft:10, color:'black'}}><RiDeleteBin6Line/></span>
 										</Col>

@@ -141,28 +141,31 @@ const feedObj = createSlice({
 			state.push(copy)
 		},
 
-		addViewCount(state,action){
+		increaseViewCount(state,action){
 			let index = state.findIndex((x)=> x.postNumber === action.payload )
 			state[index].viewCount ++;
 		},
 
-		addLikeCount(state,action){
+		increaseLikeCount(state,action){
 			let index = state.findIndex((x)=> x.postNumber === action.payload )
 			state[index].likeCount ++;
 		},
 
-		addCommentCount(state,action){
+		increaseCommentCount(state,action){
 			let index = state.findIndex((x)=> x.postNumber === action.payload )
 			state[index].commentCount ++;
 		},
 
-		deleteFeedObj(state,action){
+		decreaseCommentCount(state,action){
 			// let copy = [...state].reverse()
 			let index = state.findIndex((x)=> x.postNumber === action.payload )
-			// console.log(index)
-			// copy[index].title = ""
-			// copy[index].content = ""
-			// state = [...copy]
+			// copy[index].commentCount --;
+			// state = [...copy].reverse()
+			state[index].commentCount --;
+		},
+
+		deleteFeedObj(state,action){
+			let index = state.findIndex((x)=> x.postNumber === action.payload )
 			state[index].title = ""
 			state[index].content =""
 		},
@@ -212,7 +215,7 @@ export let { feedEditingOn, feedEditingOff } = isFeedEditing.actions
 export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 export let { pushUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
-export let { createFeedObj, addViewCount, addLikeCount, addCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
+export let { createFeedObj, increaseViewCount, increaseLikeCount, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.actions 
 
 export default configureStore({
