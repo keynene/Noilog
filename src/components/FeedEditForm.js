@@ -55,12 +55,22 @@ function FeedEditForm({ i }){
 		<form onSubmit={onSubmit}>
 			<Row className="editing_container">
 				<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>
-					<textarea className="editing_textarea" placeholder='게시글 제목을 수정해주세용' value={editTitle} onChange={onEditTitleChange} />
+					<textarea 
+						className="editing_textarea" 
+						placeholder='게시글 제목을 수정해주세용' 
+						value={editTitle} 
+						onChange={onEditTitleChange} 
+					/>
 				</Col>
 			</Row>
 			<Row>
 				<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>
-					<textarea className="editing_textarea" placeholder='게시글 내용을 수정해주세용' value={editContent} onChange={onEditContentChange} />
+					<textarea 
+						className="editing_textarea" 
+						placeholder='게시글 내용을 수정해주세용' 
+						value={editContent} 
+						onChange={onEditContentChange} 
+					/>
 				</Col>
 			</Row>
 			<Row>

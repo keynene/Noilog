@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Container, Row, Col } from 'react-bootstrap';
 
+/* Redux state */
 import { useDispatch, useSelector } from "react-redux";
-import { increaseLikeCount, deleteFeedObj, feedEditingOn } from 'store.js';
+import { increaseLikeCount } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
 
 // import { FaRegEye } from "react-icons/fa";
 import { FcLikePlaceholder } from "react-icons/fc";
 import { BiCommentDetail } from "react-icons/bi";
-import { GrEdit } from "react-icons/gr";
-import { RiDeleteBin6Line } from "react-icons/ri";
 
+
+/* Components */
 import CommentFactory from './CommentFactory';
 import FeedEditForm from './FeedEditForm';
 import Comments from './Comments';
+import FeedEditDeleteConfirm from './FeedEditDeleteConfirm';
 
 function Feeds({a, i, feeds, comments, isFeedOwner}){
 	let dispatch = useDispatch();
@@ -73,39 +75,25 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 							}} ><FcLikePlaceholder /> {feeds[i].likeCount}</span>
 							<span><BiCommentDetail style={{marginLeft:30}}/> {feeds[i].commentCount}</span>
 						</Col>
-						{isFeedOwner ? (
-							<Col style={{textAlign:'right'}}>
-								<span onClick={()=>{ 
-									if (window.confirm('피드를 수정하시겠습니까?')){
-										dispatch(feedEditingOn(i)) 
-								}
-							}} ><GrEdit/></span>
-							<span 
-								onClick={()=>{
-									if (window.confirm('정말 피드를 삭제하시겠습니까?')){
-										dispatch(deleteFeedObj(feeds[i].postNumber))
-									}
-								}} 
-								style={{marginLeft:15, color:'black'}}>
-								<RiDeleteBin6Line/>
-							</span>
-						</Col>
+
+						{isFeedOwner ? ( //피드 작성자만 수정/삭제 버튼 보임
+							<FeedEditDeleteConfirm i={i} feeds={feeds} />
 						) : null
 					}
-				</Row>
-				<Row style={{marginTop:30}}>
-					<Col style={{backgroundColor:'#F0F0F0', borderRadius:15}}>
-						{comments.map((ca,ci)=>
-							//댓글출력
-							<Comments feeds={feeds} i={i} comments={comments} ci={ci} key={ci} isCommentOwner={state.userInfo[0].id === comments[ci].writer} />
-						)}
-					</Col>
-				</Row>
+					</Row>
+					<Row style={{marginTop:30}}>
+						<Col style={{backgroundColor:'#F0F0F0', borderRadius:15}}>
+							{comments.map((ca,ci)=>
+								//댓글출력
+								<Comments feeds={feeds} i={i} comments={comments} ci={ci} key={ci} isCommentOwner={state.userInfo[0].id === comments[ci].writer} />
+							)}
+						</Col>
+					</Row>
 
-				{/* 댓글 달기 컴포넌트 */}
-				<CommentFactory feeds={feeds} i={i} />
+					{/* 댓글 달기 컴포넌트 */}
+					<CommentFactory feeds={feeds} i={i} />
 
-				<Row style={{marginTop:30, marginLeft:0, marginRight:0, marginBottom:0, width:'100%'}}><hr style={{border:'dashed 1px gray'}} /> </Row>
+					<Row style={{marginTop:30, marginLeft:0, marginRight:0, marginBottom:0, width:'100%'}}><hr style={{border:'dashed 1px gray'}} /> </Row>
 				</div>
 			) : null
 		}
