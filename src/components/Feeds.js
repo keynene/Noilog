@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
-import { increaseLikeCount, deleteFeedObj, feedEditingOn, feedEditingOff, editFeedObj } from 'store.js';
+import { increaseLikeCount, deleteFeedObj, feedEditingOn } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
 
@@ -14,63 +14,21 @@ import { GrEdit } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import CommentFactory from './CommentFactory';
+import FeedEditForm from './FeedEditForm';
 import Comments from './Comments';
 
 function Feeds({a, i, feeds, comments, isFeedOwner}){
 	let dispatch = useDispatch();
 	let state = useSelector((state) => state)
-	let [editTitle, setEditTitle] = useState("")
-	let [editContent, setEditContent] = useState("")
-
-	const onEditTitleChange = (e) => {
-		const {
-			target: { value },
-		} = e;
-		setEditTitle(value);
-	}
 	
-	const onEditContentChange = (e) => {
-		const {
-			target: { value },
-		} = e;
-		setEditContent(value);
-	}
 
 	const EditingAndTruePostNumber = (i) => {
 		if (state.isFeedEditing.editState){
 			if (state.isFeedEditing.postNumber === i){
 				return true
 			}
-			return false
 		}
 		return false
-	}
-	
-	const onSubmit = (e) => {
-		e.preventDefault();
-		
-		if (editTitle === ""){
-			return alert('수정할 제목을 입력해주세요')
-		}
-
-		if (editContent === ""){
-			return alert('수정할 피드 내용을 입력해주세요')
-		}
-
-		dispatch(feedEditingOff())
-
-		alert('수정이 완료되었습니다!')
-		setEditTitle('')
-		setEditContent('')
-	}
-
-	const onSubmitClick = (i) => {
-		let editData = {
-			postNumber : i,
-			editTitle,
-			editContent
-		}
-		dispatch(editFeedObj(editData))
 	}
 	
 	return (
@@ -88,33 +46,17 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 					{
 						//수정버튼 눌렀고, i값과 postNumber가 일치하는 게시글만 수정폼 적용
 						EditingAndTruePostNumber(i) ? (
-							<form onSubmit={onSubmit}>
-								<Row className="editing_container">
-									<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>
-										<textarea className="editing_textarea" placeholder='게시글 제목을 수정해주세용' value={editTitle} onChange={onEditTitleChange} />
-									</Col>
-								</Row>
-								<Row>
-									<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>
-										<textarea className="editing_textarea" placeholder='게시글 내용을 수정해주세용' value={editContent} onChange={onEditContentChange} />
-									</Col>
-								</Row>
-								<Row>
-									<Col style={{textAlign:'right'}}>
-										<input type="submit" value="수정하기" onClick={()=>{onSubmitClick(i)}}/>
-									</Col>
-								</Row>
-							</form>
+							<FeedEditForm i={i} />
 						) : (
 							//수정상태 아니거나, 수정상태이지만 postNumber가 다른경우 게시글 그대로 출력
 							<>
-							<Row>
-								<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>{feeds[i].title}</Col>
-							</Row>
-							<Row>
-								<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>{feeds[i].content}</Col>
-							</Row>
-						</>
+								<Row>
+									<Col style={{paddingTop:30, paddingBottom:15, textAlign:'left', fontWeight:'bold'}}>{feeds[i].title}</Col>
+								</Row>
+								<Row>
+									<Col style={{paddingTop:15, paddingBottom:30, textAlign:'left'}}>{feeds[i].content}</Col>
+								</Row>
+							</>
 						)
 					}
 						
