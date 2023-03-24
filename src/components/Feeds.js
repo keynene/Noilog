@@ -22,6 +22,14 @@ import FeedEditDeleteConfirm from './FeedEditDeleteConfirm';
 function Feeds({a, i, feeds, comments, isFeedOwner}){
 	let dispatch = useDispatch();
 	let state = useSelector((state) => state)
+
+	const likeDataObj = (postNumber) => {
+		let likeData = {
+			id : state.userInfo[0].id,
+			postNumber
+		}
+		return likeData
+	}
 	
 
 	const EditingAndTruePostNumber = (i) => {
@@ -64,15 +72,9 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 						
 					<Row style={{fontSize:20}}>
 						<Col style={{textAlign:'left'}}>
-							{/* 
-							피드버전은 조회수 필요없어서 주석처리함
 							<span onClick={()=>{
-								dispatch(addViewCount(state.feedObj[i].postNumber))
-							}}><FaRegEye/> {state.feedObj[i].viewCount}</span>  
-							*/}
-							<span onClick={()=>{
-								dispatch(increaseLikeCount(feeds[i].postNumber))
-							}} ><FcLikePlaceholder /> {feeds[i].likeCount}</span>
+								dispatch(increaseLikeCount(likeDataObj(feeds[i].postNumber)))
+							}} ><FcLikePlaceholder /> {feeds[i].likeCount.length}</span>
 							<span><BiCommentDetail style={{marginLeft:30}}/> {feeds[i].commentCount}</span>
 						</Col>
 

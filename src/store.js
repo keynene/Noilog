@@ -147,8 +147,14 @@ const feedObj = createSlice({
 		},
 
 		increaseLikeCount(state,action){
-			let index = state.findIndex((x)=> x.postNumber === action.payload )
-			state[index].likeCount ++;
+			let index = state.findIndex((x)=> x.postNumber === action.payload.postNumber )
+			if (state[index].likeCount.includes(action.payload.id) === false){
+				state[index].likeCount.push(action.payload.id);
+			}
+			else {
+				let dataIndex = state[index].likeCount.indexOf(action.payload.id)
+				state[index].likeCount.splice(dataIndex,1)
+			}
 		},
 
 		increaseCommentCount(state,action){

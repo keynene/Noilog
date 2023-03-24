@@ -95,7 +95,7 @@ function FeedFactory(){
 			content : feedContent,
 			writer : state.userInfo[0].id,
 			viewCount : 0,
-			likeCount : 0,
+			likeCount : [],
 			commentCount : 0,
 			createDate : getDate(),
 			creatorNickname : state.userInfo[0].nickname,
