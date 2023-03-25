@@ -146,7 +146,7 @@ const feedObj = createSlice({
 			state[index].viewCount ++;
 		},
 
-		increaseLikeCount(state,action){
+		onLikeCountChange(state,action){
 			let index = state.findIndex((x)=> x.postNumber === action.payload.postNumber )
 			if (state[index].likeCount.includes(action.payload.id) === false){
 				state[index].likeCount.push(action.payload.id);
@@ -221,7 +221,7 @@ export let { feedEditingOn, feedEditingOff } = isFeedEditing.actions
 export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 export let { pushUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
-export let { createFeedObj, increaseViewCount, increaseLikeCount, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
+export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.actions 
 
 export default configureStore({

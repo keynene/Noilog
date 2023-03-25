@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 /* Redux state */
 import { useDispatch, useSelector } from "react-redux";
-import { increaseLikeCount } from 'store.js';
+import { onLikeCountChange } from 'store.js';
 
 import sampleImgUrl from '../img/sample.jpg'
 
@@ -73,7 +73,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 					<Row style={{fontSize:20}}>
 						<Col style={{textAlign:'left'}}>
 							<span onClick={()=>{
-								dispatch(increaseLikeCount(likeDataObj(feeds[i].postNumber)))
+								dispatch(onLikeCountChange(likeDataObj(feeds[i].postNumber)))
 							}} ><FcLikePlaceholder /> {feeds[i].likeCount.length}</span>
 							<span><BiCommentDetail style={{marginLeft:30}}/> {feeds[i].commentCount}</span>
 						</Col>
