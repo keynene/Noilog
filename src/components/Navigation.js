@@ -15,7 +15,7 @@ function Navigation(){
 		<div>
 			<Navbar bg="light" variant="light">
         <Container>
-          <Navbar.Brand href="#home">No ·_· ven</Navbar.Brand>
+          <Nav.Link className="navbar-brand" onClick={()=>{ navigate('/') }}>No ·_· ven</Nav.Link>
           <Nav className="me-auto">
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
             <Nav.Link onClick={()=>{ navigate('/feed') }}>Feed</Nav.Link>
@@ -43,7 +43,6 @@ function Navigation(){
               :
                 null
             }
-            <Nav.Link onClick={()=>{ navigate("/feedtest") }} >FeedTest</Nav.Link>
 
           </Nav>
         </Container>
