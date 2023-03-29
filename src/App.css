@@ -52,3 +52,14 @@ body {
   outline:none;
   resize: none;
 }
+
+
+/* TableFactory */
+.board_title {
+  width:800px;
+  padding:10px 5px 10px 5px;
+  font-size:20px;
+  border:0;
+  outline:none;
+  resize: none;
+}

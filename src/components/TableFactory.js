@@ -5,21 +5,31 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 function TableFactory(){
-	let [contents, setContents] = useState('');
-	let [title, setTitle] = useState('');
-
-	const onContentsChange = (e) => {
-		const {
-			target: { value },
-		} = e;
-		setContents(value)
-	}
-
+	let [boardTitle, setBoardTitle] = useState('');
+	let [boardContents, setBoardContents] = useState('');
+	
 	const onTitleChange = (e) => {
 		const {
 			target: { value },
 		} = e;
-		setTitle(value);
+		setBoardTitle(value);
+		console.log(boardTitle)
+	}
+
+	const onContentsChange = (e) => {
+		setBoardContents(e)
+		console.log(boardContents)
+	}
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+
+		if (boardTitle === ''){
+			return alert('제목을 입력해주세요')
+		}
+		if (boardContents === ''){
+			return alert('글 내용을 입력해주세요')
+		}
 	}
 
 	const modules = {
@@ -39,24 +49,25 @@ function TableFactory(){
 }
 
 	return (
-		<form style={{ maxWidth:800, marginLeft:'auto', marginRight:'auto', marginTop:30}}>
-			<input 
+		<form onSubmit={onSubmit} style={{ maxWidth:800, marginLeft:'auto', marginRight:'auto', marginTop:30}}>
+			<p><input 
 				className='board_title' 
 				type="text" 
 				placeholder='글 제목을 작성해주세요' 
 				color="gray" 
+				value={boardTitle}
 				onChange={onTitleChange}
-			/>
+			/></p>
 			<ReactQuill 
 				onChange={onContentsChange} 
 				modules={modules}
-				style={{height:500}}
-				// theme="snow"
+				value={boardContents}
+				style={{height:500, paddingBottom:50}}
 			/>
 
-			{/* <div dangerouslySetInnerHTML={{ __html : contents }} /> */}
-			{/* <Button >글쓰기</Button> */}
-			<input type="submit" value="글쓰기" />
+			<div >
+				<Button variant="dark" type="submit" >글쓰기</Button>
+			</div>
 		</form>
 	)
 }
