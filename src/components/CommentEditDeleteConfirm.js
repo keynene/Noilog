@@ -7,12 +7,11 @@ import { GrEdit } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 /* Redux State */
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { commentEditingOn, deleteCommentObj, decreaseCommentCount } from 'store';
 
 function CommentEditDeleteConfirm({ comments, ci }){
 	let dispatch = useDispatch();
-	let state = useSelector((state) => state)
 
 	return (
 		<Row style={{textAlign:'right', fontSize:18}}>
