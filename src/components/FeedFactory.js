@@ -83,7 +83,7 @@ function FeedFactory(){
 			return alert('내용을 입력해주세요')
 		}
 
-		else if (state.userInfo.length === 0){
+		else if (state.isLoggedIn === false){
 			if (window.confirm('로그인 후 이용해주세요! 로그인 화면으로 이동할까요?')){
 				Navigate("/login")
 			}

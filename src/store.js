@@ -202,6 +202,18 @@ const feedObj = createSlice({
 	}
 })
 
+const boardObj = createSlice({
+	name : 'boardObj',
+	initialState : [],
+
+	reducers : {
+		createBoardObj(state,action){
+			let copy = {...action.payload}
+			state.push(copy)
+		},
+	}
+})
+
 const commentObj = createSlice({
 	name : 'commentObj',
 	initialState: [],
@@ -228,12 +240,14 @@ const commentObj = createSlice({
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { increasePostNumber } = postNumber.actions 
+export let { increaseBoardNumber } = boardNumber.actions 
 export let { increaseCommentNumber } = commentNumber.actions 
 export let { feedEditingOn, feedEditingOff } = isFeedEditing.actions 
 export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 export let { pushUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
+export let { createBoardObj } = boardObj.actions 
 export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.actions 
 
 export default configureStore({
@@ -241,11 +255,13 @@ export default configureStore({
 		isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
 		feedObj : feedObj.reducer,
+		boardObj : boardObj.reducer,
 		userInfo : userInfo.reducer,
 		commentObj : commentObj.reducer,
 		isFeedEditing : isFeedEditing.reducer,
 		isCommentEditing : isCommentEditing.reducer,
 		postNumber : postNumber.reducer,
+		boardNumber : boardNumber.reducer,
 		commentNumber : commentNumber.reducer,
 	}
 })

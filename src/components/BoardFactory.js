@@ -4,21 +4,50 @@ import { Button } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
+import { useNavigate } from 'react-router-dom';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { increaseBoardNumber, createBoardObj } from 'store';
+
 function BoardFactory(){
+	let state = useSelector((state) => state)
+	let navigate = useNavigate();
+	let dispatch = useDispatch();
+	
 	let [boardTitle, setBoardTitle] = useState('');
-	let [boardContents, setBoardContents] = useState('');
+	let [boardContent, setBoardContent] = useState('');
 	
 	const onTitleChange = (e) => {
 		const {
 			target: { value },
 		} = e;
 		setBoardTitle(value);
-		console.log(boardTitle)
 	}
 
 	const onContentsChange = (e) => {
-		setBoardContents(e)
-		console.log(boardContents)
+		setBoardContent(e)
+	}
+
+	const getDate = () => {
+		let date = new Date();
+		let year = date.getFullYear();
+		let month = ("0" + (1+date.getMonth())).slice(-2);
+		let day = ("0"+date.getDate()).slice(-2);
+		let hours = ('0' + date.getHours()).slice(-2); 
+		let minutes = ('0' + date.getMinutes()).slice(-2);
+		// let seconds = ('0' + date.getSeconds()).slice(-2); 
+		let ampm = '오전'
+
+		// if (hours >= 12){
+		// 	ampm = '오후'
+		// 	if (hours > 12){
+		// 		hours -= 12
+		// 	}
+
+		// }
+
+		// return `${year}년 ${month}월 ${day}일\n${ampm} ${hours}시 ${minutes}분`;
+		return `${month}-${day}\n${hours}:${minutes}`
 	}
 
 	const onSubmit = (e) => {
@@ -27,9 +56,40 @@ function BoardFactory(){
 		if (boardTitle === ''){
 			return alert('제목을 입력해주세요')
 		}
-		if (boardContents === ''){
+
+		if (boardContent === ''){
 			return alert('글 내용을 입력해주세요')
 		}
+
+		if (state.isLoggedIn === false){
+			if (window.confirm('로그인 후 이용해주세요! 로그인 화면으로 이동할까요?')){
+				navigate("/login")
+			}
+		}
+
+		let createdBoardObj = {
+			boardNumber : state.boardNumber.num,
+			title : boardTitle,
+			content : boardContent,
+			writer : state.userInfo[0].id,
+			viewCount : 0,
+			likeCount : [],
+			commentCount : 0,
+			createDate : getDate(),
+			creatorNickname : state.userInfo[0].nickname,
+		}
+
+		dispatch(increaseBoardNumber());
+		dispatch(createBoardObj(createdBoardObj));
+
+		setBoardTitle("");
+		setBoardContent("");
+
+		createdBoardObj = null;
+
+		alert("게시글 작성이 완료되었습니다!")
+		navigate("/")
+
 	}
 
 	const modules = {
@@ -60,7 +120,7 @@ function BoardFactory(){
 			<ReactQuill 
 				onChange={onContentsChange} 
 				modules={modules}
-				value={boardContents}
+				value={boardContent}
 				style={{height:500, paddingBottom:50}}
 			/>
 
