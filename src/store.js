@@ -71,7 +71,19 @@ const postNumber = createSlice({
 		num : 0
 	},
 	reducers : {
-		addPostNumber(state){
+		increasePostNumber(state){
+			state.num = state.num+1
+		}
+	}
+})
+
+const boardNumber = createSlice({
+	name : 'boardNumber',
+	initialState : {
+		num : 0
+	},
+	reducers : {
+		increaseBoardNumber(state){
 			state.num = state.num+1
 		}
 	}
@@ -83,7 +95,7 @@ const commentNumber = createSlice({
 		num : 0
 	},
 	reducers : {
-		addCommentNumber(state){
+		increaseCommentNumber(state){
 			state.num = state.num+1
 		}
 	}
@@ -215,8 +227,8 @@ const commentObj = createSlice({
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
-export let { addPostNumber } = postNumber.actions 
-export let { addCommentNumber } = commentNumber.actions 
+export let { increasePostNumber } = postNumber.actions 
+export let { increaseCommentNumber } = commentNumber.actions 
 export let { feedEditingOn, feedEditingOff } = isFeedEditing.actions 
 export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 export let { pushUserInfo, popUserInfo } = userInfo.actions 

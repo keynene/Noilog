@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { createFeedObj, addPostNumber } from 'store.js';
+import { createFeedObj, increasePostNumber } from 'store.js';
 
 function FeedFactory(){
 	
@@ -101,7 +101,7 @@ function FeedFactory(){
 			creatorNickname : state.userInfo[0].nickname,
 		}
 		
-		dispatch(addPostNumber());
+		dispatch(increasePostNumber());
 		dispatch(createFeedObj(createdFeedObj));
 
 		setFeedTitle("")

@@ -8,7 +8,7 @@ import MyPage from 'routes/MyPage.js';
 import Feed from 'routes/Feed.js';
 import Join from '../routes/Join.js';
 import Login from '../routes/Login.js';
-import TableFactory from './TableFactory.js';
+import BoardFactory from './BoardFactory.js';
 
 function AppRouter(){
 	let state = useSelector((state) => state)
@@ -34,7 +34,7 @@ function AppRouter(){
 			<Route path="/feed" element={ <Feed /> } /> 
 
 			{/* 게시글작성페이지 */}
-			<Route path="/tablefactory" element={ <TableFactory /> } /> 
+			<Route path="/boardfactory" element={ <BoardFactory /> } /> 
 			
 		</Routes>
 	)

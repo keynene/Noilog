@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { createCommentObj, increaseCommentCount, addCommentNumber } from 'store.js';
+import { createCommentObj, increaseCommentCount, increaseCommentNumber } from 'store.js';
 
 function CommentFactory({ feeds, i }){
 	let state = useSelector((state) => state)
@@ -56,7 +56,7 @@ function CommentFactory({ feeds, i }){
 			createDate : getDate()
 		}
 
-		dispatch(addCommentNumber())
+		dispatch(increaseCommentNumber())
 		dispatch(createCommentObj(createdCommentObj))
 		
 		setComment("")

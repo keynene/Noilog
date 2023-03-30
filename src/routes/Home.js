@@ -8,9 +8,9 @@ function Home(){
 
 	return (
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
-			<h4 style={{marginTop:30}} >Table</h4>	
+			<h4 style={{marginTop:30}} >Board</h4>	
 			<div style={{textAlign:'right'}}>
-				<Button variant="dark" onClick={()=>{navigate("/tableFactory")}} >글쓰기</Button>
+				<Button variant="dark" onClick={()=>{navigate("/boardFactory")}} >글쓰기</Button>
 			</div>
 			<Table style={{marginTop:30}}>
 				<thead>
