@@ -54,7 +54,7 @@ body {
 }
 
 
-/* TableFactory */
+/* BoardFactory */
 .board_title {
   width:800px;
   padding:10px 5px 10px 5px;
@@ -62,4 +62,9 @@ body {
   border:0;
   outline:none;
   resize: none;
+}
+
+/* Home */
+.board_tr:hover {
+  background-color:rgb(244, 244, 244);
 }

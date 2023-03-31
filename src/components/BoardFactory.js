@@ -47,7 +47,7 @@ function BoardFactory(){
 		// }
 
 		// return `${year}년 ${month}월 ${day}일\n${ampm} ${hours}시 ${minutes}분`;
-		return `${month}-${day}\n${hours}:${minutes}`
+		return `${month}-${day} ${hours}:${minutes}`
 	}
 
 	const onSubmit = (e) => {
