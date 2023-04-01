@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
 import { Button, Table } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setOpenBoard } from 'store';
 
 function Home(){
 	let navigate = useNavigate();
+	let dispatch = useDispatch();
 	let state = useSelector((state) => state)
 
 	let [boards, setBoards] = useState([]);
@@ -19,7 +21,18 @@ function Home(){
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
 			<h4 style={{marginTop:30}} >Board</h4>	
 			<div style={{textAlign:'right'}}>
-				<Button variant="dark" onClick={()=>{navigate("/boardFactory")}} >글쓰기</Button>
+				<Button 
+					variant="dark" 
+					onClick={()=>{
+						if (state.isLoggedIn === true){
+							navigate("/boardFactory")
+						}
+						else {
+							if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
+								navigate("/login")
+							}
+						}
+					}} >글쓰기</Button>
 			</div>
 			<Table style={{marginTop:30, width:800}}>
 				<thead>
@@ -38,7 +51,13 @@ function Home(){
 							<tr key={i} style={{fontSize:13, width:800}} className="board_tr">
 								<td style={{width:80}}>{boards[i].boardNumber}</td>
 								<td style={{width:400, textAlign:'left', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', display:'block'}}>
-									<Link style={{textDecoration:'none', color:'black'}} onClick={()=>{navigate("/")}}>{boards[i].title}</Link></td>
+									<span 
+										style={{textDecoration:'none', color:'black', cursor:'pointer'}} 
+										onClick={()=>{
+											navigate("/boarddetail")
+											dispatch(setOpenBoard(i))
+										}}
+									>{boards[i].title}</span></td>
 								<td style={{width:100}}>{boards[i].creatorNickname}</td>
 								<td style={{width:100}}>{boards[i].createDate}</td>
 								<td style={{width:60}}>{boards[i].likeCount.length}</td>

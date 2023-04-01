@@ -9,12 +9,13 @@ import Feed from 'routes/Feed.js';
 import Join from '../routes/Join.js';
 import Login from '../routes/Login.js';
 import BoardFactory from './BoardFactory.js';
+import BoardDetail from './BoardDetail.js';
 
 function AppRouter(){
 	let state = useSelector((state) => state)
 	return(
 		<Routes>
-			{/* 메인페이지 */}
+			{/* 메인페이지(게시글테이블) */}
 			<Route path="/" element={ <Home /> } />
 
 			{/* 회원가입페이지 */}
@@ -34,7 +35,10 @@ function AppRouter(){
 			<Route path="/feed" element={ <Feed /> } /> 
 
 			{/* 게시글작성페이지 */}
-			<Route path="/boardfactory" element={ <BoardFactory /> } /> 
+			<Route path="/boardfactory" element={ <BoardFactory /> } />
+
+			{/* 게시글열람페이지 */}
+			<Route path="/boarddetail" element={ <BoardDetail /> } /> 
 			
 		</Routes>
 	)

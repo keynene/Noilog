@@ -89,6 +89,18 @@ const boardNumber = createSlice({
 	}
 })
 
+const nowOpenBoard = createSlice({
+	name : 'nowOpenBoard',
+	initialState : {
+		num : 0
+	},
+	reducers : {
+		setOpenBoard(state,action){
+			state.num = action.payload
+		}
+	}
+})
+
 const commentNumber = createSlice({
 	name : 'commentNumber',
 	initialState : {
@@ -248,6 +260,7 @@ export let { pushUserInfo, popUserInfo } = userInfo.actions
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { createBoardObj } = boardObj.actions 
+export let { setOpenBoard } = nowOpenBoard.actions 
 export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.actions 
 
 export default configureStore({
@@ -256,6 +269,7 @@ export default configureStore({
 		userObj : userObj.reducer,
 		feedObj : feedObj.reducer,
 		boardObj : boardObj.reducer,
+		nowOpenBoard : nowOpenBoard.reducer,
 		userInfo : userInfo.reducer,
 		commentObj : commentObj.reducer,
 		isFeedEditing : isFeedEditing.reducer,
