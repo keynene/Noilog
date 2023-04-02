@@ -38,7 +38,7 @@ function AppRouter(){
 			<Route path="/boardfactory" element={ <BoardFactory /> } />
 
 			{/* 게시글열람페이지 */}
-			<Route path="/boarddetail" element={ <BoardDetail /> } /> 
+			<Route path="/boarddetail" element={ <BoardDetail boards={state.boardObj[state.nowOpenBoard.num]} /> } /> 
 			
 		</Routes>
 	)
