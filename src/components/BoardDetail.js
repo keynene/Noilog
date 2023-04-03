@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { onBoardLikeCountChange } from 'store';
 
+/* Components */
+import BoardCommentFactory from './BoardCommentFactory';
 
 function BoardDetail({ boards}){
   let navigate = useNavigate();
@@ -59,7 +61,7 @@ function BoardDetail({ boards}){
               if(state.isLoggedIn === true){
                 dispatch(onBoardLikeCountChange(dataObj()))
               } else {
-                if(window.confirm('로그인을 하신 후 이용할 수 있습니다. 로그인 하시겠습니까?')){
+                if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
                   navigate("/login")
                 }
               }
@@ -85,8 +87,11 @@ function BoardDetail({ boards}){
         </Col>
       </Row>
       <Row style={{marginTop:10}}>
-        <Col style={{textAlign:'left'}}><BiCommentDetail /> 댓글</Col>
+        <Col style={{textAlign:'left'}}><BiCommentDetail/> 댓글 ({boards.commentCount})</Col>
       </Row>
+
+      <BoardCommentFactory boards={boards} />
+      
     </Container>
 	)
 }

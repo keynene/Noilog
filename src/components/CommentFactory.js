@@ -58,6 +58,7 @@ function CommentFactory({ feeds, i }){
 
 		dispatch(increaseCommentNumber())
 		dispatch(createCommentObj(createdCommentObj))
+		dispatch(increaseCommentCount(feeds[i].postNumber))
 		
 		setComment("")
 
@@ -71,7 +72,6 @@ function CommentFactory({ feeds, i }){
 					<textarea className="comment_textarea" placeholder="댓글 달기..." color="gray" value={comment} onChange={onCommentChange} />
 					<input className="comment_submit" type="submit" value="↑" onClick={()=>{
 						onCommentButtonClick(i)
-						dispatch(increaseCommentCount(feeds[i].postNumber))
 						}} />
 				</form>
 			</Col>
