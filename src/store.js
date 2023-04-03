@@ -228,16 +228,19 @@ const boardObj = createSlice({
 			let index = state.findIndex((x)=> x.boardNumber === action.payload.boardNumber )
 			if (state[index].likeCount.includes(action.payload.id) === false){
 				state[index].likeCount.push(action.payload.id);
-				console.log('추가')
-				console.log(state[index].likeCount)
 			}
 			else {
 				let dataIndex = state[index].likeCount.indexOf(action.payload.id)
 				state[index].likeCount.splice(dataIndex,1)
-				console.log('삭제')
-				console.log(state[index].likeCount)
 			}
 		},
+
+		increaseBoardViewCount(state,action){
+			let index = state.findIndex((x)=> x.boardNumber === action.payload.boardNumber )
+			if (state[index].viewCount.includes(action.payload.id) === false){
+				state[index].viewCount.push(action.payload.id)
+			}
+		}
 	}
 })
 
@@ -274,7 +277,7 @@ export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions
 export let { pushUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
-export let { createBoardObj, onBoardLikeCountChange } = boardObj.actions 
+export let { createBoardObj, onBoardLikeCountChange, increaseBoardViewCount } = boardObj.actions 
 export let { setOpenBoard } = nowOpenBoard.actions 
 export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.actions 
 

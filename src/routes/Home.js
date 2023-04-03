@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setOpenBoard } from 'store';
+import { increaseBoardViewCount } from 'store';
 
 function Home(){
 	let navigate = useNavigate();
@@ -12,6 +13,14 @@ function Home(){
 	let state = useSelector((state) => state)
 
 	let [boards, setBoards] = useState([]);
+
+	const dataObj = () => {
+		let data = {
+			id : state.userInfo[0].id,
+			boardNumber : state.nowOpenBoard.num
+		}
+		return data
+	}
 
 	useEffect(()=>{
 		setBoards(state.boardObj)
@@ -56,12 +65,13 @@ function Home(){
 										onClick={()=>{
 											navigate("/boarddetail")
 											dispatch(setOpenBoard(i))
+											dispatch(increaseBoardViewCount(dataObj()))
 										}}
 									>{boards[i].title}</span></td>
 								<td style={{width:100}}>{boards[i].creatorNickname}</td>
 								<td style={{width:100}}>{boards[i].createDate}</td>
+								<td style={{width:60}}>{boards[i].viewCount.length}</td>
 								<td style={{width:60}}>{boards[i].likeCount.length}</td>
-								<td style={{width:60}}>{boards[i].viewCount}</td>
 							</tr>
 					)}
 				</tbody>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 // import { FaRegEye } from "react-icons/fa";
@@ -11,17 +11,18 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { onBoardLikeCountChange } from 'store';
 
+
 function BoardDetail({ boards}){
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
 
-  const likeDataObj = () => {
-		let likeData = {
+  const dataObj = () => {
+		let data = {
 			id : state.userInfo[0].id,
 			boardNumber : state.nowOpenBoard.num
 		}
-		return likeData
+		return data
 	}
 
 	return (
@@ -37,7 +38,7 @@ function BoardDetail({ boards}){
       <Row style={{textAlign:'right', alignItems:'center', height:40}}>
         <Col></Col>
         <Col sm={6}>
-          <span style={{marginRight:30}}>조회 : {boards.viewCount}</span>
+          <span style={{marginRight:30}}>조회 : {boards.viewCount.length}</span>
           <span>추천 : {boards.likeCount.length}</span>
         </Col>
       </Row>
@@ -53,10 +54,10 @@ function BoardDetail({ boards}){
         <Col style={{alignItems:'baseline'}}>
           <Button 
             variant="light" 
-            style={{fontSize:25, padding:'10px 25px 15px 25px',border:'1px solid rgb(200,200,200)'}}
+            style={{fontSize:25, padding:'5px 20px 10px 20px',border:'1px solid rgb(200,200,200)'}}
             onClick={()=>{
               if(state.isLoggedIn === true){
-                dispatch(onBoardLikeCountChange(likeDataObj()))
+                dispatch(onBoardLikeCountChange(dataObj()))
               } else {
                 if(window.confirm('로그인을 하신 후 이용할 수 있습니다. 로그인 하시겠습니까?')){
                   navigate("/login")
@@ -82,6 +83,9 @@ function BoardDetail({ boards}){
 						}
 					}}>글쓰기</Button>
         </Col>
+      </Row>
+      <Row style={{marginTop:10}}>
+        <Col style={{textAlign:'left'}}><BiCommentDetail /> 댓글</Col>
       </Row>
     </Container>
 	)

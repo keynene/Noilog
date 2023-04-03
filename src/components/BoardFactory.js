@@ -72,7 +72,7 @@ function BoardFactory(){
 			title : boardTitle,
 			content : boardContent,
 			writer : state.userInfo[0].id,
-			viewCount : 0,
+			viewCount : [],
 			likeCount : [],
 			commentCount : 0,
 			createDate : getDate(),
