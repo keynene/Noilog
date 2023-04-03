@@ -5,18 +5,29 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { FcLikePlaceholder } from "react-icons/fc";
 import { BiCommentDetail } from "react-icons/bi";
 
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
+/* Redux, State */
+import { useDispatch, useSelector } from 'react-redux';
+import { onBoardLikeCountChange } from 'store';
 
-function BoardDetail({ boards }){
+function BoardDetail({ boards}){
   let navigate = useNavigate();
+  let dispatch = useDispatch();
+  let state = useSelector((state) => state)
+
+  const likeDataObj = () => {
+		let likeData = {
+			id : state.userInfo[0].id,
+			boardNumber : state.nowOpenBoard.num
+		}
+		return likeData
+	}
 
 	return (
 		<Container style={{width:800, marginTop:10}}>
-      {console.log(boards.likeCount)}
       <Row style={{textAlign:'left'}}>
-        <Col><Button variant="light" onClick={()=>{navigate("/")}}>목록</Button></Col>
+        <Col><Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)'}}>목록</Button></Col>
       </Row>
       <Row style={{height:50, alignItems:'center', marginTop:10, backgroundColor:'rgb(250, 250, 250)', borderBottom:'1px solid #ccc'}}>
         <Col style={{textAlign:'left', marginLeft:30}}>{boards.creatorNickname}</Col>
@@ -40,10 +51,36 @@ function BoardDetail({ boards }){
       </Row>
       <Row>
         <Col style={{alignItems:'baseline'}}>
-          <span style={{fontSize:25}}>
-            <FcLikePlaceholder style={{fontSize:30}} />
+          <Button 
+            variant="light" 
+            style={{fontSize:25, padding:'10px 25px 15px 25px',border:'1px solid rgb(200,200,200)'}}
+            onClick={()=>{
+              if(state.isLoggedIn === true){
+                dispatch(onBoardLikeCountChange(likeDataObj()))
+              } else {
+                if(window.confirm('로그인을 하신 후 이용할 수 있습니다. 로그인 하시겠습니까?')){
+                  navigate("/login")
+                }
+              }
+            }}>
+            <FcLikePlaceholder style={{fontSize:30, marginRight:10}} />
             {boards.likeCount.length}
-          </span>
+          </Button>
+        </Col>
+      </Row>
+      <Row style={{marginTop:30, alignItems:'center'}}>
+        <Col style={{textAlign:'right', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
+          <Button variant="light" style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} onClick={()=>{navigate("/")}}>목록</Button>
+          <Button variant="dark" onClick={()=>{
+						if (state.isLoggedIn === true){
+							navigate("/boardFactory")
+						}
+						else {
+							if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
+								navigate("/login")
+							}
+						}
+					}}>글쓰기</Button>
         </Col>
       </Row>
     </Container>
