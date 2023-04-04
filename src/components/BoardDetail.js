@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 // import { FaRegEye } from "react-icons/fa";
@@ -13,11 +13,18 @@ import { onBoardLikeCountChange } from 'store';
 
 /* Components */
 import BoardCommentFactory from './BoardCommentFactory';
+import BoardComments from './BoardComments';
 
 function BoardDetail({ boards}){
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
+
+  let [boardComments, setBoardComments] = useState([]);
+
+  useEffect(()=>{
+    setBoardComments(state.boardCommentObj)
+  },[state.boardCommentObj])
 
   const dataObj = () => {
 		let data = {
@@ -90,7 +97,23 @@ function BoardDetail({ boards}){
         <Col style={{textAlign:'left'}}><BiCommentDetail/> 댓글 ({boards.commentCount})</Col>
       </Row>
 
+      {/* 댓글달기 컴포넌트 */}
       <BoardCommentFactory boards={boards} />
+
+      {/* 댓글출력 컴포넌트 */}
+      <Row>
+        <Col>
+          <Container>
+            {
+              boardComments.map((ca,ci) => 
+                <BoardComments boards={boards} i={state.nowOpenBoard.num} ci={ci} key={ci} boardComments={boardComments} />
+              )
+            }
+          </Container>
+        </Col>
+      </Row>
+
+
       
     </Container>
 	)

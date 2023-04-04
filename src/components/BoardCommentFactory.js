@@ -59,7 +59,7 @@ function BoardCommentFactory({ boards }){
 
 	return(
 		<Row>
-			<Col style={{paddingTop:20, textAlign:'left'}}>
+			<Col style={{paddingTop:20, paddingBottom:20, textAlign:'left', borderBottom:'1px solid #ccc'}}>
 				<form onSubmit={onBoardCommentSubmit} className="comment_container" style={{border:'1px solid rgb(200,200,200)'}}>
 					<textarea className="comment_textarea" placeholder="댓글 달기..." color="gray" value={boardComment} onChange={onBoardCommentChange} />
 					{/* textarea에 value, onchange 추가 */}

@@ -55,24 +55,25 @@ function Home(){
 					</tr>
 				</thead>
 				<tbody>
-					{
-						boards.map((a,i) => 
-							<tr key={i} style={{fontSize:13, width:800}} className="board_tr">
-								<td style={{width:80}}>{boards[i].boardNumber}</td>
-								<td style={{width:400, textAlign:'left', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', display:'block'}}>
-									<span 
-										style={{textDecoration:'none', color:'black', cursor:'pointer'}} 
-										onClick={()=>{
-											navigate("/boarddetail")
-											dispatch(setOpenBoard(i))
-											dispatch(increaseBoardViewCount(dataObj()))
-										}}
-									>{boards[i].title}</span></td>
-								<td style={{width:100}}>{boards[i].creatorNickname}</td>
-								<td style={{width:100}}>{boards[i].createDate}</td>
-								<td style={{width:60}}>{boards[i].viewCount.length}</td>
-								<td style={{width:60}}>{boards[i].likeCount.length}</td>
-							</tr>
+					{ boards.map((a,i) => 
+						<tr key={i} style={{fontSize:13, width:800}} className="board_tr">
+							<td style={{width:80}}>{boards[i].boardNumber}</td>
+							<td style={{width:400, textAlign:'left', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', display:'block'}}>
+								<span 
+									style={{textDecoration:'none', color:'black', cursor:'pointer', marginRight:5}} 
+									onClick={()=>{
+										navigate("/boarddetail")
+										dispatch(setOpenBoard(i))
+										dispatch(increaseBoardViewCount(dataObj()))
+									}}
+								>{boards[i].title}</span>
+								<span style={{color:'red', fontWeight:'bold'}}>[{boards[i].commentCount}]</span>
+							</td>
+							<td style={{width:100}}>{boards[i].creatorNickname}</td>
+							<td style={{width:100}}>{boards[i].createDate}</td>
+							<td style={{width:60}}>{boards[i].viewCount.length}</td>
+							<td style={{width:60}}>{boards[i].likeCount.length}</td>
+						</tr>
 					)}
 				</tbody>
 			</Table>
