@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState  } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 // import { FaRegEye } from "react-icons/fa";
@@ -9,23 +9,34 @@ import { useNavigate } from 'react-router-dom';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { onBoardLikeCountChange } from 'store';
+import { onBoardLikeCountChange, deleteBoardObj } from 'store';
 
 /* Components */
 import BoardCommentFactory from './BoardCommentFactory';
 import BoardComments from './BoardComments';
 import BoardWriteButton from './BoardWriteButton';
 
-function BoardDetail({ boards}){
+function BoardDetail({ boards }){
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
-
+  
+  let [isBoardOwner, setIsBoardOwner] = useState(false);
   let [boardComments, setBoardComments] = useState([]);
 
   useEffect(()=>{
     setBoardComments(state.boardCommentObj)
   },[state.boardCommentObj])
+
+  useEffect(()=>{
+    if (state.userInfo.length !== 0){
+      if (state.userInfo[0].id === state.boardObj[state.nowOpenBoard.num].writer){
+        setIsBoardOwner(true)
+      } 
+      else {setIsBoardOwner(false)}
+    }
+    else {setIsBoardOwner(false)}
+  },[state.boardObj, state.nowOpenBoard.num, state.userInfo])
 
   const MoveToTop = () => {
     window.scrollTo({ top:0, behavior:'smooth' });
@@ -42,18 +53,20 @@ function BoardDetail({ boards}){
 	return (
 		<Container style={{width:800, marginTop:10, marginBottom:100}}>
       <Row style={{textAlign:'left'}}>
-        <Col><Button variant="light" onClick={()=>{navigate("/")}} style={{fontSize:13, border:'1px solid rgb(200,200,200)'}}>목록</Button></Col>
+        <Col><Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)'}}>목록</Button></Col>
       </Row>
       <Row style={{height:50, alignItems:'center', marginTop:10, backgroundColor:'rgb(250, 250, 250)', borderBottom:'1px solid #ccc'}}>
-        <Col style={{textAlign:'left', marginLeft:30}}>{boards.creatorNickname}</Col>
-        <Col style={{color:'gray'}}>{boards.createDate}</Col>
-        <Col style={{textAlign:'right', marginRight:30}}>{boards.boardNumber}</Col>
-      </Row>
-      <Row style={{textAlign:'right', alignItems:'center', height:40}}>
-        <Col></Col>
-        <Col sm={6}>
-          <span style={{marginRight:30}}>조회 : {boards.viewCount.length}</span>
+        <Col style={{fontSize:15, textAlign:'left', marginLeft:30}}>{boards.creatorNickname}</Col>
+        <Col style={{fontSize:15, color:'gray'}}>{boards.createDate}</Col>
+        <Col style={{fontSize:15, textAlign:'right', marginRight:10}}>
+          <span style={{marginRight:10}}>조회 : {boards.viewCount.length}</span>
           <span>추천 : {boards.likeCount.length}</span>
+        </Col>
+      </Row>
+      <Row style={{marginTop:15}}>
+        <Col style={{textAlign:'right'}}>
+          {/* 수삭목댓 컴포넌트 */}
+          <BoardUpDelInCom isBoardOwner={isBoardOwner} boards={boards} navigate={navigate} dispatch={dispatch} />
         </Col>
       </Row>
       <Row style={{marginTop:40, marginBottom:60}}>
@@ -66,25 +79,15 @@ function BoardDetail({ boards}){
       </Row>
       <Row>
         <Col style={{alignItems:'baseline'}}>
-          <Button 
-            variant="light" 
-            style={{fontSize:25, padding:'5px 20px 10px 20px',border:'1px solid rgb(200,200,200)'}}
-            onClick={()=>{
-              if(state.isLoggedIn === true){
-                dispatch(onBoardLikeCountChange(dataObj()))
-              } else {
-                if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
-                  navigate("/login")
-                }
-              }
-            }}>
-            <FcLikePlaceholder style={{fontSize:30, marginRight:10}} />
-            {boards.likeCount.length}
-          </Button>
+          {/* 추천버튼 컴포넌트 */}
+          <LikeButton state={state} boards={boards} dispatch={dispatch} navigate={navigate} dataObj={dataObj} />
         </Col>
       </Row>
-      <Row style={{marginTop:30, alignItems:'center'}}>
-        <Col style={{textAlign:'right', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
+      <Row style={{marginTop:30, alignItems:'flex-end', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
+        <Col style={{textAlign:'left'}}>
+          <BoardUpDelInCom isBoardOwner={isBoardOwner} boards={boards} navigate={navigate} dispatch={dispatch} />
+        </Col>
+        <Col style={{textAlign:'right'}}>
           <Button variant="light" style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} onClick={()=>{navigate("/")}}>목록</Button>
           <BoardWriteButton />
         </Col>
@@ -121,6 +124,54 @@ function BoardDetail({ boards}){
       
     </Container>
 	)
+}
+
+/* 수정/삭제/목록/댓글 span */
+function BoardUpDelInCom({ isBoardOwner, boards, navigate, dispatch }){
+  return (
+    <div>
+      { isBoardOwner ? (
+        // 글작성자이면 수삭목댓
+        <div style={{fontSize:14, color:'gray'}}>
+          <span style={{cursor:'pointer'}} onClick={()=>{navigate("/")}}>수정</span><span> | </span>
+          <span style={{cursor:'pointer'}} onClick={()=>{
+            dispatch(deleteBoardObj(boards.boardNumber))
+            navigate("/")
+            }} >삭제
+          </span><span> | </span>
+          <span style={{cursor:'pointer'}} onClick={()=>{navigate("/")}}>목록</span><span> | </span>
+          <span style={{cursor:'pointer'}}>댓글(<span style={{color:'#F94B4B'}}>{boards.commentCount}</span>)</span>
+        </div>
+      ) : (
+        // 글작성자 아니면 목댓
+        <div style={{fontSize:14, color:'gray'}}>
+          <span style={{cursor:'pointer'}} onClick={()=>{navigate("/")}}>목록</span><span> | </span>
+          <span style={{cursor:'pointer'}}>댓글(<span style={{color:'#F94B4B'}}>{boards.commentCount}</span>)</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* 추천버튼 컴포넌트 */
+function LikeButton({ state, boards, dispatch, navigate, dataObj }){
+  return(
+    <Button 
+      variant="light" 
+      style={{fontSize:25, padding:'5px 20px 10px 20px',border:'1px solid rgb(200,200,200)'}}
+      onClick={()=>{
+        if(state.isLoggedIn === true){
+          dispatch(onBoardLikeCountChange(dataObj()))
+        } else {
+          if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
+            navigate("/login")
+          }
+        }
+      }}>
+      <FcLikePlaceholder style={{fontSize:30, marginRight:10}} />
+      {boards.likeCount.length}
+    </Button>
+  )
 }
 
 export default BoardDetail

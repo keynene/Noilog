@@ -25,18 +25,20 @@ function Home(){
 			</div>
 			<Table style={{marginTop:30, width:800}}>
 				<thead>
-					<tr>
-						<th>번호</th>
-						<th>제목</th>
-						<th>작성자</th>
-						<th>작성일시</th>
-						<th>조회수</th>
-						<th>추천</th>
+					<tr style={{width:800}}>
+						<th style={{width:80}}>번호</th>
+						<th style={{width:400}}>제목</th>
+						<th style={{width:100}}>작성자</th>
+						<th style={{width:100}}>작성일시</th>
+						<th style={{width:60}}>조회수</th>
+						<th style={{width:60}}>추천</th>
 					</tr>
 				</thead>
 				<tbody>
 					{ boards.map((a,i) => 
-						<BoardRow boards={boards} key={i} i={i} />
+						boards[i].content !== "" ?
+							<BoardRow boards={boards} key={i} i={i} />
+						: null
 					)}
 				</tbody>
 			</Table>

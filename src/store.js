@@ -258,6 +258,12 @@ const boardObj = createSlice({
 			let index = state.findIndex((x)=> x.boardNumber === action.payload )
 			state[index].commentCount ++;
 		},
+		
+		deleteBoardObj(state,action){
+			let index = state.findIndex((x)=> x.boardNumber === action.payload )
+			state[index].title = ""
+			state[index].content =""
+		},
 	}
 })
 
@@ -298,35 +304,39 @@ const boardCommentObj = createSlice({
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
-export let { increasePostNumber } = postNumber.actions 
-export let { increaseBoardNumber } = boardNumber.actions 
-export let { increaseCommentNumber } = commentNumber.actions 
-export let { increaseBoardCommentNumber } = boardCommentNumber.actions 
-export let { feedEditingOn, feedEditingOff } = isFeedEditing.actions 
-export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 export let { pushUserInfo, popUserInfo } = userInfo.actions 
-export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions 
+export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions
+
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
-export let { createBoardObj, onBoardLikeCountChange, increaseBoardViewCount, increaseBoardCommentCount } = boardObj.actions 
-export let { setOpenBoard } = nowOpenBoard.actions 
+export let { increasePostNumber } = postNumber.actions 
+export let { feedEditingOn, feedEditingOff } = isFeedEditing.actions 
 export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.actions 
+export let { increaseCommentNumber } = commentNumber.actions 
+export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
+
+export let { createBoardObj, onBoardLikeCountChange, increaseBoardViewCount, increaseBoardCommentCount, deleteBoardObj } = boardObj.actions 
+export let { increaseBoardNumber } = boardNumber.actions 
+export let { increaseBoardCommentNumber } = boardCommentNumber.actions 
+export let { setOpenBoard } = nowOpenBoard.actions 
 export let { createBoardCommentObj } = boardCommentObj.actions 
 
 export default configureStore({
 	reducer: {
 		isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
+		userInfo : userInfo.reducer,
+
 		feedObj : feedObj.reducer,
+		postNumber : postNumber.reducer,
+		isFeedEditing : isFeedEditing.reducer,
+		commentObj : commentObj.reducer,
+		commentNumber : commentNumber.reducer,
+		isCommentEditing : isCommentEditing.reducer,
+
 		boardObj : boardObj.reducer,
 		nowOpenBoard : nowOpenBoard.reducer,
-		userInfo : userInfo.reducer,
-		commentObj : commentObj.reducer,
 		boardCommentObj : boardCommentObj.reducer,
-		isFeedEditing : isFeedEditing.reducer,
-		isCommentEditing : isCommentEditing.reducer,
-		postNumber : postNumber.reducer,
-		boardNumber : boardNumber.reducer,
-		commentNumber : commentNumber.reducer,
 		boardCommentNumber : boardCommentNumber.reducer,
+		boardNumber : boardNumber.reducer,
 	}
 })
