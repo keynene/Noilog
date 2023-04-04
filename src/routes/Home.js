@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setOpenBoard } from 'store';
 import { increaseBoardViewCount } from 'store';
 
+import BoardWriteButton from 'components/BoardWriteButton';
+
+
 function Home(){
 	let navigate = useNavigate();
 	let dispatch = useDispatch();
@@ -30,18 +33,7 @@ function Home(){
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
 			<h4 style={{marginTop:30}} >Board</h4>	
 			<div style={{textAlign:'right'}}>
-				<Button 
-					variant="dark" 
-					onClick={()=>{
-						if (state.isLoggedIn === true){
-							navigate("/boardFactory")
-						}
-						else {
-							if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
-								navigate("/login")
-							}
-						}
-					}} >글쓰기</Button>
+				<BoardWriteButton />
 			</div>
 			<Table style={{marginTop:30, width:800}}>
 				<thead>
@@ -66,7 +58,8 @@ function Home(){
 										dispatch(setOpenBoard(i))
 										dispatch(increaseBoardViewCount(dataObj()))
 									}}
-								>{boards[i].title}</span>
+								>{boards[i].title}
+								</span>
 								<span style={{color:'red', fontWeight:'bold'}}>[{boards[i].commentCount}]</span>
 							</td>
 							<td style={{width:100}}>{boards[i].creatorNickname}</td>

@@ -14,6 +14,7 @@ import { onBoardLikeCountChange } from 'store';
 /* Components */
 import BoardCommentFactory from './BoardCommentFactory';
 import BoardComments from './BoardComments';
+import BoardWriteButton from './BoardWriteButton';
 
 function BoardDetail({ boards}){
   let navigate = useNavigate();
@@ -26,6 +27,10 @@ function BoardDetail({ boards}){
     setBoardComments(state.boardCommentObj)
   },[state.boardCommentObj])
 
+  const MoveToTop = () => {
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+
   const dataObj = () => {
 		let data = {
 			id : state.userInfo[0].id,
@@ -35,9 +40,9 @@ function BoardDetail({ boards}){
 	}
 
 	return (
-		<Container style={{width:800, marginTop:10}}>
+		<Container style={{width:800, marginTop:10, marginBottom:100}}>
       <Row style={{textAlign:'left'}}>
-        <Col><Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)'}}>목록</Button></Col>
+        <Col><Button variant="light" onClick={()=>{navigate("/")}} style={{fontSize:13, border:'1px solid rgb(200,200,200)'}}>목록</Button></Col>
       </Row>
       <Row style={{height:50, alignItems:'center', marginTop:10, backgroundColor:'rgb(250, 250, 250)', borderBottom:'1px solid #ccc'}}>
         <Col style={{textAlign:'left', marginLeft:30}}>{boards.creatorNickname}</Col>
@@ -81,39 +86,38 @@ function BoardDetail({ boards}){
       <Row style={{marginTop:30, alignItems:'center'}}>
         <Col style={{textAlign:'right', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
           <Button variant="light" style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} onClick={()=>{navigate("/")}}>목록</Button>
-          <Button variant="dark" onClick={()=>{
-						if (state.isLoggedIn === true){
-							navigate("/boardFactory")
-						}
-						else {
-							if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
-								navigate("/login")
-							}
-						}
-					}}>글쓰기</Button>
+          <BoardWriteButton />
         </Col>
       </Row>
       <Row style={{marginTop:10}}>
         <Col style={{textAlign:'left'}}><BiCommentDetail/> 댓글 ({boards.commentCount})</Col>
       </Row>
 
-      {/* 댓글달기 컴포넌트 */}
-      <BoardCommentFactory boards={boards} />
-
       {/* 댓글출력 컴포넌트 */}
       <Row>
         <Col>
           <Container>
-            {
-              boardComments.map((ca,ci) => 
-                <BoardComments boards={boards} i={state.nowOpenBoard.num} ci={ci} key={ci} boardComments={boardComments} />
-              )
+            { boardComments.map((ca,ci) => 
+              <BoardComments boards={boards} boardComments={boardComments} ci={ci} key={ci} /> )
             }
           </Container>
         </Col>
       </Row>
 
+      {/* 댓글달기 컴포넌트 */}
+      <BoardCommentFactory boards={boards} />
 
+      <Row style={{textAlign:'left', marginTop:30}}>
+        <Col>
+          <Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>목록</Button>
+          {/* <Button variant="light" onClick={()=>{navigate("/")}} style={{fontSize:13, border:'1px solid rgb(200,200,200)', marginRight:5}}>다음글 ↑</Button>
+          <Button variant="light" onClick={()=>{navigate("/")}} style={{fontSize:13, border:'1px solid rgb(200,200,200)'}}>이전글 ↓</Button> */}
+        </Col>
+        <Col style={{textAlign:'right'}}>
+          <Button variant="light" onClick={()=>{MoveToTop()}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>맨위로</Button>
+          <BoardWriteButton />
+        </Col>
+      </Row>
       
     </Container>
 	)

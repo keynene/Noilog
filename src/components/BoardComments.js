@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Container, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
-function BoardComments({ boardComments, boards, i, ci }){
+function BoardComments({ boardComments, boards, ci }){
 	return (
 		<>
 		{ boardComments[ci].content !== "" ? (  //내용이 있을때만
