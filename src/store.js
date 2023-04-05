@@ -65,6 +65,26 @@ const isCommentEditing = createSlice({
 	}
 })
 
+const isBoardCommentEditing = createSlice({
+	name : 'isBoardCommentEditing',
+	initialState : {
+		commentNumber : null,
+		editState : false
+	},
+
+	reducers : {
+		boardCommentEditingOn(state,action){
+			state.commentNumber = action.payload
+			state.editState = true
+		},
+		
+		boardCommentEditingOff(state){
+			state.commentNumber = null
+			state.editState = false
+		},
+	}
+})
+
 const postNumber = createSlice({
 	name : 'postNumber',
 	initialState : {
@@ -199,10 +219,7 @@ const feedObj = createSlice({
 		},
 
 		decreaseCommentCount(state,action){
-			// let copy = [...state].reverse()
 			let index = state.findIndex((x)=> x.postNumber === action.payload )
-			// copy[index].commentCount --;
-			// state = [...copy].reverse()
 			state[index].commentCount --;
 		},
 
@@ -259,6 +276,11 @@ const boardObj = createSlice({
 			state[index].commentCount ++;
 		},
 		
+		decreaseBoardCommentCount(state,action){
+			let index = state.findIndex((x)=> x.boardNumber === action.payload )
+			state[index].commentCount --;
+		},
+		
 		deleteBoardObj(state,action){
 			let index = state.findIndex((x)=> x.boardNumber === action.payload )
 			state[index].title = ""
@@ -279,6 +301,7 @@ const commentObj = createSlice({
 
 		deleteCommentObj(state,action){
 			let index = state.findIndex((x)=> x.commentNumber === action.payload )
+			console.log(index)
 			state[index].content = ""
 		},
 
@@ -300,6 +323,18 @@ const boardCommentObj = createSlice({
 			let copy = {...action.payload}
 			state.push(copy)
 		},
+		
+		deleteBoardCommentObj(state,action){
+			let index = state.findIndex((x)=> x.commentNumber === action.payload )
+			state[index].content = ""
+		},
+		
+		editBoardCommentObj(state,action){
+			let copy = [...state]
+			let index = state.findIndex((x)=> x.commentNumber === action.payload.commentNumber )
+			copy[index].content = action.payload.editComment
+			state = [...copy]
+		}
 	}
 })
 
@@ -314,11 +349,12 @@ export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.a
 export let { increaseCommentNumber } = commentNumber.actions 
 export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 
-export let { createBoardObj, onBoardLikeCountChange, increaseBoardViewCount, increaseBoardCommentCount, deleteBoardObj } = boardObj.actions 
+export let { createBoardObj, onBoardLikeCountChange, increaseBoardViewCount, increaseBoardCommentCount, decreaseBoardCommentCount, deleteBoardObj } = boardObj.actions 
 export let { increaseBoardNumber } = boardNumber.actions 
 export let { increaseBoardCommentNumber } = boardCommentNumber.actions 
 export let { setOpenBoard } = nowOpenBoard.actions 
-export let { createBoardCommentObj } = boardCommentObj.actions 
+export let { createBoardCommentObj, deleteBoardCommentObj, editBoardCommentObj } = boardCommentObj.actions 
+export let { boardCommentEditingOn, boardCommentEditingOff } = isBoardCommentEditing.actions 
 
 export default configureStore({
 	reducer: {
@@ -332,11 +368,12 @@ export default configureStore({
 		commentObj : commentObj.reducer,
 		commentNumber : commentNumber.reducer,
 		isCommentEditing : isCommentEditing.reducer,
-
+		
 		boardObj : boardObj.reducer,
 		nowOpenBoard : nowOpenBoard.reducer,
 		boardCommentObj : boardCommentObj.reducer,
 		boardCommentNumber : boardCommentNumber.reducer,
 		boardNumber : boardNumber.reducer,
+		isBoardCommentEditing : isBoardCommentEditing.reducer,
 	}
 })

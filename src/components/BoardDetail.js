@@ -85,6 +85,7 @@ function BoardDetail({ boards }){
       </Row>
       <Row style={{marginTop:30, alignItems:'flex-end', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
         <Col style={{textAlign:'left'}}>
+          {/* 수삭목댓 컴포넌트 */}
           <BoardUpDelInCom isBoardOwner={isBoardOwner} boards={boards} navigate={navigate} dispatch={dispatch} />
         </Col>
         <Col style={{textAlign:'right'}}>
@@ -101,7 +102,7 @@ function BoardDetail({ boards }){
         <Col>
           <Container>
             { boardComments.map((ca,ci) => 
-              <BoardComments boards={boards} boardComments={boardComments} ci={ci} key={ci} /> )
+              <BoardComments boards={boards} boardComments={boardComments} ci={ci} key={ci} isBoardCommentOwner={state.userInfo[0].id === boardComments[ci].writer} /> )
             }
           </Container>
         </Col>
@@ -135,9 +136,10 @@ function BoardUpDelInCom({ isBoardOwner, boards, navigate, dispatch }){
         <div style={{fontSize:14, color:'gray'}}>
           <span style={{cursor:'pointer'}} onClick={()=>{navigate("/")}}>수정</span><span> | </span>
           <span style={{cursor:'pointer'}} onClick={()=>{
-            dispatch(deleteBoardObj(boards.boardNumber))
-            navigate("/")
-            }} >삭제
+            if (window.confirm('게시글을 삭제하시겠습니까?')){
+              dispatch(deleteBoardObj(boards.boardNumber))
+              navigate("/")
+            }}} >삭제
           </span><span> | </span>
           <span style={{cursor:'pointer'}} onClick={()=>{navigate("/")}}>목록</span><span> | </span>
           <span style={{cursor:'pointer'}}>댓글(<span style={{color:'#F94B4B'}}>{boards.commentCount}</span>)</span>
