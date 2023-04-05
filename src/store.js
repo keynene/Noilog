@@ -45,6 +45,26 @@ const isFeedEditing = createSlice({
 	}
 })
 
+const isBoardEditing = createSlice({
+	name : 'isBoardEditing',
+	initialState : {
+		boardNumber : null,
+		editState : false
+	},
+
+	reducers : {
+		boardEditingOn(state,action){
+			state.boardNumber = action.payload
+			state.editState = true
+		},
+		
+		boardEditingOff(state){
+			state.boardNumber = null
+			state.editState = false
+		},
+	}
+})
+
 const isCommentEditing = createSlice({
 	name : 'isCommentEditing',
 	initialState : {
@@ -286,6 +306,14 @@ const boardObj = createSlice({
 			state[index].title = ""
 			state[index].content =""
 		},
+		
+		editBoardObj(state,action){
+			let copy = [...state]
+			let index = state.findIndex((x)=> x.boardNumber === action.payload.boardNumber )
+			copy[index].title = action.payload.editTitle
+			copy[index].content = action.payload.editContent
+			state = [...copy]
+		}
 	}
 })
 
@@ -349,8 +377,9 @@ export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.a
 export let { increaseCommentNumber } = commentNumber.actions 
 export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 
-export let { createBoardObj, onBoardLikeCountChange, increaseBoardViewCount, increaseBoardCommentCount, decreaseBoardCommentCount, deleteBoardObj } = boardObj.actions 
+export let { createBoardObj, onBoardLikeCountChange, increaseBoardViewCount, increaseBoardCommentCount, decreaseBoardCommentCount, deleteBoardObj, editBoardObj } = boardObj.actions 
 export let { increaseBoardNumber } = boardNumber.actions 
+export let { boardEditingOn, boardEditingOff } = isBoardEditing.actions 
 export let { increaseBoardCommentNumber } = boardCommentNumber.actions 
 export let { setOpenBoard } = nowOpenBoard.actions 
 export let { createBoardCommentObj, deleteBoardCommentObj, editBoardCommentObj } = boardCommentObj.actions 
@@ -370,10 +399,11 @@ export default configureStore({
 		isCommentEditing : isCommentEditing.reducer,
 		
 		boardObj : boardObj.reducer,
+		boardNumber : boardNumber.reducer,
 		nowOpenBoard : nowOpenBoard.reducer,
+		isBoardEditing : isBoardEditing.reducer,
 		boardCommentObj : boardCommentObj.reducer,
 		boardCommentNumber : boardCommentNumber.reducer,
-		boardNumber : boardNumber.reducer,
 		isBoardCommentEditing : isBoardCommentEditing.reducer,
 	}
 })

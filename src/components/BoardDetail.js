@@ -1,6 +1,8 @@
 import React, { useEffect, useState  } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
+import 'react-quill/dist/quill.snow.css';
+
 // import { FaRegEye } from "react-icons/fa";
 import { FcLikePlaceholder } from "react-icons/fc";
 import { BiCommentDetail } from "react-icons/bi";
@@ -9,12 +11,13 @@ import { useNavigate } from 'react-router-dom';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { onBoardLikeCountChange, deleteBoardObj } from 'store';
+import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn } from 'store';
 
 /* Components */
 import BoardCommentFactory from './BoardCommentFactory';
 import BoardComments from './BoardComments';
 import BoardWriteButton from './BoardWriteButton';
+import BoardEditForm from './BoardEditForm';
 
 function BoardDetail({ boards }){
   let navigate = useNavigate();
@@ -23,6 +26,7 @@ function BoardDetail({ boards }){
   
   let [isBoardOwner, setIsBoardOwner] = useState(false);
   let [boardComments, setBoardComments] = useState([]);
+  
 
   useEffect(()=>{
     setBoardComments(state.boardCommentObj)
@@ -63,66 +67,83 @@ function BoardDetail({ boards }){
           <span>추천 : {boards.likeCount.length}</span>
         </Col>
       </Row>
-      <Row style={{marginTop:15}}>
-        <Col style={{textAlign:'right'}}>
-          {/* 수삭목댓 컴포넌트 */}
-          <BoardUpDelInCom isBoardOwner={isBoardOwner} boards={boards} navigate={navigate} dispatch={dispatch} />
-        </Col>
-      </Row>
-      <Row style={{marginTop:40, marginBottom:60}}>
-        <Col><h4>{boards.title}</h4></Col>
-      </Row>
-      <Row>
-        <Col style={{textAlign:'left', paddingBottom:80}} >
-          <div dangerouslySetInnerHTML={{ __html :  boards.content  }} />
-        </Col>
-      </Row>
-      <Row>
-        <Col style={{alignItems:'baseline'}}>
-          {/* 추천버튼 컴포넌트 */}
-          <LikeButton state={state} boards={boards} dispatch={dispatch} navigate={navigate} dataObj={dataObj} />
-        </Col>
-      </Row>
-      <Row style={{marginTop:30, alignItems:'flex-end', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
-        <Col style={{textAlign:'left'}}>
-          {/* 수삭목댓 컴포넌트 */}
-          <BoardUpDelInCom isBoardOwner={isBoardOwner} boards={boards} navigate={navigate} dispatch={dispatch} />
-        </Col>
-        <Col style={{textAlign:'right'}}>
-          <Button variant="light" style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} onClick={()=>{navigate("/")}}>목록</Button>
-          <BoardWriteButton />
-        </Col>
-      </Row>
-      <Row style={{marginTop:10}}>
-        <Col style={{textAlign:'left'}}><BiCommentDetail/> 댓글 ({boards.commentCount})</Col>
-      </Row>
-
-      {/* 댓글출력 컴포넌트 */}
-      <Row>
-        <Col>
-          <Container>
-            { boardComments.map((ca,ci) => 
-              <BoardComments boards={boards} boardComments={boardComments} ci={ci} key={ci} isBoardCommentOwner={state.userInfo[0].id === boardComments[ci].writer} /> )
+      { state.isBoardEditing.editState ? (
+      //수정중일때 수정폼
+        <BoardEditForm boards={boards} />
+      ) : (
+      //수정중이 아닐때 게시글 출력
+      <> 
+        <Row style={{marginTop:15}}>
+          <Col style={{textAlign:'right'}}>
+            {/* 수삭목댓 컴포넌트 */}
+            <BoardUpDelInCom isBoardOwner={isBoardOwner} boards={boards} navigate={navigate} dispatch={dispatch} />
+          </Col>
+        </Row>
+        <Row style={{marginTop:40, marginBottom:60}}>
+          <Col><h4>{boards.title}</h4></Col>
+        </Row>
+        <Row>
+          <Col style={{textAlign:'left', paddingBottom:80}} >
+            <div dangerouslySetInnerHTML={{ __html :  boards.content  }} />
+          </Col>
+        </Row>
+        <Row>
+          <Col style={{alignItems:'baseline'}}>
+            {/* 추천버튼 컴포넌트 */}
+            <LikeButton state={state} boards={boards} dispatch={dispatch} navigate={navigate} dataObj={dataObj} />
+          </Col>
+        </Row>
+        <Row style={{marginTop:30, alignItems:'flex-end', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
+          <Col style={{textAlign:'left'}}>
+            {/* 수삭목댓 컴포넌트 */}
+            <BoardUpDelInCom isBoardOwner={isBoardOwner} boards={boards} navigate={navigate} dispatch={dispatch} />
+          </Col>
+          <Col style={{textAlign:'right'}}>
+            { isBoardOwner ? (
+              <Button 
+                variant="light" 
+                style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} 
+                onClick={()=>{
+                  if (window.confirm('게시글을 수정하시겠습니까?')){
+                    dispatch(boardEditingOn(boards.boardNumber))
+                  }
+              }}>수정</Button> ) : null 
             }
-          </Container>
-        </Col>
-      </Row>
+            <Button variant="light" style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} onClick={()=>{navigate("/")}}>목록</Button>
+            <BoardWriteButton />
+          </Col>
+        </Row>
+        <Row style={{marginTop:10}}>
+          <Col style={{textAlign:'left'}}><BiCommentDetail/> 댓글 ({boards.commentCount})</Col>
+        </Row>
 
-      {/* 댓글달기 컴포넌트 */}
-      <BoardCommentFactory boards={boards} />
+        {/* 댓글출력 컴포넌트 */}
+        <Row>
+          <Col>
+            <Container>
+              { boardComments.map((ca,ci) => 
+                <BoardComments boards={boards} boardComments={boardComments} ci={ci} key={ci} isBoardCommentOwner={ state.isLoggedIn ? state.userInfo[0].id === boardComments[ci].writer : false} /> )
+              }
+            </Container>
+          </Col>
+        </Row>
 
-      <Row style={{textAlign:'left', marginTop:30}}>
-        <Col>
-          <Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>목록</Button>
-          {/* <Button variant="light" onClick={()=>{navigate("/")}} style={{fontSize:13, border:'1px solid rgb(200,200,200)', marginRight:5}}>다음글 ↑</Button>
-          <Button variant="light" onClick={()=>{navigate("/")}} style={{fontSize:13, border:'1px solid rgb(200,200,200)'}}>이전글 ↓</Button> */}
-        </Col>
-        <Col style={{textAlign:'right'}}>
-          <Button variant="light" onClick={()=>{MoveToTop()}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>맨위로</Button>
-          <BoardWriteButton />
-        </Col>
-      </Row>
-      
+        {/* 댓글달기 컴포넌트 */}
+        <BoardCommentFactory boards={boards} />
+
+        <Row style={{textAlign:'left', marginTop:30}}>
+          <Col>
+            <Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>목록</Button>
+            {/* <Button variant="light" onClick={()=>{navigate("/")}} style={{fontSize:13, border:'1px solid rgb(200,200,200)', marginRight:5}}>다음글 ↑</Button>
+            <Button variant="light" onClick={()=>{navigate("/")}} style={{fontSize:13, border:'1px solid rgb(200,200,200)'}}>이전글 ↓</Button> */}
+          </Col>
+          <Col style={{textAlign:'right'}}>
+            <Button variant="light" onClick={()=>{MoveToTop()}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>맨위로</Button>
+            <BoardWriteButton />
+          </Col>
+        </Row>
+      </>
+      )}
     </Container>
 	)
 }
@@ -134,7 +155,11 @@ function BoardUpDelInCom({ isBoardOwner, boards, navigate, dispatch }){
       { isBoardOwner ? (
         // 글작성자이면 수삭목댓
         <div style={{fontSize:14, color:'gray'}}>
-          <span style={{cursor:'pointer'}} onClick={()=>{navigate("/")}}>수정</span><span> | </span>
+          <span style={{cursor:'pointer'}} onClick={()=>{
+            if (window.confirm('게시글을 수정하시겠습니까?')){
+              dispatch(boardEditingOn(boards.boardNumber))
+            }
+          }}>수정</span><span> | </span>
           <span style={{cursor:'pointer'}} onClick={()=>{
             if (window.confirm('게시글을 삭제하시겠습니까?')){
               dispatch(deleteBoardObj(boards.boardNumber))
