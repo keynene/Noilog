@@ -9,7 +9,7 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedIn, pushUserInfo } from 'store.js';
+import { LoggedIn, setUserInfo } from 'store.js';
 
 function App() {
   let dispatch = useDispatch();
@@ -29,7 +29,7 @@ function App() {
       let nowLoggedInId = JSON.parse(localStorage.getItem('login')).loginId
       let nowLoggedInInfo = JSON.parse(localStorage.getItem(JSON.stringify(nowLoggedInId)))
       dispatch(LoggedIn(nowLoggedInId))
-      dispatch(pushUserInfo(nowLoggedInInfo))
+      dispatch(setUserInfo(nowLoggedInInfo))
     }
   },[])
 

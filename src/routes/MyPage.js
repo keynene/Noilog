@@ -22,7 +22,7 @@ function MyPage(){
 					<Col><img src={sampleImgUrl} alt="" width="133px" height="158px" /></Col>
 					<Col style={{paddingTop:20}}>
 						<h4>
-							{state.userInfo[0].nickname} ({state.userInfo[0].id})
+							{state.userInfo.nickname} ({state.userInfo.id})
 							<button style={{fontSize:14, marginLeft:10}} onClick={()=>{
 								dispatch(LoggedOut(''))
 								dispatch(popUserInfo())

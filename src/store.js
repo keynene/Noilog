@@ -132,11 +132,11 @@ const boardNumber = createSlice({
 const nowOpenBoard = createSlice({
 	name : 'nowOpenBoard',
 	initialState : {
-		num : 0
+		boardNumber : 0,
 	},
 	reducers : {
 		setOpenBoard(state,action){
-			state.num = action.payload
+			state.boardNumber = action.payload
 		}
 	}
 })
@@ -167,16 +167,30 @@ const boardCommentNumber = createSlice({
 
 const userInfo = createSlice({
 	name : 'userInfo',
-	initialState : [],
-	// initialState : JSON.parse(localStorage.getItem(JSON.stringify(JSON.parse(localStorage.getItem('login')).loginId))),
+	initialState : {
+		id:'',
+		password:'',
+		email:'',
+		name:'',
+		nickname:'',
+	},
 
 	reducers : {
-		pushUserInfo(state,action){
+		setUserInfo(state,action){
 			let copy = {...action.payload}
-			state.push(copy)
+			state = {...copy}
+			return state
 		},
 		popUserInfo(state){
-			state.pop()
+			let copy = {
+				id:'',
+				password:'',
+				email:'',
+				name:'',
+				nickname:'',
+			}
+			state = {...copy}
+			return state
 		},
 	}
 })
@@ -259,7 +273,7 @@ const feedObj = createSlice({
 			copy[index].title = action.payload.editTitle
 			copy[index].content = action.payload.editContent
 			state = [...copy].reverse()
-		}
+		},
 	}
 })
 
@@ -367,7 +381,7 @@ const boardCommentObj = createSlice({
 })
 
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
-export let { pushUserInfo, popUserInfo } = userInfo.actions 
+export let { setUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
