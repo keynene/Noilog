@@ -43,13 +43,13 @@ function BoardDetail({ boards, isBoardOwner }){
 	}
 
 	return (
-		<Container style={{width:800, marginTop:10, marginBottom:100}}>
+    <Container style={{width:800, marginTop:10, marginBottom:100}}>
       <Row style={{textAlign:'left'}}>
         <Col><Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)'}}>목록</Button></Col>
       </Row>
       <Row style={{height:50, alignItems:'center', marginTop:10, backgroundColor:'rgb(250, 250, 250)', borderBottom:'1px solid #ccc'}}>
         <Col style={{fontSize:15, textAlign:'left', marginLeft:30}}>{boards.creatorNickname}</Col>
-        <Col style={{fontSize:15, color:'gray'}}>{boards.createDate}</Col>
+        <Col style={{fontSize:15, color:'gray'}}>{boards.createDate.setDateYMDHMS}</Col>
         <Col style={{fontSize:15, textAlign:'right', marginRight:10}}>
           <span style={{marginRight:10}}>조회 : {boards.viewCount.length}</span>
           <span>추천 : {boards.likeCount.length}</span>

@@ -34,7 +34,7 @@ function BoardRow({ boards, i }){
 				<span style={{color:'red', fontWeight:'bold'}}>[{boards[i].commentCount}]</span>
 			</td>
 			<td style={{width:100}}>{boards[i].creatorNickname}</td>
-			<td style={{width:100}}>{boards[i].createDate}</td>
+			<td style={{width:100}}>{boards[i].createDate.setDateMDHM}</td>
 			<td style={{width:60}}>{boards[i].viewCount.length}</td>
 			<td style={{width:60}}>{boards[i].likeCount.length}</td>
 		</tr>

@@ -35,19 +35,14 @@ function BoardFactory(){
 		let day = ("0"+date.getDate()).slice(-2);
 		let hours = ('0' + date.getHours()).slice(-2); 
 		let minutes = ('0' + date.getMinutes()).slice(-2);
-		// let seconds = ('0' + date.getSeconds()).slice(-2); 
-		let ampm = '오전'
-
-		// if (hours >= 12){
-		// 	ampm = '오후'
-		// 	if (hours > 12){
-		// 		hours -= 12
-		// 	}
-
-		// }
-
-		// return `${year}년 ${month}월 ${day}일\n${ampm} ${hours}시 ${minutes}분`;
-		return `${month}-${day} ${hours}:${minutes}`
+		let seconds = ('0' + date.getSeconds()).slice(-2); 
+		
+		let setDate = {
+			setDateMDHM : `${month}-${day} ${hours}:${minutes}`,
+			setDateYMDHMS : `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+		}
+		
+		return setDate
 	}
 
 	const onSubmit = (e) => {
