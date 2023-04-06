@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import {useSelector} from "react-redux";
 
 /* Routes import */
@@ -13,6 +13,7 @@ import BoardDetail from './BoardDetail.js';
 
 function AppRouter(){
 	let state = useSelector((state) => state)
+	let navigate = useNavigate();
 	return(
 		<Routes>
 			{/* 메인페이지(게시글테이블) */}
@@ -38,7 +39,20 @@ function AppRouter(){
 			<Route path="/boardfactory" element={ <BoardFactory /> } />
 
 			{/* 게시글열람페이지 */}
-			<Route path="/boarddetail" element={ <BoardDetail boards={state.boardObj[state.nowOpenBoard.num]} /> } /> 
+			<Route path="/boarddetail" element={ 
+				<BoardDetail 
+					boards={state.boardObj[state.nowOpenBoard.num]} 
+					isBoardOwner={
+						state.isLoggedIn ?  //로그인중인가?
+							state.boardObj.length !== 0 ?  //게시글이 있나?
+								state.userInfo[0].id === state.boardObj[state.nowOpenBoard.num].writer
+							: false 
+						: false
+					}
+				/>}
+			/> 
+
+			<Route path="*" element={<button onClick={()=>{navigate("/")}}>홈으로가기</button>} />
 			
 		</Routes>
 	)

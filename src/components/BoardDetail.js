@@ -19,28 +19,16 @@ import BoardComments from './BoardComments';
 import BoardWriteButton from './BoardWriteButton';
 import BoardEditForm from './BoardEditForm';
 
-function BoardDetail({ boards }){
+function BoardDetail({ boards, isBoardOwner }){
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
   
-  let [isBoardOwner, setIsBoardOwner] = useState(false);
   let [boardComments, setBoardComments] = useState([]);
-  
 
   useEffect(()=>{
     setBoardComments(state.boardCommentObj)
   },[state.boardCommentObj])
-
-  useEffect(()=>{
-    if (state.userInfo.length !== 0){
-      if (state.userInfo[0].id === state.boardObj[state.nowOpenBoard.num].writer){
-        setIsBoardOwner(true)
-      } 
-      else {setIsBoardOwner(false)}
-    }
-    else {setIsBoardOwner(false)}
-  },[state.boardObj, state.nowOpenBoard.num, state.userInfo])
 
   const MoveToTop = () => {
     window.scrollTo({ top:0, behavior:'smooth' });
@@ -67,8 +55,8 @@ function BoardDetail({ boards }){
           <span>추천 : {boards.likeCount.length}</span>
         </Col>
       </Row>
+      {/* 수정폼 컴포넌트 */}
       { state.isBoardEditing.editState ? (
-      //수정중일때 수정폼
         <BoardEditForm boards={boards} />
       ) : (
       //수정중이 아닐때 게시글 출력
@@ -122,8 +110,16 @@ function BoardDetail({ boards }){
           <Col>
             <Container>
               { boardComments.map((ca,ci) => 
-                <BoardComments boards={boards} boardComments={boardComments} ci={ci} key={ci} isBoardCommentOwner={ state.isLoggedIn ? state.userInfo[0].id === boardComments[ci].writer : false} /> )
-              }
+                <BoardComments 
+                  boards={boards} 
+                  boardComments={boardComments} 
+                  ci={ci} 
+                  key={ci} 
+                  isBoardCommentOwner={ 
+                    state.isLoggedIn ? state.userInfo[0].id === boardComments[ci].writer : false
+                  } 
+                />
+              )}
             </Container>
           </Col>
         </Row>
