@@ -14,7 +14,7 @@ function Home(){
 	let [boards, setBoards] = useState([]);
 
 	useEffect(()=>{
-		setBoards(state.boardObj)
+		setBoards([...state.boardObj].reverse())
 	},[state.boardObj])
 
 	return (

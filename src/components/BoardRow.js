@@ -12,8 +12,8 @@ function BoardRow({ boards, i }){
 
 	const dataObj = () => {
 		let data = {
-			id : state.userInfo[0].id,
-			boardNumber : state.nowOpenBoard.num
+			id : state.userInfo.id,
+			boardNumber : boards[i].boardNumber
 		}
 		return data
 	}
@@ -26,8 +26,8 @@ function BoardRow({ boards, i }){
 					style={{textDecoration:'none', color:'black', cursor:'pointer', marginRight:5}} 
 					onClick={()=>{
 						navigate("/boarddetail")
-						dispatch(setOpenBoard(i))
-						dispatch(increaseBoardViewCount(dataObj()))
+						dispatch(setOpenBoard(boards[i].boardNumber))
+						dispatch(increaseBoardViewCount(dataObj())) //수정
 					}}
 				>{boards[i].title}
 				</span>

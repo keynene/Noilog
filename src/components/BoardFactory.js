@@ -66,12 +66,12 @@ function BoardFactory(){
 			boardNumber : state.boardNumber.num,
 			title : boardTitle,
 			content : boardContent,
-			writer : state.userInfo[0].id,
+			writer : state.userInfo.id,
 			viewCount : [],
 			likeCount : [],
 			commentCount : 0,
 			createDate : getDate(),
-			creatorNickname : state.userInfo[0].nickname,
+			creatorNickname : state.userInfo.nickname,
 		}
 
 		dispatch(increaseBoardNumber());

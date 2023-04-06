@@ -4,12 +4,14 @@ import { Row, Col } from 'react-bootstrap';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { increaseBoardCommentNumber, createBoardCommentObj, increaseBoardCommentCount } from 'store';
 
 function BoardCommentFactory({ boards }){
 	let [boardComment, setBoardComment] = useState('');
 	let state = useSelector((state) => state);
 	let dispatch = useDispatch();
+	let navigate = useNavigate();
 
 	const onBoardCommentChange = (e) => {
 		const {
@@ -33,6 +35,12 @@ function BoardCommentFactory({ boards }){
 	const onBoardCommentSubmit = (e) => {
 		e.preventDefault();
 
+		if (state.isLoggedIn === false){
+			if(window.confirm('로그인 후 이용해주세요! 로그인하시겠습니까?')){
+				return navigate("/login")
+			} else {return}
+		}
+
 		if (boardComment === ''){
 			return alert('댓글 내용을 입력해주세요!')
 		}
@@ -41,8 +49,8 @@ function BoardCommentFactory({ boards }){
 			commentNumber : state.boardCommentNumber.num,
 			boardNumber : boards.boardNumber,
 			content : boardComment,
-			writer : state.userInfo[0].id,
-			creatorNickname : state.userInfo[0].nickname,
+			writer : state.userInfo.id,
+			creatorNickname : state.userInfo.nickname,
 			createDate : getDate()
 		}
 

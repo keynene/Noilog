@@ -19,25 +19,50 @@ import BoardComments from './BoardComments';
 import BoardWriteButton from './BoardWriteButton';
 import BoardEditForm from './BoardEditForm';
 
-function BoardDetail({ boards, isBoardOwner }){
+function BoardDetail(){
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
   
   let [boardComments, setBoardComments] = useState([]);
+  let [boardsObj, setBoardsObj] = useState([...state.boardObj]);
+  let [boards, setBoards] = useState(
+    boardsObj.find((x)=> x.boardNumber === state.nowOpenBoard.boardNumber )
+  );
+
+  let [isBoardOwner, setIsBoardOwner] = useState(
+    state.userInfo.id === boards.writer ? true : false
+  );
+  
 
   useEffect(()=>{
-    setBoardComments(state.boardCommentObj)
-  },[state.boardCommentObj])
+    setBoardsObj([...state.boardObj])
+  },[state.boardObj])
 
+  useEffect(()=>{
+    setBoards(boardsObj.find((x)=> x.boardNumber === state.nowOpenBoard.boardNumber ))
+  },[boardsObj, state.nowOpenBoard])
+
+  useEffect(()=>{
+    if (state.isLoggedIn){
+      if (state.userInfo.id === boards.writer){
+        setIsBoardOwner(true)
+      } else {setIsBoardOwner(false)}
+    } else {setIsBoardOwner(false)}
+  },[state.isLoggedIn, state.userInfo, boards.writer])
+
+  useEffect(()=>{
+    setBoardComments([...state.boardCommentObj])
+  },[state.boardCommentObj])
+  
   const MoveToTop = () => {
     window.scrollTo({ top:0, behavior:'smooth' });
   }
 
   const dataObj = () => {
 		let data = {
-			id : state.userInfo[0].id,
-			boardNumber : state.nowOpenBoard.num
+			id : state.userInfo.id,
+			boardNumber : state.nowOpenBoard.boardNumber
 		}
 		return data
 	}
@@ -116,7 +141,7 @@ function BoardDetail({ boards, isBoardOwner }){
                   ci={ci} 
                   key={ci} 
                   isBoardCommentOwner={ 
-                    state.isLoggedIn ? state.userInfo[0].id === boardComments[ci].writer : false
+                    state.isLoggedIn ? state.userInfo.id === boardComments[ci].writer : false
                   } 
                 />
               )}
