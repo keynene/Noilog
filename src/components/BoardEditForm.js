@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 
 import ReactQuill from 'react-quill';
 
@@ -7,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { editBoardObj, boardEditingOff } from 'store';
 
 function BoardEditForm({ boards }){
-	let [editTitle, setEditTitle] = useState('');
-  let [editContent, setEditContent] = useState('');
+	let [editTitle, setEditTitle] = useState(boards.title);
+  let [editContent, setEditContent] = useState(boards.content);
 
 	let dispatch = useDispatch();
 	let navigate = useNavigate();
@@ -84,7 +85,8 @@ function BoardEditForm({ boards }){
 				value={editContent}
 				style={{height:500, paddingBottom:80}}
 			/>
-			<input type="submit" value="수정하기" onClick={()=>{onEditButtonClick(boards.boardNumber)}} />
+			<Button variant="light" type="submit" onClick={()=>{dispatch(boardEditingOff())}} style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}>취소하기</Button>
+			<Button variant="dark" type="submit" onClick={()=>{onEditButtonClick(boards.boardNumber)}}>수정하기</Button>
 		</form>
 	)
 }

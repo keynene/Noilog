@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
@@ -116,7 +117,7 @@ function FeedFactory(){
 			<form onSubmit={onSubmit}>
 				<p><input type="text" name="title" placeholder="Title" onChange={onFeedTitleChange} value={feedTitle} /></p>
 				<p><input type="text" name="content" placeholder="Content" onChange={onFeedContentChange} value={feedContent} /></p>
-				<input type="submit" value="글작성하기" />
+				<Button variant="dark" type="submit" >작성하기</Button>
 			</form>
 		</div>
 	)

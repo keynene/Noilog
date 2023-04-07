@@ -55,7 +55,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 					{
 						//수정버튼 눌렀고, i값과 postNumber가 일치하는 게시글만 수정폼 적용
 						EditingAndTruePostNumber(feeds[i].postNumber) ? (
-							<FeedEditForm postNumber={feeds[i].postNumber} />
+							<FeedEditForm postNumber={feeds[i].postNumber} feeds={feeds[i]} />
 						) : (
 							//수정상태 아니거나, 수정상태이지만 postNumber가 다른경우 게시글 그대로 출력
 							<>

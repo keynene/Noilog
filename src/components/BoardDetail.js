@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn } from 'store';
+import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn, boardEditingOff } from 'store';
 
 /* Components */
 import BoardCommentFactory from './BoardCommentFactory';
@@ -70,7 +70,20 @@ function BoardDetail(){
 	return (
     <Container style={{width:800, marginTop:10, marginBottom:100}}>
       <Row style={{textAlign:'left'}}>
-        <Col><Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)'}}>목록</Button></Col>
+        <Col>
+          <Button 
+            variant="light" 
+            onClick={()=>{
+              if (state.isBoardEditing){
+                if (window.confirm('글 수정을 취소하시겠습니까?')){
+                  dispatch(boardEditingOff())
+                  navigate("/boarddetail")
+                }
+              }
+            }} 
+            style={{border:'1px solid rgb(200,200,200)'}}
+          >목록</Button>
+        </Col>
       </Row>
       <Row style={{height:50, alignItems:'center', marginTop:10, backgroundColor:'rgb(250, 250, 250)', borderBottom:'1px solid #ccc'}}>
         <Col style={{fontSize:15, textAlign:'left', marginLeft:30}}>{boards.creatorNickname}</Col>

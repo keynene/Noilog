@@ -121,6 +121,15 @@ function BoardFactory(){
 			/>
 
 			<div >
+				<Button 
+					variant="light" 
+					onClick={()=>{
+						if (window.confirm('글 작성을 취소하시겠습니까?')){
+							navigate("/")
+						}
+					}} 
+					style={{border:'1px solid rgb(200,200,200)', marginRight:5}}
+				> 목록</Button>
 				<Button variant="dark" type="submit" >글쓰기</Button>
 			</div>
 		</form>

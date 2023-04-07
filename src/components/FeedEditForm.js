@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 
 import { useDispatch } from 'react-redux';
 import { feedEditingOff, editFeedObj } from 'store';
 
-function FeedEditForm({ postNumber }){
-	let [editTitle, setEditTitle] = useState("")
-	let [editContent, setEditContent] = useState("")
+function FeedEditForm({ postNumber, feeds }){
+	let [editTitle, setEditTitle] = useState(feeds.title)
+	let [editContent, setEditContent] = useState(feeds.content)
 
 	let dispatch = useDispatch();
 
@@ -74,8 +74,9 @@ function FeedEditForm({ postNumber }){
 				</Col>
 			</Row>
 			<Row>
-				<Col style={{textAlign:'right'}}>
-					<input type="submit" value="수정하기" onClick={()=>{onSubmitClick(postNumber)}}/>
+				<Col style={{textAlign:'right', marginBottom:30}}>
+					<Button variant="light" type="submit" onClick={()=>{dispatch(feedEditingOff())}} style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}>취소하기</Button>
+					<Button variant="dark" type="submit" onClick={()=>{onSubmitClick(postNumber)}}>수정하기</Button>
 				</Col>
 			</Row>
 		</form>
