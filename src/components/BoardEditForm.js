@@ -85,7 +85,11 @@ function BoardEditForm({ boards }){
 				value={editContent}
 				style={{height:500, paddingBottom:80}}
 			/>
-			<Button variant="light" type="submit" onClick={()=>{dispatch(boardEditingOff())}} style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}>취소하기</Button>
+			<Button variant="light" type="submit" onClick={()=>{
+				if(window.confirm('수정을 취소하시겠습니까?')){
+					dispatch(boardEditingOff())
+				}
+			}} style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}>취소하기</Button>
 			<Button variant="dark" type="submit" onClick={()=>{onEditButtonClick(boards.boardNumber)}}>수정하기</Button>
 		</form>
 	)

@@ -71,10 +71,12 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 						
 					<Row style={{fontSize:20}}>
 						<Col style={{textAlign:'left'}}>
-							<span onClick={()=>{
-								dispatch(onLikeCountChange(likeDataObj(feeds[i].postNumber)))
-							}} ><FcLikePlaceholder /> {feeds[i].likeCount.length}</span>
-							<span><BiCommentDetail style={{marginLeft:30}}/> {feeds[i].commentCount}</span>
+							<span 
+								
+								onClick={()=>{
+									dispatch(onLikeCountChange(likeDataObj(feeds[i].postNumber)))
+								}} ><FcLikePlaceholder style={{cursor:'pointer'}} /> {feeds[i].likeCount.length}</span>
+							<span><BiCommentDetail style={{marginLeft:30, cursor:'pointer'}}/> {feeds[i].commentCount}</span>
 						</Col>
 
 						{isFeedOwner ? ( //피드 작성자만 수정/삭제 버튼 보임

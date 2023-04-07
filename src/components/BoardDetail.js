@@ -74,12 +74,12 @@ function BoardDetail(){
           <Button 
             variant="light" 
             onClick={()=>{
-              if (state.isBoardEditing){
+              if (state.isBoardEditing.editState){
                 if (window.confirm('글 수정을 취소하시겠습니까?')){
                   dispatch(boardEditingOff())
-                  navigate("/boarddetail")
+                  navigate("/")
                 }
-              }
+              } else{ navigate("/")}
             }} 
             style={{border:'1px solid rgb(200,200,200)'}}
           >목록</Button>

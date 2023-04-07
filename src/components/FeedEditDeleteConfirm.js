@@ -16,7 +16,7 @@ function FeedEditDeleteConfirm({ i, feeds }){
 				if (window.confirm('피드를 수정하시겠습니까?')){
 					dispatch(feedEditingOn(feeds[i].postNumber)) 
 			}
-		}} ><GrEdit/></span>
+		}} ><GrEdit style={{cursor:'pointer'}}/></span>
 		<span 
 			onClick={()=>{
 				if (window.confirm('정말 피드를 삭제하시겠습니까?')){
@@ -24,7 +24,7 @@ function FeedEditDeleteConfirm({ i, feeds }){
 				}
 			}} 
 			style={{marginLeft:15, color:'black'}}>
-			<RiDeleteBin6Line/>
+			<RiDeleteBin6Line style={{cursor:'pointer'}}/>
 		</span>
 	</Col>
 	)

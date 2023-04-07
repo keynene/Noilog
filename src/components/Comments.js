@@ -68,13 +68,13 @@ function CommentEditDeleteConfirm({ comments, ci, dispatch }){
 					if (window.confirm('댓글을 수정하시겠습니까?')) {
 						dispatch(commentEditingOn(comments[ci].commentNumber))
 					}
-				}}><GrEdit /></span>
+				}}><GrEdit style={{cursor:'pointer'}} /></span>
 				<span onClick={()=>{
 					if (window.confirm('댓글을 삭제하시겠습니까?')){
 						dispatch(deleteCommentObj(comments[ci].commentNumber))
 						dispatch(decreaseCommentCount(comments[ci].postNumber))
 					}
-				}} style={{marginLeft:10, color:'black'}}><RiDeleteBin6Line/></span>
+				}} style={{marginLeft:10, color:'black', cursor:'pointer'}}><RiDeleteBin6Line/></span>
 			</Col>
 		</Row>
 	)
