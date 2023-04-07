@@ -82,14 +82,17 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 						) : null
 					}
 					</Row>
-					<Row style={{marginTop:30}}>
-						<Col style={{backgroundColor:'#F0F0F0', borderRadius:15}}>
-							{comments.map((ca,ci)=>
-								//댓글출력
-								<Comments feeds={feeds} i={i} comments={comments} ci={ci} key={ci} isCommentOwner={state.userInfo.id === comments[ci].writer} />
-							)}
-						</Col>
-					</Row>
+					
+					{ feeds[i].commentCount ? 
+						<Row style={{marginTop:30}}>
+							<Col style={{backgroundColor:'#F0F0F0', borderRadius:15}}>
+								{comments.map((ca,ci)=>
+									//댓글출력
+									<Comments feeds={feeds} i={i} comments={comments} ci={ci} key={ci} isCommentOwner={state.userInfo.id === comments[ci].writer} />
+								)}
+							</Col>
+						</Row> : null
+					}
 
 					{/* 댓글 달기 컴포넌트 */}
 					<CommentFactory feeds={feeds} i={i} />
