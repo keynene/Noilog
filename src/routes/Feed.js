@@ -10,12 +10,11 @@ function Feed(){
 
 	let state = useSelector((state) => state)
 	
-	let [feeds, setFeeds] = useState([]);
 	let [comments, setComments] = useState([]);
-
+	let [feeds, setFeeds] = useState([]);
 
 	useEffect(()=>{
-		setFeeds(state.feedObj)
+		setFeeds([...state.feedObj].reverse())
 	},[state.feedObj])
 
 	useEffect(()=>{
@@ -27,7 +26,17 @@ function Feed(){
 			<FeedFactory />
 			{
 				feeds.map((a,i) =>
-					<Feeds i={i} feeds={[...feeds].reverse()} comments={comments} key={i} isFeedOwner={[...feeds].reverse()[i].writer === state.userInfo[0].id} />
+					<Feeds 
+						i={i} 
+						feeds={feeds} 
+						comments={comments} 
+						key={i} 
+						isFeedOwner={
+							state.isLoggedIn ? 
+								feeds[i].writer === state.userInfo.id
+							: false
+						} 
+					/>
 				)
 			}
 		</div>

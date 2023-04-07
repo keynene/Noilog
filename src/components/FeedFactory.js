@@ -93,12 +93,12 @@ function FeedFactory(){
 			postNumber : state.postNumber.num,
 			title : feedTitle,
 			content : feedContent,
-			writer : state.userInfo[0].id,
+			writer : state.userInfo.id,
 			viewCount : 0,
 			likeCount : [],
 			commentCount : 0,
 			createDate : getDate(),
-			creatorNickname : state.userInfo[0].nickname,
+			creatorNickname : state.userInfo.nickname,
 		}
 		
 		dispatch(increasePostNumber());
@@ -106,7 +106,7 @@ function FeedFactory(){
 
 		setFeedTitle("")
 		setFeedContent("")
-		
+
 		createdFeedObj = null
 	}
 

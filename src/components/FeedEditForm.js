@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { feedEditingOff, editFeedObj } from 'store';
 
-function FeedEditForm({ i }){
+function FeedEditForm({ postNumber }){
 	let [editTitle, setEditTitle] = useState("")
 	let [editContent, setEditContent] = useState("")
 
@@ -42,9 +42,9 @@ function FeedEditForm({ i }){
 		setEditContent('')
 	}
 
-	const onSubmitClick = (i) => {
+	const onSubmitClick = (postNumber) => {
 		let editData = {
-			postNumber : i,
+			postNumber,
 			editTitle,
 			editContent
 		}
@@ -75,7 +75,7 @@ function FeedEditForm({ i }){
 			</Row>
 			<Row>
 				<Col style={{textAlign:'right'}}>
-					<input type="submit" value="수정하기" onClick={()=>{onSubmitClick(i)}}/>
+					<input type="submit" value="수정하기" onClick={()=>{onSubmitClick(postNumber)}}/>
 				</Col>
 			</Row>
 		</form>

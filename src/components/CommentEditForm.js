@@ -33,9 +33,9 @@ function CommentEditForm({ comments, ci }){
 		setEditComment('')
 	}
 
-	const onSubmitClick = (ci) => {
+	const onSubmitClick = (commentNumber) => {
 		let editData = {
-			commentNumber : ci,
+			commentNumber,
 			editComment
 		}
 		dispatch(editCommentObj(editData))
@@ -61,7 +61,7 @@ function CommentEditForm({ comments, ci }){
 					<Row style={{textAlign:'right'}}>
 						<Col>
 							<br/>
-							<input type="submit" value="수정하기" onClick={()=>{onSubmitClick(ci)}} />
+							<input type="submit" value="수정하기" onClick={()=>{onSubmitClick(comments[ci].commentNumber)}} />
 						</Col>
 					</Row>
 				</Col>

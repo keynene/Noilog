@@ -17,9 +17,9 @@ function Comments({ feeds, i, comments, ci, isCommentOwner }){
 	let state = useSelector((state) => state)
 	let dispatch = useDispatch();
 
-	const EditingAndTrueCommentNumber = (ci) => {
+	const EditingAndTrueCommentNumber = (commentNumber) => {
 		if (state.isCommentEditing.editState){
-			if (state.isCommentEditing.commentNumber === ci){
+			if (state.isCommentEditing.commentNumber === commentNumber){
 				return true
 			}
 		}
@@ -33,7 +33,7 @@ function Comments({ feeds, i, comments, ci, isCommentOwner }){
 				//postNumber에 해당하는 댓글만 출력
 				feeds[i].postNumber === comments[ci].postNumber ? (
 					//수정폼
-					EditingAndTrueCommentNumber(ci) ?(
+					EditingAndTrueCommentNumber(comments[ci].commentNumber) ?(
 						<CommentEditForm comments={comments} ci={ci} />
 					)	:	(
 						<Row>
@@ -66,12 +66,12 @@ function CommentEditDeleteConfirm({ comments, ci, dispatch }){
 			<Col style={{textAlign:'right'}}>
 				<span onClick={()=>{
 					if (window.confirm('댓글을 수정하시겠습니까?')) {
-						dispatch(commentEditingOn(ci))
+						dispatch(commentEditingOn(comments[ci].commentNumber))
 					}
 				}}><GrEdit /></span>
 				<span onClick={()=>{
 					if (window.confirm('댓글을 삭제하시겠습니까?')){
-						dispatch(deleteCommentObj(ci))
+						dispatch(deleteCommentObj(comments[ci].commentNumber))
 						dispatch(decreaseCommentCount(comments[ci].postNumber))
 					}
 				}} style={{marginLeft:10, color:'black'}}><RiDeleteBin6Line/></span>

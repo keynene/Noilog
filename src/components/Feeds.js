@@ -25,16 +25,15 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 
 	const likeDataObj = (postNumber) => {
 		let likeData = {
-			id : state.userInfo[0].id,
+			id : state.userInfo.id,
 			postNumber
 		}
 		return likeData
 	}
-	
 
-	const EditingAndTruePostNumber = (i) => {
+	const EditingAndTruePostNumber = (postNumber) => {
 		if (state.isFeedEditing.editState){
-			if (state.isFeedEditing.postNumber === i){
+			if (state.isFeedEditing.postNumber === postNumber){
 				return true
 			}
 		}
@@ -55,8 +54,8 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 					</Row>
 					{
 						//수정버튼 눌렀고, i값과 postNumber가 일치하는 게시글만 수정폼 적용
-						EditingAndTruePostNumber(i) ? (
-							<FeedEditForm i={i} />
+						EditingAndTruePostNumber(feeds[i].postNumber) ? (
+							<FeedEditForm postNumber={feeds[i].postNumber} />
 						) : (
 							//수정상태 아니거나, 수정상태이지만 postNumber가 다른경우 게시글 그대로 출력
 							<>
@@ -87,7 +86,7 @@ function Feeds({a, i, feeds, comments, isFeedOwner}){
 						<Col style={{backgroundColor:'#F0F0F0', borderRadius:15}}>
 							{comments.map((ca,ci)=>
 								//댓글출력
-								<Comments feeds={feeds} i={i} comments={comments} ci={ci} key={ci} isCommentOwner={state.userInfo[0].id === comments[ci].writer} />
+								<Comments feeds={feeds} i={i} comments={comments} ci={ci} key={ci} isCommentOwner={state.userInfo.id === comments[ci].writer} />
 							)}
 						</Col>
 					</Row>

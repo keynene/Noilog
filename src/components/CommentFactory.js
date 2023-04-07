@@ -51,8 +51,8 @@ function CommentFactory({ feeds, i }){
 			commentNumber : state.commentNumber.num,
 			postNumber : feeds[i].postNumber,
 			content : comment,
-			writer : state.userInfo[0].id,
-			creatorNickname : state.userInfo[0].nickname,
+			writer : state.userInfo.id,
+			creatorNickname : state.userInfo.nickname,
 			createDate : getDate()
 		}
 

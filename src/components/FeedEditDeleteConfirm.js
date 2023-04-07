@@ -14,7 +14,7 @@ function FeedEditDeleteConfirm({ i, feeds }){
 		<Col style={{textAlign:'right'}}>
 			<span onClick={()=>{ 
 				if (window.confirm('피드를 수정하시겠습니까?')){
-					dispatch(feedEditingOn(i)) 
+					dispatch(feedEditingOn(feeds[i].postNumber)) 
 			}
 		}} ><GrEdit/></span>
 		<span 
