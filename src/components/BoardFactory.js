@@ -7,7 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { increaseBoardNumber, createBoardObj } from 'store';
+import { increaseBoardNumber, createBoardObj, setOpenBoard } from 'store';
 
 function BoardFactory(){
 	let state = useSelector((state) => state)
@@ -83,7 +83,8 @@ function BoardFactory(){
 		createdBoardObj = null;
 
 		alert("게시글 작성이 완료되었습니다!")
-		navigate("/")
+		dispatch(setOpenBoard(state.boardNumber.num))
+		navigate("/boarddetail")
 
 	}
 
