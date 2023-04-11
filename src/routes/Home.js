@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
+import ReactDOM from "react-dom";
+import Pagination from "react-js-pagination";
 
 import { useSelector } from 'react-redux';
 
@@ -13,7 +15,6 @@ import data from 'components/test.js'
 // totalCount: 총 데이터의 갯수
 // pageCount: 화면에 나타날 페이지 갯수
 // limit: 한 페이지 당 나타낼 데이터의 갯수
-
 function Home(){
 	let state = useSelector((state) => state)
 
@@ -104,18 +105,30 @@ function Home(){
 					)}
 				</tbody>
 			</Table>
-			<div>
-				{Array(numPages).map((pa,pi) => 
-					<Button 
-						variant="light"
-						key={pi+1}
-						onClick={()=>{setPage(pi+1)}}
-					>{pi+1}</Button>
-				)}
-			</div>
+			<Paging tBoards={tBoards} />
 		</div>
 		/////////////////////////////////////////////////////////////////////////사본
 	)
 }
+
+function Paging({ tBoards }){
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
+  return (
+    <Pagination
+      activePage={page} // 현재 페이지
+      itemsCountPerPage={10} // 한 페이지랑 보여줄 아이템 갯수
+      totalItemsCount={tBoards.length} // 총 아이템 갯수
+      pageRangeDisplayed={5} // paginator의 페이지 범위
+      prevPageText={"‹"} // "이전"을 나타낼 텍스트
+      nextPageText={"›"} // "다음"을 나타낼 텍스트
+      onChange={handlePageChange} // 페이지 변경을 핸들링하는 함수
+    />
+  );
+};
 
 export default Home;
