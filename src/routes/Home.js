@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Table } from 'react-bootstrap';
 import ReactDOM from "react-dom";
-import Pagination from "react-js-pagination";
 
 import { useSelector } from 'react-redux';
 
@@ -10,6 +9,7 @@ import { useSelector } from 'react-redux';
 import BoardWriteButton from 'components/BoardWriteButton';
 import BoardRow from 'components/BoardRow';
 import data from 'components/test.js'
+import Pagination from 'components/Pagination.js'
 
 // currentPage: 현재 페이지
 // totalCount: 총 데이터의 갯수
@@ -19,25 +19,20 @@ function Home(){
 	let state = useSelector((state) => state)
 
 	let [boards, setBoards] = useState([]);
+	
+	const [loading, setLoading] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [postsPerPage, setPostPerPage] = useState(10);
 
-
-
-	////////////////////////////////////////////////////////////////////////////////////
-	let [tBoards, setTBoards] = useState(data);
-
-	const [page, setPage] = useState(1); //페이지
-	const [totalPosts, setTotalPosts] = useState(tBoards.length); //게시글 갯수
-	const limit = 10; //posts가 보일 최대한의 갯수
-	const offset = (page-1)*limit //시작점과 끝점 구하기
-	const numPages = Math.ceil(totalPosts/limit)
-
-	const postsData = (posts) => {
-		if(posts){
-			let result = posts.slice(offset, offset+limit);
-			return result;
-		}
+	const indexOfLast = currentPage * postsPerPage;
+	const indexOfFirst = indexOfLast - postsPerPage;
+	const currentPosts = (posts) => {
+		let currentPosts = 0;
+		currentPosts = posts.slice(indexOfFirst, indexOfLast);
+		return currentPosts;
 	}
-
+	////////////////////////////////////////////////////////////////////////////////////
+	// let [tBoards, setTBoards] = useState(data);
 	////////////////////////////////////////////////////////////////////////////////////
 
 	useEffect(()=>{
@@ -45,7 +40,48 @@ function Home(){
 	},[state.boardObj])
 
 	return (
-		// 원본
+		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
+			<h4 style={{marginTop:30}} >Board</h4>	
+			<div style={{textAlign:'right'}}>
+				<BoardWriteButton />
+			</div>
+			<Table style={{marginTop:30, width:800}}>
+				<thead>
+					<tr style={{width:800}}>
+						<th style={{width:80}}>번호</th>
+						<th style={{width:400}}>제목</th>
+						<th style={{width:100}}>작성자</th>
+						<th style={{width:100}}>작성일시</th>
+						<th style={{width:60}}>조회수</th>
+						<th style={{width:60}}>추천</th>
+					</tr>
+				</thead>
+				{boards.length === 0 ? (
+					<tbody>
+						<tr>
+							<td colSpan="6" style={{border:"none", paddingTop:20}}>아직 게시글이 없습니다!</td> 
+						</tr>
+					</tbody>
+				) : (
+					<tbody>
+						{loading && <div> loading... </div>}
+						{	boards.map((a,i) => 
+								boards[i].content !== ""   &&
+									<BoardRow boards={currentPosts(boards)} key={i} i={i} />
+							)
+						}
+					</tbody>
+				)}
+			</Table>
+			{boards.length !== 0 &&
+				<Pagination
+					postsPerPage={postsPerPage}
+					totalPosts={boards.length}
+					paginate={setCurrentPage}
+				/>
+			}
+		</div>
+		/////////////////////////////////////////////////////////////////////////사본
 		// <div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
 		// 	<h4 style={{marginTop:30}} >Board</h4>	
 		// 	<div style={{textAlign:'right'}}>
@@ -63,72 +99,49 @@ function Home(){
 		// 			</tr>
 		// 		</thead>
 		// 		<tbody>
-		// 			{ boards.map((a,i) => 
-		// 				boards[i].content !== "" ?
-		// 					<BoardRow boards={boards} key={i} i={i} />
-		// 				: null
-		// 			)}
+		// 			<Boards tBoards={currentPosts(tBoards)} loading={loading} />
+		// 			{/* { tBoards.map((a,i) => 
+		// 				<tr key={i} style={{fontSize:15}}>
+		// 					<td>{tBoards[i].postNumber}</td>
+		// 					<td>{tBoards[i].title}</td>
+		// 					<td>{tBoards[i].writer.nickname}</td>
+		// 					<td>{tBoards[i].createdDate.substring(0,10)}</td>
+		// 					<td>{tBoards[i].viewCount}</td>
+		// 					<td>{tBoards[i].likeCount}</td>
+		// 				</tr>
+		// 			)} */}
 		// 		</tbody>
 		// 	</Table>
+		// 	<Pagination
+		// 		postsPerPage={postsPerPage}
+		// 		totalPosts={tBoards.length}
+		// 		paginate={setCurrentPage}
+		// 	></Pagination>
 		// </div>
-
-
-
-
-		/////////////////////////////////////////////////////////////////////////사본
-		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
-			<h4 style={{marginTop:30}} >Board</h4>	
-			<div style={{textAlign:'right'}}>
-				<BoardWriteButton />
-			</div>
-			<Table style={{marginTop:30, width:800}}>
-				<thead>
-					<tr style={{width:800}}>
-						<th style={{width:80}}>번호</th>
-						<th style={{width:400}}>제목</th>
-						<th style={{width:100}}>작성자</th>
-						<th style={{width:100}}>작성일시</th>
-						<th style={{width:60}}>조회수</th>
-						<th style={{width:60}}>추천</th>
-					</tr>
-				</thead>
-				<tbody>
-					{ tBoards.map((a,i) => 
-						<tr key={i} style={{fontSize:15}}>
-							<td>{tBoards[i].postNumber}</td>
-							<td>{tBoards[i].title}</td>
-							<td>{tBoards[i].writer.nickname}</td>
-							<td>{tBoards[i].createdDate.substring(0,10)}</td>
-							<td>{tBoards[i].viewCount}</td>
-							<td>{tBoards[i].likeCount}</td>
-						</tr>
-					)}
-				</tbody>
-			</Table>
-			<Paging tBoards={tBoards} />
-		</div>
 		/////////////////////////////////////////////////////////////////////////사본
 	)
 }
 
-function Paging({ tBoards }){
-  const [page, setPage] = useState(1);
+// function Boards({ tBoards, loading }){
+// 	return (
+// 		<>
+// 			{loading && <div> loading... </div>}
+// 			<>
+// 			{ tBoards.map((a,i) => 
+// 				<tr key={i} style={{fontSize:15}}>
+// 					<td>{tBoards[i].postNumber}</td>
+// 					<td>{tBoards[i].title}</td>
+// 					<td>{tBoards[i].writer.nickname}</td>
+// 					<td>{tBoards[i].createdDate.substring(0,10)}</td>
+// 					<td>{tBoards[i].viewCount}</td>
+// 					<td>{tBoards[i].likeCount}</td>
+// 				</tr>
+// 			)}
+// 			</>
+// 		</>
+// 	)
+// }
 
-  const handlePageChange = (page) => {
-    setPage(page);
-  };
 
-  return (
-    <Pagination
-      activePage={page} // 현재 페이지
-      itemsCountPerPage={10} // 한 페이지랑 보여줄 아이템 갯수
-      totalItemsCount={tBoards.length} // 총 아이템 갯수
-      pageRangeDisplayed={5} // paginator의 페이지 범위
-      prevPageText={"‹"} // "이전"을 나타낼 텍스트
-      nextPageText={"›"} // "다음"을 나타낼 텍스트
-      onChange={handlePageChange} // 페이지 변경을 핸들링하는 함수
-    />
-  );
-};
 
 export default Home;
