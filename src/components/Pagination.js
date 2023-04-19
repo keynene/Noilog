@@ -3,10 +3,6 @@ import React from 'react';
 import styled from 'styled-components'
 
 function Pagination({ postsPerPage, totalPosts, paginate }){
-	const pageNumbers = [];
-	for (let i=1; i<=Math.ceil(totalPosts/postsPerPage); i++){
-		pageNumbers.push(i);
-	}
 
 	const PageUl = styled.ul`
 		float: left;
@@ -46,6 +42,11 @@ function Pagination({ postsPerPage, totalPosts, paginate }){
 			background-color: #263a6c;
 		}
 	`;
+
+	const pageNumbers = [];
+	for (let i=1; i<=Math.ceil(totalPosts/postsPerPage); i++){
+		pageNumbers.push(i);
+	}
 
 	return (
 		<>

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 /* Components */
 import BoardWriteButton from 'components/BoardWriteButton';
 import BoardRow from 'components/BoardRow';
-import data from 'components/test.js'
+// import data from 'components/test.js'
 import Pagination from 'components/Pagination.js'
 
 function Home(){
@@ -17,13 +17,14 @@ function Home(){
 	
 	const [loading, setLoading] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const postsPerPage = 10;
+	const [postsPerPage, setPostPerPage] = useState(10);
 
-	const indexOfLast = currentPage * postsPerPage;
-	const indexOfFirst = indexOfLast - postsPerPage;
-	const currentPosts = (posts) => {
+	const indexOfLast = currentPage * postsPerPage; //현재페이지*10 (현페이지 마지막 인덱스)
+	const indexOfFirst = indexOfLast - postsPerPage; //현페이지 마지막 인덱스-10 (현페이지 첫 인덱스)
+	const currentPosts = (posts) => { //현재페이지의 포스트 함수
 		let currentPosts = 0;
-		currentPosts = posts.slice(indexOfFirst, indexOfLast);
+		//전체게시글에서 현페이지 첫인덱스~마지막인덱스 까지만 보여주기 위해 범위 설정
+		currentPosts = posts.slice(indexOfFirst, indexOfLast); 
 		return currentPosts;
 	}
 
@@ -57,19 +58,19 @@ function Home(){
 				) : (
 					<tbody>
 						{loading && <div> loading... </div>}
-						{boards.map((a,i) => 
-							boards[i].content !== "" &&
-							<BoardRow boards={currentPosts(boards)} key={i} i={i} />
-						)}
+						<BoardRow boards={currentPosts(boards)}/>
 					</tbody>
 				)}
 			</Table>
 			{boards.length !== 0 &&
-				<Pagination
-					postsPerPage={postsPerPage}
-					totalPosts={boards.length}
-					paginate={setCurrentPage}
-				/>
+				<div style={{display:"flex", justifyContent:"center"}}>
+					<Pagination
+						postsPerPage={postsPerPage}
+						totalPosts={boards.length}
+						paginate={setCurrentPage}
+						style={{textAlign:"center"}}
+					/>
+				</div>
 			}
 		</div>
 	)

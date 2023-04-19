@@ -19,8 +19,9 @@ function BoardRow({ boards, i }){
 	}
 
 	return (
+		<>
+		{boards.map((a,i) => boards[i].content !== "" && (
 		<tr key={i} style={{fontSize:13, width:800}} className="board_tr">
-			{console.log(boards)}
 			<td style={{width:80}}>{boards[i].boardNumber}</td>
 			<td style={{width:400, textAlign:'left', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', display:'block'}}>
 				<span 
@@ -39,6 +40,8 @@ function BoardRow({ boards, i }){
 			<td style={{width:60}}>{boards[i].viewCount.length}</td>
 			<td style={{width:60}}>{boards[i].likeCount.length}</td>
 		</tr>
+		))}
+		</>
 	)
 }
 
