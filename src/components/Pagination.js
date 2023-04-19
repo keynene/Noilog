@@ -2,31 +2,26 @@ import React from 'react';
 
 import styled from 'styled-components'
 
-function Pagination({ postsPerPage, totalPosts, paginate }){
+function Pagination({ postsPerPage, totalPosts, paginate, currentPage }){
 
 	const PageUl = styled.ul`
-		float: left;
+		margin-top: 20px;
 		list-style: none;
 		text-align: center;
-		border-radius: 3px;
-		color: white;
+		color: rgb(100,100,100);
 		padding: 1px;
-		border-top: 3px solid #186ead;
-		border-bottom: 3px solid #186ead;
-		background-color: rgba(0, 0, 0, 0.4);
 	`;
 
 	const PageLi = styled.li`
 		display: inline-block;
 		font-size: 17px;
-		font-weight: 600;
-		padding: 5px;
-		border-radius: 5px;
-		width: 25px;
+		font-weight: 550;
+		padding: 3px;
+		border-radius: 50px;
+		width: 30px;
 		&:hover {
 			cursor: pointer;
-			color: white;
-			background-color: #263a6c;
+			background-color: rgb(230,230,230);
 		}
 		&:focus::after {
 			color: white;
@@ -48,19 +43,34 @@ function Pagination({ postsPerPage, totalPosts, paginate }){
 		pageNumbers.push(i);
 	}
 
+	const onPrevButtonClick = () => {
+		if (currentPage !== 1){
+			paginate(currentPage-1)
+		}
+	}
+
+	const onNextButtonClick = () => {
+		if (pageNumbers.length !== currentPage){
+			paginate(currentPage+1)
+		}
+	}
+
 	return (
 		<>
-			<div>
-				<PageUl>
-					{pageNumbers.map((number) => (
-						<PageLi key={number} className="page-item">
-							<PageSpan onClick={() => paginate(number) } className="page-link">
-								{number}
-							</PageSpan>
-						</PageLi>
-					))}
-				</PageUl>
-			</div>
+		{console.log(currentPage)}
+			<PageUl>
+				<PageLi onClick={()=>{onPrevButtonClick()}}><PageSpan>{"<<"}</PageSpan></PageLi>
+				<PageLi onClick={()=>{onPrevButtonClick()}}><PageSpan>{"<"}</PageSpan></PageLi>
+				{pageNumbers.map((number) => (
+					<PageLi key={number} className="page-item">
+						<PageSpan onClick={() => paginate(number) } className="page-link">
+							{number}
+						</PageSpan>
+					</PageLi>
+				))}
+				<PageLi onClick={()=>{onNextButtonClick()}}><PageSpan>{">"}</PageSpan></PageLi>
+				<PageLi onClick={()=>{onNextButtonClick()}}><PageSpan>{">>"}</PageSpan></PageLi>
+			</PageUl>
 		</>
 	)
 }

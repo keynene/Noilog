@@ -7,13 +7,13 @@ import { useSelector } from 'react-redux';
 /* Components */
 import BoardWriteButton from 'components/BoardWriteButton';
 import BoardRow from 'components/BoardRow';
-// import data from 'components/test.js'
+import data from 'components/test.js'
 import Pagination from 'components/Pagination.js'
 
 function Home(){
 	let state = useSelector((state) => state)
 
-	let [boards, setBoards] = useState([]);
+	let [boards, setBoards] = useState(data);
 	
 	const [loading, setLoading] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -28,9 +28,9 @@ function Home(){
 		return currentPosts;
 	}
 
-	useEffect(()=>{
-		setBoards([...state.boardObj].reverse())
-	},[state.boardObj])
+	// useEffect(()=>{
+	// 	setBoards([...state.boardObj].reverse())
+	// },[state.boardObj])
 
 	return (
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
@@ -64,10 +64,12 @@ function Home(){
 			</Table>
 			{boards.length !== 0 &&
 				<div style={{display:"flex", justifyContent:"center"}}>
+					{console.log("home =>",currentPage)}
 					<Pagination
 						postsPerPage={postsPerPage}
 						totalPosts={boards.length}
 						paginate={setCurrentPage}
+						currentPage={currentPage}
 						style={{textAlign:"center"}}
 					/>
 				</div>
