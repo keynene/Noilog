@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import { Table } from 'react-bootstrap';
 
@@ -7,18 +8,22 @@ import { useSelector } from 'react-redux';
 /* Components */
 import BoardWriteButton from 'components/BoardWriteButton';
 import BoardRow from 'components/BoardRow';
-import data from 'components/test.js'
+// import data from 'components/test.js'
 import Pagination from 'components/Pagination.js'
 
 function Home(){
 	let state = useSelector((state) => state)
 
-	let [boards, setBoards] = useState(data);
+	let [boards, setBoards] = useState([]); //기존 연습용 데이터
 	
 	const [loading, setLoading] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [postsPerPage, setPostPerPage] = useState(10);
-
+  
+  /////////페이지 테스트용///////////
+  /* 페이지 테스트용
+	let [boards, setBoards] = useState(data);
+  */
 	const indexOfLast = currentPage * postsPerPage; //현재페이지*10 (현페이지 마지막 인덱스)
 	const indexOfFirst = indexOfLast - postsPerPage; //현페이지 마지막 인덱스-10 (현페이지 첫 인덱스)
 	const currentPosts = (posts) => { //현재페이지의 포스트 함수
@@ -27,10 +32,22 @@ function Home(){
 		currentPosts = posts.slice(indexOfFirst, indexOfLast); 
 		return currentPosts;
 	}
+  /////////페이지 테스트용///////////
 
-	// useEffect(()=>{
+	// useEffect(()=>{ //기존 연습용 데이터
 	// 	setBoards([...state.boardObj].reverse())
 	// },[state.boardObj])
+
+  useEffect(()=>{
+    axios.get('http://3.36.85.194:42988/api/v1/posts/search/jpql?word=x')
+    .then(response => {
+      let copy = [...response.data.data]
+      setBoards(copy.reverse())
+    })
+    .catch((error)=>{
+      console.log(error.message);
+    })
+  },[])
 
 	return (
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
@@ -64,7 +81,6 @@ function Home(){
 			</Table>
 			{boards.length !== 0 &&
 				<div style={{display:"flex", justifyContent:"center"}}>
-					{console.log("home =>",currentPage)}
 					<Pagination
 						postsPerPage={postsPerPage}
 						totalPosts={boards.length}
