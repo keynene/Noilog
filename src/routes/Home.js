@@ -14,7 +14,7 @@ import Pagination from 'components/Pagination.js'
 function Home(){
 	let state = useSelector((state) => state)
 
-	let [boards, setBoards] = useState([]); //기존 연습용 데이터
+	let [boards, setBoards] = useState([]); //기존 데이터
 	
 	const [loading, setLoading] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -34,20 +34,21 @@ function Home(){
 	}
   /////////페이지 테스트용///////////
 
-	// useEffect(()=>{ //기존 연습용 데이터
+	// useEffect(()=>{ //기존 데이터
 	// 	setBoards([...state.boardObj].reverse())
 	// },[state.boardObj])
 
   useEffect(()=>{
-    axios.get('http://3.36.85.194:42988/api/v1/posts/search/jpql?word=x')
+    axios.get('http://3.36.85.194:42988/api/v1/posts/search')
     .then(response => {
-      let copy = [...response.data.data]
-      setBoards(copy.reverse())
+      // console.log(response.data.data.content)
+      let copy = [...response.data.data.content]
+      setBoards(copy)
     })
     .catch((error)=>{
-      console.log(error.message);
+      console.log("error=> ",error.message);
     })
-  },[])
+  },[boards])
 
 	return (
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
