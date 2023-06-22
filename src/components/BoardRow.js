@@ -22,7 +22,7 @@ function BoardRow({ boards, i }){
 		<>
 		{boards.map((a,i) => boards[i].content !== "" && (
 		<tr key={i} style={{fontSize:13, width:800}} className="board_tr">
-			<td style={{width:80}}>{boards[i].boardNumber}</td>
+			<td style={{width:80}}>{boards[i].postNumber}</td>
 			<td style={{width:400, textAlign:'left', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', display:'block'}}>
 				<span 
 					style={{textDecoration:'none', color:'black', cursor:'pointer', marginRight:5}} 
@@ -33,12 +33,13 @@ function BoardRow({ boards, i }){
 					}}
 				>{boards[i].title}
 				</span>
-				<span style={{color:'red', fontWeight:'bold'}}>[{boards[i].commentCount}]</span>
+				{/* <span style={{color:'red', fontWeight:'bold'}}>[{boards[i].commentCount}]</span> */}
+				<span style={{color:'red', fontWeight:'bold'}}>[0]</span>
 			</td>
-			<td style={{width:100}}>{boards[i].creatorNickname}</td>
-			<td style={{width:100}}>{boards[i].createDate.setDateMDHM}</td>
-			<td style={{width:60}}>{boards[i].viewCount.length}</td>
-			<td style={{width:60}}>{boards[i].likeCount.length}</td>
+			<td style={{width:100}}>{boards[i].nickname}</td>
+			<td style={{width:100}}>{boards[i].createDate}</td> 
+			<td style={{width:60}}>{boards[i].viewCount}</td>
+			<td style={{width:60}}>{boards[i].likeCount}</td>
 		</tr>
 		))}
 		</>
