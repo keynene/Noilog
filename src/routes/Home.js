@@ -38,17 +38,19 @@ function Home(){
 	// 	setBoards([...state.boardObj].reverse())
 	// },[state.boardObj])
 
+  
+
   useEffect(()=>{
     axios.get('http://3.36.85.194:42988/api/v1/posts/search')
-    .then(response => {
-      // console.log(response.data.data.content)
-      let copy = [...response.data.data.content]
-      setBoards(copy)
-    })
-    .catch((error)=>{
-      console.log("error=> ",error.message);
-    })
-  },[boards])
+      .then(response => {
+        // console.log(response.data.data.content)
+        let copy = [...response.data.data.content]
+        setBoards(copy)
+      })
+      .catch((error)=>{
+        console.log("error=> ",error.message);
+      })
+  },[])
 
 	return (
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
@@ -70,7 +72,9 @@ function Home(){
 				{boards.length === 0 ? (
 					<tbody>
 						<tr>
-							<td colSpan="6" style={{border:"none", paddingTop:20, color:"gray"}}>아직 게시글이 없습니다!</td> 
+							<td colSpan="6" style={{border:"none", paddingTop:20, color:"gray"}}>
+                아직 게시글이 없습니다!
+              </td> 
 						</tr>
 					</tbody>
 				) : (

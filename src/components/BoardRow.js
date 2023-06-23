@@ -18,6 +18,12 @@ function BoardRow({ boards, i }){
 		return data
 	}
 
+  function getDate(date) {
+    let md = date.slice(5,10)
+    let time = date.slice(11,16)
+    return `${md} ${time}`
+  }
+
 	return (
 		<>
 		{boards.map((a,i) => boards[i].content !== "" && (
@@ -36,8 +42,8 @@ function BoardRow({ boards, i }){
 				{/* <span style={{color:'red', fontWeight:'bold'}}>[{boards[i].commentCount}]</span> */}
 				<span style={{color:'red', fontWeight:'bold'}}>[0]</span>
 			</td>
-			<td style={{width:100}}>{boards[i].nickname}</td>
-			<td style={{width:100}}>{boards[i].createDate}</td> 
+			<td style={{width:100}}>{boards[i].writer.nickname}</td>
+			<td style={{width:100}}>{getDate(boards[i].createdDate)}</td> 
 			<td style={{width:60}}>{boards[i].viewCount}</td>
 			<td style={{width:60}}>{boards[i].likeCount}</td>
 		</tr>
