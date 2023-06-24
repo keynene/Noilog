@@ -38,10 +38,10 @@ function Home(){
 	// 	setBoards([...state.boardObj].reverse())
 	// },[state.boardObj])
 
-  
+  let page = 0
 
   useEffect(()=>{
-    axios.get('http://3.36.85.194:42988/api/v1/posts/search')
+    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${page}`)
       .then(response => {
         // console.log(response.data.data.content)
         let copy = [...response.data.data.content]
