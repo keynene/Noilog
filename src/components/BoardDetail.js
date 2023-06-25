@@ -1,4 +1,5 @@
 import React, { useEffect, useState  } from 'react';
+import axios from 'axios';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import 'react-quill/dist/quill.snow.css';
@@ -19,13 +20,32 @@ function BoardDetail(){
   let state = useSelector((state) => state)
   
   let [boardsObj, setBoardsObj] = useState([...state.boardObj]);
-  let [boards, setBoards] = useState(
-    boardsObj.find((x)=> x.boardNumber === state.nowOpenBoard.boardNumber )
+  let [boards, setBoards] = useState([]);
+  // let [boards, setBoards] = useState(
+    //   boardsObj.find((x)=> x.postNumber === state.nowOpenBoard.postNumber )
+    // );
+
+  let page = 0
+
+  useEffect(()=>{
+    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${page}`)
+      .then(response => {
+        // console.log(response.data.data.content)
+        let copy = [...response.data.data.content]
+        setBoards(copy)
+      })
+      .catch((error)=>{
+        console.log("error=> ",error.message);
+      })
+  },[])
+    
+  let [isBoardOwner, setIsBoardOwner] = useState( //수정전
+    state.userInfo.nickname === boards.writer.nickname ? true : false
   );
 
-  let [isBoardOwner, setIsBoardOwner] = useState(
-    state.userInfo.id === boards.writer ? true : false
-  );
+  console.log(boards)
+  console.log(state.userInfo.nickname)
+  console.log(boards.writer.nickname)
 
   useEffect(()=>{ 
     //아래 setBoards useEffect이 find함수를 통해 index를 redux의 return 값으로 
@@ -33,9 +53,10 @@ function BoardDetail(){
     setBoardsObj([...state.boardObj])
   },[state.boardObj])
 
-  useEffect(()=>{
-    setBoards(boardsObj.find((x)=> x.boardNumber === state.nowOpenBoard.boardNumber ))
-  },[boardsObj, state.nowOpenBoard])
+  //기존코드
+  // useEffect(()=>{
+  //   setBoards(boardsObj.find((x)=> x.boardNumber === state.nowOpenBoard.boardNumber ))
+  // },[boardsObj, state.nowOpenBoard])
 
   useEffect(()=>{
     if (state.isLoggedIn){

@@ -132,11 +132,11 @@ const boardNumber = createSlice({
 const nowOpenBoard = createSlice({
 	name : 'nowOpenBoard',
 	initialState : {
-		boardNumber : 0,
+		postNumber : 0,
 	},
 	reducers : {
 		setOpenBoard(state,action){
-			state.boardNumber = action.payload
+			state.postNumber = action.payload
 		}
 	}
 })
