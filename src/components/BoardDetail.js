@@ -21,10 +21,6 @@ function BoardDetail({boards}){
   let [openBoard, setOpenBoard] = useState(
     boards.find((x)=> x.postNumber === state.nowOpenBoard.postNumber ))
 
-  console.log(boards)
-  console.log(openBoard)
-  console.log(state.nowOpenBoard.postNumber-1)
-  
   // let [boardsObj, setBoardsObj] = useState([...boards]);
   //기존코드
   // let [boards, setBoards] = useState([]);
@@ -33,7 +29,7 @@ function BoardDetail({boards}){
     // );
     
   let [isBoardOwner, setIsBoardOwner] = useState( //수정전
-    state.userInfo.nickname === boards.writer.nickname ? true : false
+    state.userInfo.nickname === openBoard.writer.nickname ? true : false
   );
 
   // console.log(boards)
@@ -55,7 +51,7 @@ function BoardDetail({boards}){
 
   useEffect(()=>{
     if (state.isLoggedIn){
-      if (state.userInfo.id === openBoard.writer){
+      if (state.userInfo.nickname === openBoard.writer.nickname){
         setIsBoardOwner(true)
       } else {setIsBoardOwner(false)}
     } else {setIsBoardOwner(false)}
@@ -80,11 +76,11 @@ function BoardDetail({boards}){
         </Col>
       </Row>
       <Row style={{height:50, alignItems:'center', marginTop:10, backgroundColor:'rgb(250, 250, 250)', borderBottom:'1px solid #ccc'}}>
-        <Col style={{fontSize:15, textAlign:'left', marginLeft:30}}>{openBoard.creatorNickname}</Col>
-        <Col style={{fontSize:15, color:'gray'}}>{openBoard.createDate.setDateYMDHMS}</Col>
+        <Col style={{fontSize:15, textAlign:'left', marginLeft:30}}>{openBoard.writer.nickname}</Col>
+        <Col style={{fontSize:15, color:'gray'}}>{openBoard.createdDate}</Col>
         <Col style={{fontSize:15, textAlign:'right', marginRight:10}}>
-          <span style={{marginRight:10}}>조회 : {openBoard.viewCount.length}</span>
-          <span>추천 : {openBoard.likeCount.length}</span>
+          <span style={{marginRight:10}}>조회 : {openBoard.viewCount}</span>
+          <span>추천 : {openBoard.likeCount}</span>
         </Col>
       </Row>
 

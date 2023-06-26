@@ -11,10 +11,10 @@ import BoardRow from 'components/BoardRow';
 // import data from 'components/test.js'
 import Pagination from 'components/Pagination.js'
 
-function Home(){
+function Home({boards}){
 	let state = useSelector((state) => state)
 
-	let [boards, setBoards] = useState([]); //기존 데이터
+	// let [boards, setBoards] = useState([]); //기존 데이터
 	
 	const [loading, setLoading] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -37,20 +37,6 @@ function Home(){
 	// useEffect(()=>{ //기존 데이터
 	// 	setBoards([...state.boardObj].reverse())
 	// },[state.boardObj])
-
-  let page = 0
-
-  useEffect(()=>{
-    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${page}`)
-      .then(response => {
-        // console.log(response.data.data.content)
-        let copy = [...response.data.data.content]
-        setBoards(copy)
-      })
-      .catch((error)=>{
-        console.log("error=> ",error.message);
-      })
-  },[])
 
 	return (
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
