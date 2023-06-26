@@ -129,7 +129,7 @@ const boardNumber = createSlice({
 	}
 })
 
-const nowOpenBoard = createSlice({
+const nowOpenBoard = createSlice({  //#수정완
 	name : 'nowOpenBoard',
 	initialState : {
 		postNumber : 0,
@@ -293,7 +293,7 @@ const boardObj = createSlice({
 		},
 
 		increaseBoardViewCount(state,action){
-			let index = state.findIndex((x)=> x.boardNumber === action.payload.boardNumber )
+			let index = state.findIndex((x)=> x.postNumber === action.payload.postNumber )
 			if (state[index].viewCount.includes(action.payload.id) === false){
 				state[index].viewCount.push(action.payload.id)
 			}
