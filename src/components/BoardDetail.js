@@ -64,17 +64,13 @@ function BoardDetail({boards}){
   console.log(3)
   console.log("3 => ", openBoard)
   
-  // useEffect(()=>{
-  //   console.log(4)
-  //   if (state.isLoggedIn){
-  //     console.log(5)
-  //     console.log("5 => ", openBoard)
-  //     if (state.userInfo.nickname === openBoard.writer.nickname){
-  //       console.log(6)
-  //       setIsBoardOwner(true)
-  //     } else {setIsBoardOwner(false)}
-  //   } else {setIsBoardOwner(false)}
-  // },[state.isLoggedIn, state.userInfo, openBoard])
+  useEffect(()=>{
+    if (state.isLoggedIn && openBoard !== null){
+      if (state.userInfo.nickname === openBoard.writer.nickname){
+        setIsBoardOwner(true)
+      } else {setIsBoardOwner(false)}
+    } else {setIsBoardOwner(false)}
+  },[state.isLoggedIn, state.userInfo, openBoard])
   
   return (
     <Container style={{width:800, marginTop:10, marginBottom:100}}>
