@@ -39,7 +39,7 @@ function AppRouter({boards, page}){
 			<Route path="/boardfactory" element={ <BoardFactory /> } />
 
 			{/* 게시글열람페이지 */}
-			<Route path="/boarddetail" element={ <BoardDetail boards={boards} />} /> 
+			<Route path="/boarddetail/:postNumber" element={ <BoardDetail boards={boards} />} /> 
 		</Routes>
 	)
 }

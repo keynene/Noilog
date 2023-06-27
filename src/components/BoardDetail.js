@@ -4,7 +4,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import 'react-quill/dist/quill.snow.css';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,10 +15,26 @@ import BoardEditForm from './BoardEditForm';
 import BoardDetailObj from './BoardDetailObj';
 
 function BoardDetail({boards}){
+  let {postNumber} = useParams();
+  let openBoard = boards.find((x)=>{ return x.postNumber == postNumber });
+  console.log(boards)
+  console.log(openBoard)
+  //최근 본 상품 : localStorage에 저장
+  // useEffect(()=>{
+  //   //localStorage는 수정이 안 되니까 저장된 정보를 꺼내서 업데이트하고 다시 넣어줘야 함
+  //   let watchedData = localStorage.getItem('watched')
+  //   watchedData = JSON.parse(watchedData)
+  //   watchedData.push(product.id)
+  //   //중복제거하기
+  //   watchedData = new Set(watchedData) //집합으로 만들었다가
+  //   watchedData = Array.from(watchedData) //배열로 바꾸기
+  //   localStorage.setItem('watched', JSON.stringify(watchedData))
+  // },[])
+
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
-  let [openBoard, setOpenBoard] = useState(null);
+  // let [openBoard, setOpenBoard] = useState(null);
   let [isBoardOwner, setIsBoardOwner] = useState(false);
   // let [openBoard, setOpenBoard] = useState(
   //   boards.find((x)=> x.postNumber === state.nowOpenBoard.postNumber ))
@@ -48,24 +64,24 @@ function BoardDetail({boards}){
         // },[boardsObj, state.nowOpenBoard])
         ///////////
 
-  console.log(1)
-  useEffect(()=>{
-    console.log(2)
-    axios.get(`http://3.36.85.194:42988/api/v1/posts/${state.nowOpenBoard.postNumber}`)
-    .then(response => {
-      setOpenBoard(response.data.data)
-      console.log("성공")
+  // console.log(1)
+  // useEffect(()=>{
+  //   console.log(2)
+  //   axios.get(`http://3.36.85.194:42988/api/v1/posts/${state.nowOpenBoard.postNumber}`)
+  //   .then(response => {
+  //     setOpenBoard(response.data.data)
+  //     console.log("성공")
       
-    })
-    .catch((error)=>{
-      console.log("error=> ",error.message);
-    })
-  },[])
-  console.log(3)
-  console.log("3 => ", openBoard)
+  //   })
+  //   .catch((error)=>{
+  //     console.log("error=> ",error.message);
+  //   })
+  // },[])
+  // console.log(3)
+  // console.log("3 => ", openBoard)
   
   useEffect(()=>{
-    if (state.isLoggedIn && openBoard !== null){
+    if (state.isLoggedIn && openBoard !== undefined){
       if (state.userInfo.nickname === openBoard.writer.nickname){
         setIsBoardOwner(true)
       } else {setIsBoardOwner(false)}
@@ -90,7 +106,7 @@ function BoardDetail({boards}){
           >목록</Button>
         </Col>
       </Row>
-      { openBoard !== null ? (
+      { openBoard !== undefined ? (
         <Row style={{height:50, alignItems:'center', marginTop:10, backgroundColor:'rgb(250, 250, 250)', borderBottom:'1px solid #ccc'}}>
           <Col style={{fontSize:15, textAlign:'left', marginLeft:30}}>{openBoard.postNumber}</Col>
           <Col style={{fontSize:15, color:'gray'}}>{openBoard.createdDate}</Col>
