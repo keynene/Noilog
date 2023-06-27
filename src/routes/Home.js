@@ -11,7 +11,7 @@ import BoardRow from 'components/BoardRow';
 // import data from 'components/test.js'
 import Pagination from 'components/Pagination.js'
 
-function Home({boards}){
+function Home({boards, page}){
 	let state = useSelector((state) => state)
 
 	// let [boards, setBoards] = useState([]); //기존 데이터
@@ -66,21 +66,23 @@ function Home({boards}){
 				) : (
 					<tbody>
 						{loading && <div> loading... </div>}
-						<BoardRow boards={currentPosts(boards)}/>
+						{/* <BoardRow boards={currentPosts(boards)}/> */}
+						<BoardRow boards={boards}/>
 					</tbody>
 				)}
 			</Table>
-			{boards.length !== 0 &&
+      {/* 페이지는 나중에 구현하자 */}
+			{/* {boards.length !== 0 &&
 				<div style={{display:"flex", justifyContent:"center"}}>
 					<Pagination
 						postsPerPage={postsPerPage}
 						totalPosts={boards.length}
 						paginate={setCurrentPage}
-						currentPage={currentPage}
+						currentPage={page}
 						style={{textAlign:"center"}}
 					/>
 				</div>
-			}
+			} */}
 		</div>
 	)
 }
