@@ -16,9 +16,6 @@ import BoardDetailObj from './BoardDetailObj';
 function BoardDetail({boards}){
   let {postNumber} = useParams();
   let [openBoard, setOpenBoard] = useState(boards.find((x)=>{ return x.postNumber == postNumber }));
-  console.log(postNumber)
-  console.log(boards)
-  console.log(openBoard)
 
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -40,6 +37,8 @@ function BoardDetail({boards}){
       } else {setIsBoardOwner(false)}
     } else {setIsBoardOwner(false)}
   },[state.isLoggedIn, state.userInfo, openBoard, isLoading])
+
+  console.log(openBoard)
   
   return (
     <Container style={{width:800, marginTop:10, marginBottom:100}}>
@@ -74,12 +73,12 @@ function BoardDetail({boards}){
       }
 
       {/* 수정폼 컴포넌트 */}
-      {/* { state.isBoardEditing.editState ? (
+      { state.isBoardEditing.editState ? (
         <BoardEditForm openBoard={openBoard} />
       ) : (
       //수정중이 아닐때 게시글 출력
-        <BoardDetailObj openBoard={openBoard} isBoardOwner={isBoardOwner} boards={boards} />
-      )} */}
+        <BoardDetailObj openBoard={openBoard} isBoardOwner={isBoardOwner} boards={boards} isLoading={isLoading} />
+      )}
     </Container>
 	)
 }

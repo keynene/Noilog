@@ -16,8 +16,7 @@ import BoardWriteButton from './BoardWriteButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn, setOpenBoard, increaseBoardViewCount } from 'store';
 
-function BoardDetailObj({ openBoard, isBoardOwner, boards }){
-  // console.log(openBoard)
+function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading }){
 	let state = useSelector((state) => state)
 	let navigate = useNavigate();
 	let dispatch = useDispatch();
@@ -100,110 +99,115 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards }){
 
 	return (
 		<> 
-		<Row style={{marginTop:15}}>
-			<Col style={{textAlign:'right'}}>
-				{/* 수삭목댓 컴포넌트 */}
-				<BoardUpDelInCom 
-          isBoardOwner={isBoardOwner} 
-          openBoard={openBoard} 
-          boards={boards} 
-          navigate={navigate} 
-          onEditButtonClick={onEditButtonClick} 
-          onDeleteButtonClick={onDeleteButtonClick}
-        />
-			</Col>
-		</Row>
-		
-		<Row style={{marginTop:40, marginBottom:60}}>
-			<Col><h4>{openBoard.title}</h4></Col>
-		</Row>
+    {isLoading? <>loading...</> : //openBoard 데이터 로딩 시 출력 (BoardDetail.js 참고)
+		(
+      <>
+      <Row style={{marginTop:15}}>
+        <Col style={{textAlign:'right'}}>
+          {/* 수삭목댓 컴포넌트 */}
+          <BoardUpDelInCom 
+            isBoardOwner={isBoardOwner} 
+            openBoard={openBoard} 
+            boards={boards} 
+            navigate={navigate} 
+            onEditButtonClick={onEditButtonClick} 
+            onDeleteButtonClick={onDeleteButtonClick}
+          />
+        </Col>
+      </Row>
+      
+      <Row style={{marginTop:40, marginBottom:60}}>
+        <Col><h4>{openBoard.title}</h4></Col>
+      </Row>
 
-		<Row>
-			<Col style={{textAlign:'left', paddingBottom:80}} >
-				<div dangerouslySetInnerHTML={{ __html :  openBoard.content  }} />
-			</Col>
-		</Row>
+      <Row>
+        <Col style={{textAlign:'left', paddingBottom:80}} >
+          <div dangerouslySetInnerHTML={{ __html :  openBoard.content  }} />
+        </Col>
+      </Row>
 
-		{/* 추천버튼 컴포넌트 */}
-		<Row>
-			<Col style={{alignItems:'baseline'}}>
-				<LikeButton state={state} openBoard={openBoard} boards={boards} dispatch={dispatch} navigate={navigate} dataObj={dataObj} />
-			</Col>
-		</Row>
+      {/* 추천버튼 컴포넌트 */}
+      <Row>
+        <Col style={{alignItems:'baseline'}}>
+          <LikeButton state={state} openBoard={openBoard} boards={boards} dispatch={dispatch} navigate={navigate} dataObj={dataObj} />
+        </Col>
+      </Row>
 
-		<Row style={{marginTop:30, alignItems:'flex-end', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
-			<Col style={{textAlign:'left'}}>
-				{/* 수삭목댓 컴포넌트 */}
-				<BoardUpDelInCom 
-					isBoardOwner={isBoardOwner} openBoard={openBoard} boards={boards} navigate={navigate} onEditButtonClick={onEditButtonClick} onDeleteButtonClick={onDeleteButtonClick}/>
-			</Col>
-			<Col style={{textAlign:'right'}}>
-				{ isBoardOwner ? (
-					<>
-					<Button 
-						variant="light" 
-						style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} 
-						onClick={()=>{onEditButtonClick()}}
-					>수정</Button> 
-					<Button
-						variant="light"
-						style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}
-						onClick={()=>{onDeleteButtonClick()}}
-					>삭제</Button>
-					</>
-					) : null 
-				}
-				<Button variant="light" style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} onClick={()=>{navigate("/")}}>목록</Button>
-				<BoardWriteButton />
-			</Col>
-		</Row>
+      <Row style={{marginTop:30, alignItems:'flex-end', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
+        <Col style={{textAlign:'left'}}>
+          {/* 수삭목댓 컴포넌트 */}
+          <BoardUpDelInCom 
+            isBoardOwner={isBoardOwner} openBoard={openBoard} boards={boards} navigate={navigate} onEditButtonClick={onEditButtonClick} onDeleteButtonClick={onDeleteButtonClick}/>
+        </Col>
+        <Col style={{textAlign:'right'}}>
+          { isBoardOwner ? (
+            <>
+            <Button 
+              variant="light" 
+              style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} 
+              onClick={()=>{onEditButtonClick()}}
+            >수정</Button> 
+            <Button
+              variant="light"
+              style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}
+              onClick={()=>{onDeleteButtonClick()}}
+            >삭제</Button>
+            </>
+            ) : null 
+          }
+          <Button variant="light" style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} onClick={()=>{navigate("/")}}>목록</Button>
+          <BoardWriteButton />
+        </Col>
+      </Row>
 
-		{/* 댓글출력 컴포넌트 */}
-		<Row style={{marginTop:10}}>
-			<Col style={{textAlign:'left'}}><BiCommentDetail/> 댓글 ({openBoard.commentCount})</Col>
-		</Row>
-		<Row>
-			<Col>
-				<Container>
-					{ boardComments.map((ca,ci) => 
-						<BoardComments 
-              openBoard={openBoard}
-							boards={boards} 
-							boardComments={boardComments} 
-							ci={ci} 
-							key={ci} 
-							isBoardCommentOwner={ 
-								state.isLoggedIn ? state.userInfo.id === boardComments[ci].writer : false
-							} 
-						/>
-					)}
-				</Container>
-			</Col>
-		</Row>
+      {/* 댓글출력 컴포넌트 */}
+      <Row style={{marginTop:10}}>
+        <Col style={{textAlign:'left'}}><BiCommentDetail/> 댓글 ({openBoard.commentCount})</Col>
+      </Row>
+      <Row>
+        <Col>
+          <Container>
+            { boardComments.map((ca,ci) => 
+              <BoardComments 
+                openBoard={openBoard}
+                boards={boards} 
+                boardComments={boardComments} 
+                ci={ci} 
+                key={ci} 
+                isBoardCommentOwner={ 
+                  state.isLoggedIn ? state.userInfo.id === boardComments[ci].writer : false
+                } 
+              />
+            )}
+          </Container>
+        </Col>
+      </Row>
 
-		{/* 댓글달기 컴포넌트 */}
-		<BoardCommentFactory openBoard={openBoard} boards={boards} />
+      {/* 댓글달기 컴포넌트 */}
+      <BoardCommentFactory openBoard={openBoard} boards={boards} />
 
-		{/* 목록, 다음글, 이전글, 맨위로, 글쓰기 버튼 */}
-		<Row style={{textAlign:'left' , marginTop:30}}>
-			<Col>
-				<Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>목록</Button>
-				<Button 
-					variant="light" 
-					onClick={()=>{onNextButtonClick()}}
-					style={{border:'1px solid rgb(200,200,200)', marginRight:5}}
-				>다음글 ↑</Button>
-				<Button 
-					variant="light" 
-					onClick={()=>{onPrevButtonClick()}} 
-					style={{border:'1px solid rgb(200,200,200)'}}
-				>이전글 ↓</Button>
-			</Col>
-			<Col style={{textAlign:'right'}}>
-				<Button variant="light" onClick={()=>{MoveToTop()}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>맨위로</Button>
-				<BoardWriteButton />
-			</Col>
-		</Row>
+      {/* 목록, 다음글, 이전글, 맨위로, 글쓰기 버튼 */}
+      <Row style={{textAlign:'left' , marginTop:30}}>
+        <Col>
+          <Button variant="light" onClick={()=>{navigate("/")}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>목록</Button>
+          <Button 
+            variant="light" 
+            onClick={()=>{onNextButtonClick()}}
+            style={{border:'1px solid rgb(200,200,200)', marginRight:5}}
+          >다음글 ↑</Button>
+          <Button 
+            variant="light" 
+            onClick={()=>{onPrevButtonClick()}} 
+            style={{border:'1px solid rgb(200,200,200)'}}
+          >이전글 ↓</Button>
+        </Col>
+        <Col style={{textAlign:'right'}}>
+          <Button variant="light" onClick={()=>{MoveToTop()}} style={{border:'1px solid rgb(200,200,200)', marginRight:5}}>맨위로</Button>
+          <BoardWriteButton />
+        </Col>
+      </Row>
+      </>
+    )}
 		</>
 	)
 }
