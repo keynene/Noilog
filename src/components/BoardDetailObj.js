@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn, setOpenBoard, increaseBoardViewCount } from 'store';
 
 function BoardDetailObj({ openBoard, isBoardOwner, boards }){
+  // console.log(openBoard)
 	let state = useSelector((state) => state)
 	let navigate = useNavigate();
 	let dispatch = useDispatch();
@@ -42,7 +43,7 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards }){
 	
   const onEditButtonClick = () => {
     if (window.confirm('게시글을 수정하시겠습니까?')){
-      dispatch(boardEditingOn(openBoard.boardNumber))
+      dispatch(boardEditingOn(openBoard.postNumber))
     }
   }
 
@@ -102,7 +103,14 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards }){
 		<Row style={{marginTop:15}}>
 			<Col style={{textAlign:'right'}}>
 				{/* 수삭목댓 컴포넌트 */}
-				<BoardUpDelInCom isBoardOwner={isBoardOwner} openBoard={openBoard} boards={boards} navigate={navigate} onEditButtonClick={onEditButtonClick} onDeleteButtonClick={onDeleteButtonClick}/>
+				<BoardUpDelInCom 
+          isBoardOwner={isBoardOwner} 
+          openBoard={openBoard} 
+          boards={boards} 
+          navigate={navigate} 
+          onEditButtonClick={onEditButtonClick} 
+          onDeleteButtonClick={onDeleteButtonClick}
+        />
 			</Col>
 		</Row>
 		

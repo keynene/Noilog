@@ -15,20 +15,31 @@ import BoardDetailObj from './BoardDetailObj';
 
 function BoardDetail({boards}){
   let {postNumber} = useParams();
-  let openBoard = boards.find((x)=>{ return x.postNumber == postNumber });
+  let [openBoard, setOpenBoard] = useState(boards.find((x)=>{ return x.postNumber == postNumber }));
+  console.log(postNumber)
+  console.log(boards)
+  console.log(openBoard)
 
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
   let [isBoardOwner, setIsBoardOwner] = useState(false);
+  let [isLoading, setIsLoading] = useState(true);
+
+  useEffect(()=>{
+    setOpenBoard(boards.find((x)=>{ return x.postNumber == postNumber }))
+  },[boards, postNumber])
   
   useEffect(()=>{
-    if (state.isLoggedIn && openBoard !== undefined){
+    if (openBoard !== undefined){
+      setIsLoading(false)
+    }
+    if (state.isLoggedIn && isLoading === false){
       if (state.userInfo.nickname === openBoard.writer.nickname){
         setIsBoardOwner(true)
       } else {setIsBoardOwner(false)}
     } else {setIsBoardOwner(false)}
-  },[state.isLoggedIn, state.userInfo, openBoard])
+  },[state.isLoggedIn, state.userInfo, openBoard, isLoading])
   
   return (
     <Container style={{width:800, marginTop:10, marginBottom:100}}>
@@ -48,29 +59,27 @@ function BoardDetail({boards}){
           >목록</Button>
         </Col>
       </Row>
-      { openBoard !== undefined ? (
+      { isLoading ? (
+        <> loading... </>
+        ) : (
         <Row style={{height:50, alignItems:'center', marginTop:10, backgroundColor:'rgb(250, 250, 250)', borderBottom:'1px solid #ccc'}}>
-          <Col style={{fontSize:15, textAlign:'left', marginLeft:30}}>{openBoard.postNumber}</Col>
+          <Col style={{fontSize:15, textAlign:'left', marginLeft:30}}>No. {openBoard.postNumber}</Col>
           <Col style={{fontSize:15, color:'gray'}}>{openBoard.createdDate}</Col>
           <Col style={{fontSize:15, textAlign:'right', marginRight:10}}>
             <span style={{marginRight:10}}>조회 : {openBoard.viewCount}</span>
             <span>추천 : {openBoard.likeCount}</span>
           </Col>
         </Row>
-        ) : (
-          <>
-            loading...
-          </>
         )
       }
 
       {/* 수정폼 컴포넌트 */}
-      { state.isBoardEditing.editState ? (
+      {/* { state.isBoardEditing.editState ? (
         <BoardEditForm openBoard={openBoard} />
       ) : (
       //수정중이 아닐때 게시글 출력
         <BoardDetailObj openBoard={openBoard} isBoardOwner={isBoardOwner} boards={boards} />
-      )}
+      )} */}
     </Container>
 	)
 }
