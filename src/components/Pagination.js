@@ -44,7 +44,7 @@ function Pagination({ postsPerPage, totalPosts, paginate, currentPage }){
 	}
 
 	const onPrevButtonClick = () => {
-		if (currentPage !== 1){
+		if (currentPage !== 0){
 			paginate(currentPage-1)
 		}
 	}

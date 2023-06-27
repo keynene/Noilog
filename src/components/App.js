@@ -16,7 +16,7 @@ function App() {
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
   let [boards, setBoards] = useState([]);
-  let page = 0
+  let [page, setPage] = useState(0);
   
 
   let data = {
@@ -44,19 +44,17 @@ function App() {
       .then(response => {
         // console.log(response.data.data.content)
         let copy = [...response.data.data.content]
-        setBoards(copy) //한 번만 하면 비동기적 처리 때문인지 콘솔에 boards 찍어보면 빈배열 [] 이 출력된다
-        setBoards(copy) //두 번 세팅해줌으로써 해결
-        console.log(response)
+        setBoards(copy)
       })
       .catch((error)=>{
         console.log("error=> ",error.message);
       })
-  },[])
+  },[page])
 
   return (
     <div className="App">
       <Navigation />
-      <AppRouter boards={boards} />
+      <AppRouter boards={boards} page={page} />
     </div>
   );
 }
