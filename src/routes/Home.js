@@ -1,42 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
 import { Table } from 'react-bootstrap';
-
-import { useSelector } from 'react-redux';
 
 /* Components */
 import BoardWriteButton from 'components/BoardWriteButton';
 import BoardRow from 'components/BoardRow';
-// import data from 'components/test.js'
 import Pagination from 'components/Pagination.js'
 
-function Home({boards, page}){
-	let state = useSelector((state) => state)
-
-	// let [boards, setBoards] = useState([]); //기존 데이터
+function Home({boards, totalPage}){
 	
 	const [loading, setLoading] = useState(false);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [postsPerPage, setPostPerPage] = useState(10);
-  
-  /////////페이지 테스트용///////////
-  /* 페이지 테스트용
-	let [boards, setBoards] = useState(data);
-  */
-	const indexOfLast = currentPage * postsPerPage; //현재페이지*10 (현페이지 마지막 인덱스)
-	const indexOfFirst = indexOfLast - postsPerPage; //현페이지 마지막 인덱스-10 (현페이지 첫 인덱스)
-	const currentPosts = (posts) => { //현재페이지의 포스트 함수
-		let currentPosts = 0;
-		//전체게시글에서 현페이지 첫인덱스~마지막인덱스 까지만 보여주기 위해 범위 설정
-		currentPosts = posts.slice(indexOfFirst, indexOfLast); 
-		return currentPosts;
-	}
-  /////////페이지 테스트용///////////
-
-	// useEffect(()=>{ //기존 데이터
-	// 	setBoards([...state.boardObj].reverse())
-	// },[state.boardObj])
+	const [currentPage, setCurrentPage] = useState(0);
 
 	return (
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
@@ -56,33 +30,31 @@ function Home({boards, page}){
 					</tr>
 				</thead>
 				{boards.length === 0 ? (
-					<tbody>
-						<tr>
-							<td colSpan="6" style={{border:"none", paddingTop:20, color:"gray"}}>
-                아직 게시글이 없습니다!
-              </td> 
-						</tr>
-					</tbody>
-				) : (
-					<tbody>
-						{loading && <div> loading... </div>}
-						{/* <BoardRow boards={currentPosts(boards)}/> */}
-						<BoardRow boards={boards}/>
-					</tbody>
-				)}
+        <tbody>
+          <tr>
+            <td colSpan="6" style={{border:"none", paddingTop:20, color:"gray"}}>
+              아직 게시글이 없습니다!
+            </td> 
+          </tr>
+        </tbody>
+        ) : (
+        <tbody>
+          {loading && <div> loading... </div>}
+          <BoardRow boards={boards}/>
+        </tbody>
+        )}
 			</Table>
-      {/* 페이지는 나중에 구현하자 */}
-			{/* {boards.length !== 0 &&
-				<div style={{display:"flex", justifyContent:"center"}}>
-					<Pagination
-						postsPerPage={postsPerPage}
-						totalPosts={boards.length}
-						paginate={setCurrentPage}
-						currentPage={page}
-						style={{textAlign:"center"}}
-					/>
-				</div>
-			} */}
+
+			{boards.length !== 0 &&
+      <div style={{display:"flex", justifyContent:"center"}}>
+        <Pagination
+          totalPage={totalPage}
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          style={{textAlign:"center"}}
+        />
+      </div>
+			}
 		</div>
 	)
 }

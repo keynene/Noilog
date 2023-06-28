@@ -38,8 +38,6 @@ function BoardDetail({boards}){
     } else {setIsBoardOwner(false)}
   },[state.isLoggedIn, state.userInfo, openBoard, isLoading])
 
-  console.log(openBoard)
-  
   return (
     <Container style={{width:800, marginTop:10, marginBottom:100}}>
       <Row style={{textAlign:'left'}}>

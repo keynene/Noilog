@@ -25,6 +25,17 @@ const isLoggedIn = createSlice({
 	}
 })
 
+const currentPage = createSlice({
+  name : 'currentPage',
+  initialState : 0,
+
+  reducers : {
+    onChangedPage(state, action){
+      return state = action.payload
+    },
+  }
+})
+
 const isFeedEditing = createSlice({
 	name : 'isFeedEditing',
 	initialState : {
@@ -385,6 +396,7 @@ export let { createCommentObj, editCommentObj, deleteCommentObj } = commentObj.a
 export let { increaseCommentNumber } = commentNumber.actions 
 export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 
+export let { onChangedPage } = currentPage.actions 
 export let { createBoardObj, onBoardLikeCountChange, increaseBoardViewCount, increaseBoardCommentCount, decreaseBoardCommentCount, deleteBoardObj, editBoardObj } = boardObj.actions 
 export let { increaseBoardNumber } = boardNumber.actions 
 export let { boardEditingOn, boardEditingOff } = isBoardEditing.actions 
@@ -406,6 +418,7 @@ export default configureStore({
 		commentNumber : commentNumber.reducer,
 		isCommentEditing : isCommentEditing.reducer,
 		
+    currentPage : currentPage.reducer,
 		boardObj : boardObj.reducer,
 		boardNumber : boardNumber.reducer,
 		nowOpenBoard : nowOpenBoard.reducer,

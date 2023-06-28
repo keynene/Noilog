@@ -2,21 +2,12 @@ import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setOpenBoard, increaseBoardViewCount } from 'store';
+import { useDispatch } from 'react-redux';
+import { setOpenBoard } from 'store';
 
 function BoardRow({ boards, i }){
 	let navigate = useNavigate();
 	let dispatch = useDispatch();
-	let state = useSelector((state) => state)
-
-	const dataObj = () => {
-		let data = {
-			id : state.userInfo.id,
-			boardNumber : boards[i].boardNumber
-		}
-		return data
-	}
 
   function getDate(date) {
     let md = date.slice(5,10)

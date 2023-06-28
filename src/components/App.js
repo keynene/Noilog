@@ -16,8 +16,8 @@ function App() {
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
   let [boards, setBoards] = useState([]);
-  let [page, setPage] = useState(0);
-  
+  let [totalPage, setTotalPage] = useState(0);
+  const mainPage = 0
 
   let data = {
     login : false,
@@ -40,21 +40,22 @@ function App() {
 
   /** 데이터 받아오기 (axios) */
   useEffect(()=>{
-    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${page}`)
+    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${state.currentPage}`)
       .then(response => {
-        // console.log(response.data.data.content)
-        let copy = [...response.data.data.content]
-        setBoards(copy)
+        let boardCopy = [...response.data.data.content]
+        let totalPageCopy = response.data.message.slice(10,)
+        setBoards(boardCopy)
+        setTotalPage(totalPageCopy)
       })
       .catch((error)=>{
         console.log("error=> ",error.message);
       })
-  },[page])
+  },[state.currentPage])
 
   return (
     <div className="App">
       <Navigation />
-      <AppRouter boards={boards} page={page} />
+      <AppRouter boards={boards} totalPage={totalPage} />
     </div>
   );
 }

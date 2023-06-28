@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { useDispatch } from 'react-redux';
+import { onChangedPage } from 'store';
+
 import styled from 'styled-components'
 
 const PageUl = styled.ul`
@@ -36,39 +39,64 @@ const PageSpan = styled.span`
   }
 `;
 
-function Pagination({ postsPerPage, totalPosts, paginate, currentPage }){
+function Pagination({ totalPage, setCurrentPage, currentPage }){
+  let dispatch = useDispatch();
 
 	const pageNumbers = [];
-	for (let i=1; i<=Math.ceil(totalPosts/postsPerPage); i++){
-		pageNumbers.push(i);
+  for (let i=0; i<=totalPage; i++){
+    pageNumbers.push(i)
+  }
+
+	const onFirstButtonClick = () => { // <<
+    setCurrentPage(0)
+    dispatch(onChangedPage(0))
 	}
 
-	const onPrevButtonClick = () => {
-		if (currentPage !== 0){
-			paginate(currentPage-1)
+	const onPrevButtonClick = () => { // <
+		if (currentPage > 0){
+      setCurrentPage(currentPage-1)
+      dispatch(onChangedPage(currentPage-1))
 		}
 	}
 
-	const onNextButtonClick = () => {
-		if (pageNumbers.length !== currentPage){
-			paginate(currentPage+1)
+	const onNextButtonClick = () => { //Click Number
+		if (currentPage < totalPage){
+      setCurrentPage(currentPage+1)
+      dispatch(onChangedPage(currentPage+1))
 		}
+	}
+
+	const onLastButtonClick = () => { // >
+    setCurrentPage(totalPage)
+    dispatch(onChangedPage(totalPage))
+	}
+
+	const onPageButtonClick = (num) => { // >>
+    setCurrentPage(num)
+    dispatch(onChangedPage(num))
 	}
 
 	return (
 		<>
 			<PageUl>
-				<PageLi onClick={()=>{onPrevButtonClick()}}><PageSpan>{"<<"}</PageSpan></PageLi>
+				<PageLi onClick={()=>{onFirstButtonClick()}}><PageSpan>{"<<"}</PageSpan></PageLi>
 				<PageLi onClick={()=>{onPrevButtonClick()}}><PageSpan>{"<"}</PageSpan></PageLi>
 				{pageNumbers.map((number) => (
 					<PageLi key={number} className="page-item">
-						<PageSpan onClick={() => paginate(number) } className="page-link">
-							{number}
-						</PageSpan>
+						{ currentPage === number ? (
+                <PageSpan onClick={() => onPageButtonClick(number) } className="page-link" style={{color:'#ff8298'}}>
+                  {number}
+                </PageSpan>
+              ) : (
+                <PageSpan onClick={() => onPageButtonClick(number) } className="page-link">
+                  {number}
+                </PageSpan>
+              )
+            }
 					</PageLi>
 				))}
 				<PageLi onClick={()=>{onNextButtonClick()}}><PageSpan>{">"}</PageSpan></PageLi>
-				<PageLi onClick={()=>{onNextButtonClick()}}><PageSpan>{">>"}</PageSpan></PageLi>
+				<PageLi onClick={()=>{onLastButtonClick()}}><PageSpan>{">>"}</PageSpan></PageLi>
 			</PageUl>
 		</>
 	)
