@@ -33,8 +33,7 @@ const currentPage = createSlice({
 
   reducers : {
     onChangedPage(state, action){
-      let data = {page : action.payload}
-      return state = data
+      state.page = action.payload
     },
   }
 })
