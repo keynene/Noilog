@@ -77,7 +77,7 @@ function Pagination({ totalPage, firstPage }){
 			<PageUl>
 				<PageLi onClick={()=>{onFirstButtonClick()}}><PageSpan>{"<<"}</PageSpan></PageLi>
 				<PageLi onClick={()=>{onPrevButtonClick()}}><PageSpan>{"<"}</PageSpan></PageLi>
-				{pageNumbers.map((data,number) => (
+				{pageNumbers.map((number) => (
           <PageLi key={number} className="page-item">
 						{ state.currentPage.page === number ? (
               <PageSpan onClick={() => onPageButtonClick(number) } className="page-link" style={{color:'#ff8298'}}>
