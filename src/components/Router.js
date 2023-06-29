@@ -12,12 +12,12 @@ import Login from '../routes/Login.js';
 import BoardFactory from './BoardFactory.js';
 import BoardDetail from './BoardDetail.js';
 
-function AppRouter({boards, totalPage}){
+function AppRouter({boards, totalPage, firstPage}){
 	let state = useSelector((state) => state)
 	return(
 		<Routes>
 			{/* 메인페이지(게시글테이블) */}
-			<Route path="/" element={ <Home boards={boards} totalPage={totalPage} /> } />
+			<Route path="/" element={ <Home boards={boards} totalPage={totalPage} firstPage={firstPage} /> } />
 
 			{/* 회원가입페이지 */}
 			<Route path="/join" element={ <Join /> } />

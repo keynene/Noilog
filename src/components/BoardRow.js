@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setOpenBoard } from 'store';
 
-function BoardRow({ boards, i }){
+function BoardRow({ boards}){
 	let navigate = useNavigate();
 	let dispatch = useDispatch();
 

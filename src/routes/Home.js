@@ -7,10 +7,9 @@ import BoardWriteButton from 'components/BoardWriteButton';
 import BoardRow from 'components/BoardRow';
 import Pagination from 'components/Pagination.js'
 
-function Home({boards, totalPage}){
+function Home({boards, totalPage, firstPage}){
 	
 	const [loading, setLoading] = useState(false);
-	const [currentPage, setCurrentPage] = useState(0);
 
 	return (
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
@@ -49,8 +48,7 @@ function Home({boards, totalPage}){
       <div style={{display:"flex", justifyContent:"center"}}>
         <Pagination
           totalPage={totalPage}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
+          firstPage={firstPage}
           style={{textAlign:"center"}}
         />
       </div>

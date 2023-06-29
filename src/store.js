@@ -27,11 +27,14 @@ const isLoggedIn = createSlice({
 
 const currentPage = createSlice({
   name : 'currentPage',
-  initialState : 0,
+  initialState : {
+    page : 0
+  },
 
   reducers : {
     onChangedPage(state, action){
-      return state = action.payload
+      let data = {page : action.payload}
+      return state = data
     },
   }
 })
