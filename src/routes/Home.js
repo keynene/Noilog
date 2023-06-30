@@ -7,7 +7,7 @@ import BoardWriteButton from 'components/BoardWriteButton';
 import BoardRow from 'components/BoardRow';
 import Pagination from 'components/Pagination.js'
 
-function Home({boards, totalPage, firstPage}){
+function Home({boards, lastPage, firstPage}){
 	
 	const [loading, setLoading] = useState(false);
 
@@ -47,7 +47,7 @@ function Home({boards, totalPage, firstPage}){
 			{boards.length !== 0 &&
       <div style={{display:"flex", justifyContent:"center"}}>
         <Pagination
-          totalPage={totalPage}
+          lastPage={lastPage}
           firstPage={firstPage}
           style={{textAlign:"center"}}
         />

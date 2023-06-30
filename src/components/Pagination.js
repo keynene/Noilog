@@ -39,12 +39,12 @@ const PageSpan = styled.span`
   }
 `;
 
-function Pagination({ totalPage, firstPage }){
+function Pagination({ lastPage, firstPage }){
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
 
 	const pageNumbers = [];
-  for (let i=0; i<=totalPage; i++){
+  for (let i=1; i<=lastPage; i++){
     pageNumbers.push(i)
   }
 
@@ -59,13 +59,13 @@ function Pagination({ totalPage, firstPage }){
 	}
 
 	const onNextButtonClick = () => { // >
-		if (state.currentPage.page < totalPage){
+		if (state.currentPage.page < lastPage){
       dispatch(onChangedPage(state.currentPage.page+1))
 		}
 	}
 
 	const onLastButtonClick = () => { // >>
-    dispatch(onChangedPage(totalPage))
+    dispatch(onChangedPage(lastPage))
 	}
 
 	const onPageButtonClick = (num) => { // Click Number

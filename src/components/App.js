@@ -16,8 +16,8 @@ function App() {
   let dispatch = useDispatch();
   let state = useSelector((state) => state)
   let [boards, setBoards] = useState([]);
-  let [totalPage, setTotalPage] = useState(0);
-  let [firstPage, setFirstPage] = useState(0);
+  let [lastPage, setLastPage] = useState(0);
+  let [firstPage, setFirstPage] = useState(1);
   const mainPage = 0
 
   let data = {
@@ -43,11 +43,11 @@ function App() {
   useEffect(()=>{
     axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${state.currentPage.page}`)
       .then(response => {
-        let boardCopy = [...response.data.data.content]
-        let totalPageCopy = parseInt(response.data.message.slice(10,))
-        let firstPageCopy = parseInt(0)
+        let boardCopy = [...response.data.data.posts]
+        let lastPageCopy = parseInt(response.data.data.lastPage)
+        let firstPageCopy = parseInt(1)
         setBoards(boardCopy)
-        setTotalPage(totalPageCopy)
+        setLastPage(lastPageCopy)
         setFirstPage(firstPageCopy)
       })
       .catch((error)=>{
@@ -58,7 +58,7 @@ function App() {
   return (
     <div className="App">
       <Navigation />
-      <AppRouter boards={boards} totalPage={totalPage} firstPage={firstPage}/>
+      <AppRouter boards={boards} lastPage={lastPage} firstPage={firstPage}/>
     </div>
   );
 }

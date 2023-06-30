@@ -28,7 +28,7 @@ const isLoggedIn = createSlice({
 const currentPage = createSlice({
   name : 'currentPage',
   initialState : {
-    page : 0
+    page : 1
   },
 
   reducers : {
