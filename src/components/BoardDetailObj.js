@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import { useNavigate } from 'react-router-dom';
@@ -16,12 +17,13 @@ import BoardWriteButton from './BoardWriteButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn, setOpenBoard, increaseBoardViewCount } from 'store';
 
-function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading }){
+function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoading }){
 	let state = useSelector((state) => state)
 	let navigate = useNavigate();
 	let dispatch = useDispatch();
 
   let [boardComments, setBoardComments] = useState([]);
+  let [maxPostNum, setMaxPostNum] = useState(0);
 
 	useEffect(()=>{
     setBoardComments([...state.boardCommentObj])
@@ -56,44 +58,32 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading }){
   }
 
   const onNextButtonClick = () => {
-    if(boards.length === openBoard.boardNumber+1){
+    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=1`)
+    .then(response => {
+      let copy = response.data.data.posts[0].postNumber
+      setMaxPostNum(copy)
+    })
+    .catch((error)=>{
+      console.log("error=> ",error.message);
+    })
+
+    if (openBoard.postNumber === maxPostNum){
       return alert('다음글이 없습니다!')
-    } else{
-      let nextId = state.userInfo.id
-      let nextBoardNumber = openBoard.boardNumber+1
-      while (nextBoardNumber < boards.length){
-        let index = state.boardObj.findIndex((x)=> x.boardNumber === nextBoardNumber )
-        if (state.boardObj[index].content === ""){
-          nextBoardNumber++;
-        } else{
-          dispatch(setOpenBoard(nextBoardNumber))
-          dispatch(increaseBoardViewCount({nextId, nextBoardNumber}))
-          navigate("/boarddetail")
-          break;
-        }
-      }
-      return alert('다음글이 없습니다!')
+    }
+
+    else{
+      setOpenBoard(boards.find((x)=>{ return x.postNumber == openBoard.postNumber-1 }))
+      navigate(`/boarddetail/${openBoard.postNumber+1}`)
     }
   }
 
   const onPrevButtonClick = () => {
-    if(openBoard.boardNumber === 0){
+    if (openBoard.postNumber === 1){
       return alert('이전글이 없습니다!')
-    } else{
-      let prevId = state.userInfo.id
-      let prevBoardNumber = openBoard.boardNumber-1
-      while (prevBoardNumber >= 0){
-        let index = state.boardObj.findIndex((x)=> x.boardNumber === prevBoardNumber )
-        if (state.boardObj[index].content === ""){
-          prevBoardNumber--;
-        } else{
-          dispatch(setOpenBoard(prevBoardNumber))
-          dispatch(increaseBoardViewCount({prevId, prevBoardNumber}))
-          navigate("/boarddetail")
-          break;
-        }
-      }
-      return alert('이전글이 없습니다!')
+    }
+    else{
+      setOpenBoard(boards.find((x)=>{ return x.postNumber == openBoard.postNumber+1 }))
+      navigate(`/boarddetail/${openBoard.postNumber-1}`)
     }
   }
 

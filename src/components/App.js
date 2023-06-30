@@ -18,7 +18,6 @@ function App() {
   let [boards, setBoards] = useState([]);
   let [lastPage, setLastPage] = useState(0);
   let [firstPage, setFirstPage] = useState(1);
-  const mainPage = 0
 
   let data = {
     login : false,

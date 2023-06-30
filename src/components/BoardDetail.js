@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { boardEditingOff } from 'store';
+import { boardEditingOff, onChangedPage } from 'store';
 
 /* Components */
 import BoardEditForm from './BoardEditForm';
@@ -75,7 +75,7 @@ function BoardDetail({boards}){
         <BoardEditForm openBoard={openBoard} />
       ) : (
       //수정중이 아닐때 게시글 출력
-        <BoardDetailObj openBoard={openBoard} isBoardOwner={isBoardOwner} boards={boards} isLoading={isLoading} />
+        <BoardDetailObj openBoard={openBoard} setOpenBoard={setOpenBoard} isBoardOwner={isBoardOwner} boards={boards} isLoading={isLoading} />
       )}
     </Container>
 	)

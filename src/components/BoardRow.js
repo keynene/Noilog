@@ -25,7 +25,7 @@ function BoardRow({ boards}){
 					style={{textDecoration:'none', color:'black', cursor:'pointer', marginRight:5}} 
 					onClick={()=>{
 						navigate(`/boarddetail/${boards[i].postNumber}`)
-            dispatch(setOpenBoard(boards[i].postNumber))
+            // dispatch(setOpenBoard(boards[i].postNumber))
 						// dispatch(increaseBoardViewCount(dataObj())) //수정
 					}}
 				>{boards[i].title}
