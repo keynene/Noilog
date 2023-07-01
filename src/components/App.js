@@ -18,6 +18,7 @@ function App() {
   let [boards, setBoards] = useState([]);
   let [lastPage, setLastPage] = useState(0);
   let [firstPage, setFirstPage] = useState(1);
+  let [maxPostNum, setMaxPostNum] = useState(0);
 
   let data = {
     login : false,
@@ -45,9 +46,11 @@ function App() {
         let boardCopy = [...response.data.data.posts]
         let lastPageCopy = parseInt(response.data.data.lastPage)
         let firstPageCopy = parseInt(1)
+        let maxPostNumCopy = parseInt(response.data.data.posts[0].postNumber)
         setBoards(boardCopy)
         setLastPage(lastPageCopy)
         setFirstPage(firstPageCopy)
+        setMaxPostNum(maxPostNumCopy)
       })
       .catch((error)=>{
         console.log("error=> ",error.message);
@@ -57,7 +60,7 @@ function App() {
   return (
     <div className="App">
       <Navigation />
-      <AppRouter boards={boards} lastPage={lastPage} firstPage={firstPage}/>
+      <AppRouter boards={boards} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
     </div>
   );
 }

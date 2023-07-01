@@ -14,7 +14,7 @@ import BoardEditForm from './BoardEditForm';
 import BoardDetailObj from './BoardDetailObj';
 import axios from 'axios';
 
-function BoardDetail({boards}){
+function BoardDetail({boards, maxPostNum}){
   let {postNumber} = useParams();
   let [openBoard, setOpenBoard] = useState([]);
 
@@ -44,7 +44,7 @@ function BoardDetail({boards}){
         setOpenBoard(getData)
       })
       .catch(err =>  console.log(err.message) )
-  },[])
+  },[postNumber])
 
   return (
     <Container style={{width:800, marginTop:10, marginBottom:100}}>
@@ -83,7 +83,7 @@ function BoardDetail({boards}){
         <BoardEditForm openBoard={openBoard} />
       ) : (
       //수정중이 아닐때 게시글 출력
-        <BoardDetailObj openBoard={openBoard} setOpenBoard={setOpenBoard} isBoardOwner={isBoardOwner} boards={boards} isLoading={isLoading} />
+        <BoardDetailObj openBoard={openBoard} setOpenBoard={setOpenBoard} isBoardOwner={isBoardOwner} boards={boards} isLoading={isLoading} maxPostNum={maxPostNum} />
       )}
     </Container>
 	)

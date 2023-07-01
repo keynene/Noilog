@@ -17,13 +17,12 @@ import BoardWriteButton from './BoardWriteButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn, setOpenBoard, increaseBoardViewCount } from 'store';
 
-function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoading }){
+function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoading, maxPostNum }){
 	let state = useSelector((state) => state)
 	let navigate = useNavigate();
 	let dispatch = useDispatch();
 
   let [boardComments, setBoardComments] = useState([]);
-  let [maxPostNum, setMaxPostNum] = useState(0);
 
 	useEffect(()=>{
     setBoardComments([...state.boardCommentObj])
@@ -58,23 +57,13 @@ function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoadi
   }
 
   const onNextButtonClick = () => {
-    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=1`)
-    .then(response => {
-      let copy = response.data.data.posts[0].postNumber
-      setMaxPostNum(copy)
-    })
-    .catch((error)=>{
-      console.log("error=> ",error.message);
-    })
-
     if (openBoard.postNumber === maxPostNum){
       return alert('다음글이 없습니다!')
     }
-
-    else{
-      setOpenBoard(boards.find((x)=>{ return x.postNumber == openBoard.postNumber-1 }))
+    else {
       navigate(`/boarddetail/${openBoard.postNumber+1}`)
     }
+    
   }
 
   const onPrevButtonClick = () => {
@@ -82,7 +71,6 @@ function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoadi
       return alert('이전글이 없습니다!')
     }
     else{
-      setOpenBoard(boards.find((x)=>{ return x.postNumber == openBoard.postNumber+1 }))
       navigate(`/boarddetail/${openBoard.postNumber-1}`)
     }
   }
