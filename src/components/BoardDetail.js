@@ -12,10 +12,11 @@ import { boardEditingOff, onChangedPage } from 'store';
 /* Components */
 import BoardEditForm from './BoardEditForm';
 import BoardDetailObj from './BoardDetailObj';
+import axios from 'axios';
 
 function BoardDetail({boards}){
   let {postNumber} = useParams();
-  let [openBoard, setOpenBoard] = useState(boards.find((x)=>{ return x.postNumber == postNumber }));
+  let [openBoard, setOpenBoard] = useState([]);
 
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -23,9 +24,6 @@ function BoardDetail({boards}){
   let [isBoardOwner, setIsBoardOwner] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
 
-  useEffect(()=>{
-    setOpenBoard(boards.find((x)=>{ return x.postNumber == postNumber }))
-  },[boards, postNumber])
   
   useEffect(()=>{
     if (openBoard !== undefined){
@@ -37,6 +35,16 @@ function BoardDetail({boards}){
       } else {setIsBoardOwner(false)}
     } else {setIsBoardOwner(false)}
   },[state.isLoggedIn, state.userInfo, openBoard, isLoading])
+
+  useEffect(()=>{
+    axios
+      .get(`http://3.36.85.194:42988/api/v1/posts/${postNumber}`)
+      .then(response => { 
+        let getData = response.data.data
+        setOpenBoard(getData)
+      })
+      .catch(err =>  console.log(err.message) )
+  },[])
 
   return (
     <Container style={{width:800, marginTop:10, marginBottom:100}}>
