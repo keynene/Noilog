@@ -1,4 +1,5 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const isLoggedIn = createSlice({
 	name : 'isLoggedIn',
@@ -23,6 +24,25 @@ const isLoggedIn = createSlice({
 			return state = false
 		}
 	}
+})
+
+const loginUserInfo = createSlice({
+  name : 'loginUserInfo',
+  initialState : {
+    memberNumber: null,
+    username: '',
+    nickname: '',
+    name: '',
+    email: '',
+  },
+
+  reducers : {
+    setLoginUserInfo(state, action){
+      console.log(action.payload)
+			state = {...action.payload}
+			return state
+    }
+  }
 })
 
 const currentPage = createSlice({
@@ -390,6 +410,7 @@ const boardCommentObj = createSlice({
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { setUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions
+export let { setLoginUserInfo } = loginUserInfo.actions
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { increasePostNumber } = postNumber.actions 
@@ -412,6 +433,7 @@ export default configureStore({
 		isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
 		userInfo : userInfo.reducer,
+    loginUserInfo : loginUserInfo.reducer,
 
 		feedObj : feedObj.reducer,
 		postNumber : postNumber.reducer,

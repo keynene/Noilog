@@ -44,13 +44,11 @@ function App() {
     axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${state.currentPage.page}`)
       .then(response => {
         let boardCopy = [...response.data.data.posts]
-        let lastPageCopy = parseInt(response.data.data.lastPage)
-        let firstPageCopy = parseInt(1)
-        let maxPostNumCopy = parseInt(response.data.data.posts[0].postNumber)
         setBoards(boardCopy)
-        setLastPage(lastPageCopy)
-        setFirstPage(firstPageCopy)
-        setMaxPostNum(maxPostNumCopy)
+
+        setLastPage(parseInt(response.data.data.lastPage))
+        setFirstPage(parseInt(1))
+        setMaxPostNum(parseInt(response.data.data.posts[0].postNumber))
       })
       .catch((error)=>{
         console.log("error=> ",error.message);
