@@ -38,6 +38,7 @@ function Navigation(){
                 <Nav.Link onClick={()=>{ 
                   dispatch(LoggedOut('')) 
                   alert('로그아웃 되었습니다')
+                  navigate("/")
                 }} >Logout</Nav.Link>
               :
                 null

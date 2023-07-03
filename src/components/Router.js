@@ -36,7 +36,7 @@ function AppRouter({boards, loginUserInfo, lastPage, firstPage, maxPostNum}){
 			<Route path="/feed" element={ <Feed /> } /> 
 
 			{/* 게시글작성페이지 */}
-			<Route path="/boardfactory" element={ <BoardFactory /> } />
+			<Route path="/boardfactory" element={ <BoardFactory loginUserInfo={loginUserInfo} /> } />
 
 			{/* 게시글열람페이지 */}
 			<Route path="/boarddetail/:postNumber" element={ <BoardDetail boards={boards} loginUserInfo={loginUserInfo} maxPostNum={maxPostNum} />} /> 
