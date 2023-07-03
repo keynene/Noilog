@@ -63,6 +63,7 @@ const loginState = createSlice({
     },
     LoggedOut(state){
       state.isLoggedIn = false
+      localStorage.removeItem("accessToken")
     }
   }
 })
