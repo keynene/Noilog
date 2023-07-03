@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedOut, popUserInfo } from 'store.js';
+import { LoggedOut } from 'store.js';
 
 function Navigation(){
   let dispatch = useDispatch();
@@ -27,17 +27,16 @@ function Navigation(){
             }
 
             { 
-              state.isLoggedIn === true ? 
+              state.loginState.isLoggedIn === true ? 
                 null
               :
                 <Nav.Link onClick={()=>{ navigate('/login') }}>Login</Nav.Link>
             }
 
             {
-              state.isLoggedIn === true ?
+              state.loginState.isLoggedIn === true ?
                 <Nav.Link onClick={()=>{ 
                   dispatch(LoggedOut('')) 
-                  dispatch(popUserInfo())
                   alert('로그아웃 되었습니다')
                 }} >Logout</Nav.Link>
               :

@@ -1,29 +1,29 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit';
 
-const isLoggedIn = createSlice({
-	name : 'isLoggedIn',
-	initialState : false,
+// const isLoggedIn = createSlice({
+// 	name : 'isLoggedIn',
+// 	initialState : false,
 
-	reducers : {
-		LoggedIn(state, action){
-			let data = {
-				login : true,
-				loginId : action.payload
-			}
-			localStorage.setItem('login',JSON.stringify(data))
-			return state = true
-		},
+// 	reducers : {
+// 		LoggedIn(state, action){
+// 			let data = {
+// 				login : true,
+// 				loginId : action.payload
+// 			}
+// 			localStorage.setItem('login',JSON.stringify(data))
+// 			return state = true
+// 		},
 
-		LoggedOut(state, action){
-			let data = {
-				login : false,
-				loginId : action.payload
-			}
-			localStorage.setItem('login',JSON.stringify(data))
-			return state = false
-		}
-	}
-})
+// 		LoggedOut(state, action){
+// 			let data = {
+// 				login : false,
+// 				loginId : action.payload
+// 			}
+// 			localStorage.setItem('login',JSON.stringify(data))
+// 			return state = false
+// 		}
+// 	}
+// })
 
 /** 리덕스에 유저정보 object 저장하기 시도했으나 실패함 (유저정보는 app.js 에 있음) */
 // const loginUserInfo = createSlice({
@@ -58,8 +58,11 @@ const loginState = createSlice({
   },
 
   reducers : {
-    setLoginTrue(state){
+    LoggedIn(state){
       state.isLoggedIn = true
+    },
+    LoggedOut(state){
+      state.isLoggedIn = false
     }
   }
 })
@@ -426,11 +429,11 @@ const boardCommentObj = createSlice({
 	}
 })
 
-export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
+// export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { setUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions
 // export let { setLoginUserInfo } = loginUserInfo.actions
-export let { setLoginTrue } = loginState.actions
+export let { LoggedIn, LoggedOut } = loginState.actions
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { increasePostNumber } = postNumber.actions 
@@ -450,7 +453,7 @@ export let { boardCommentEditingOn, boardCommentEditingOff } = isBoardCommentEdi
 
 export default configureStore({
 	reducer: {
-		isLoggedIn : isLoggedIn.reducer,
+		// isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
 		userInfo : userInfo.reducer,
     // loginUserInfo : loginUserInfo.reducer,

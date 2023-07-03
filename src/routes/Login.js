@@ -1,10 +1,10 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 /* Actions */
-import { LoggedIn, setLoginUserInfo, setLoginTrue } from '../store.js';
+import { LoggedIn } from '../store.js';
 function Login(){
 
 	const [uid, setUid] = useState("");
@@ -16,7 +16,6 @@ function Login(){
 
 	let dispatch = useDispatch()
 	let navigate = useNavigate();
-  let state = useSelector((state) => state)
 
   // useEffect(()=>{
   //   console.log(state.loginState.isLoggedIn)
@@ -52,7 +51,7 @@ function Login(){
             let accessToken = response.data.accessToken
             localStorage.setItem("accessToken", accessToken)
             //토큰만 저장, 유저정보는 App.js에서 저장
-            dispatch(setLoginTrue())
+            dispatch(LoggedIn())
             navigate("/")
           })
           .catch(err => console.log(err.message))
