@@ -14,7 +14,7 @@ import BoardEditForm from './BoardEditForm';
 import BoardDetailObj from './BoardDetailObj';
 import axios from 'axios';
 
-function BoardDetail({boards, loginUserInfo, maxPostNum}){
+function BoardDetail({boards, userInfo, maxPostNum}){
   let {postNumber} = useParams();
   let [openBoard, setOpenBoard] = useState();
 
@@ -30,11 +30,11 @@ function BoardDetail({boards, loginUserInfo, maxPostNum}){
       setIsLoading(false)
     }
     if (state.loginState.isLoggedIn && isLoading === false && openBoard !== []){
-      if (loginUserInfo.memberNumber === openBoard.writer.memberNumber){
+      if (userInfo.memberNumber === openBoard.writer.memberNumber){
         setIsBoardOwner(true)
       } else {setIsBoardOwner(false)}
     } else {setIsBoardOwner(false)}
-  },[loginUserInfo, state.loginState, openBoard, isLoading])
+  },[userInfo, state.loginState, openBoard, isLoading])
 
   useEffect(()=>{
     axios

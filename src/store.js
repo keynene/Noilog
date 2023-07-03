@@ -51,19 +51,17 @@ import {configureStore, createSlice} from '@reduxjs/toolkit';
 //   }
 // })
 
-const loginState = createSlice({
-  name: 'loginState',
-  initialState: {
-    isLoggedIn : false
-  },
+const isLoggedIn = createSlice({
+  name: 'isLoggedIn',
+  initialState: false,
 
   reducers : {
     LoggedIn(state){
-      state.isLoggedIn = true
+      return state = true
     },
     LoggedOut(state){
-      state.isLoggedIn = false
       localStorage.removeItem("accessToken")
+      return state = false
     }
   }
 })
@@ -430,11 +428,9 @@ const boardCommentObj = createSlice({
 	}
 })
 
-// export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
+export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { setUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions
-// export let { setLoginUserInfo } = loginUserInfo.actions
-export let { LoggedIn, LoggedOut } = loginState.actions
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { increasePostNumber } = postNumber.actions 
@@ -454,11 +450,9 @@ export let { boardCommentEditingOn, boardCommentEditingOff } = isBoardCommentEdi
 
 export default configureStore({
 	reducer: {
-		// isLoggedIn : isLoggedIn.reducer,
+		isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
 		userInfo : userInfo.reducer,
-    // loginUserInfo : loginUserInfo.reducer,
-    loginState : loginState.reducer,
 
 		feedObj : feedObj.reducer,
 		postNumber : postNumber.reducer,

@@ -27,14 +27,14 @@ function Navigation(){
             }
 
             { 
-              state.loginState.isLoggedIn === true ? 
+              state.isLoggedIn === true ? 
                 null
               :
                 <Nav.Link onClick={()=>{ navigate('/login') }}>Login</Nav.Link>
             }
 
             {
-              state.loginState.isLoggedIn === true ?
+              state.isLoggedIn === true ?
                 <Nav.Link onClick={()=>{ 
                   dispatch(LoggedOut('')) 
                   alert('로그아웃 되었습니다')

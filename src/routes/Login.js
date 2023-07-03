@@ -17,15 +17,6 @@ function Login(){
 	let dispatch = useDispatch()
 	let navigate = useNavigate();
 
-  // useEffect(()=>{
-  //   console.log(state.loginState.isLoggedIn)
-  //   if (state.loginState.isLoggedIn == true && state.loginUserInfo.memberNumber !== null){
-  //     navigate("/")
-  //     console.log(state.loginUserInfo)
-  //     alert(`${state.loginUserInfo.nickname}님, 환영합니당🎉`)
-  //   }
-  // },[state.loginState, state.loginUserInfo])
-
 	const onChange = (e) => {
 		const {
 			target: {name, value},
@@ -65,6 +56,7 @@ function Login(){
 		// } catch { alert('없는 아이디입니다!') }
 		} catch(error) { 
       console.log(error.message) 
+      //에러코드에 따른 에러메세지 작성하기
     }
 		
 	}
@@ -78,7 +70,6 @@ function Login(){
 				
 				<input type="submit" value="Login" />
 				<br />
-				{/* {error && <span className="authError">{error}</span>} */}
 			</form>
 		</div>
 	)

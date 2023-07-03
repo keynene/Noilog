@@ -22,30 +22,12 @@ function App() {
   let [lastPage, setLastPage] = useState(0);
   let [firstPage, setFirstPage] = useState(1);
   let [maxPostNum, setMaxPostNum] = useState(0);
-  let [loginUserInfo, setLoginUserInfo] = useState({});
-
-  // let data = {
-  //   login : false,
-  //   loginId : ''
-  // }
-
-  /** 로그인여부 확인 (구방법)*/
-  // useEffect(()=>{
-  //   if (localStorage.length === 0){
-  //     localStorage.setItem('login',JSON.stringify(data))
-  //   }
-
-  //   if (JSON.parse(localStorage.getItem('login')).login === true){
-  //     let nowLoggedInId = JSON.parse(localStorage.getItem('login')).loginId
-  //     let nowLoggedInInfo = JSON.parse(localStorage.getItem(JSON.stringify(nowLoggedInId)))
-  //     dispatch(LoggedIn(nowLoggedInId))
-  //     dispatch(setUserInfo(nowLoggedInInfo))
-  //   }
-  // },[])
+  let [userInfo, setUserInfo] = useState({});
+  let [accessToken, setAccessToken] = useState('');
   
   /** 로그인 성공하면 회원정보 받아오기 (로그인 성공 여부는 Login.js파일에 있음) */
   useEffect(()=>{
-    if (state.loginState.isLoggedIn){
+    if (state.isLoggedIn){
       let token = localStorage.getItem("accessToken")
       let config = {
         headers : {
@@ -57,11 +39,14 @@ function App() {
         .get(`http://3.36.85.194:42988/api/v1/members`, config)
         .then(response => {
           let userInfoCopy = {...response.data.data}
-          setLoginUserInfo(userInfoCopy)
+          setUserInfo(userInfoCopy)
         })
         .catch(err => console.log(err.message))
     }
-  },[state.loginState])
+    else {
+      localStorage.removeItem("accessToken")
+    }
+  },[state.isLoggedIn])
 
   /** 데이터 받아오기 (axios) */
   useEffect(()=>{
@@ -83,16 +68,16 @@ function App() {
     <div className="App">
       <Navigation />
       <Row>
-        { state.loginState.isLoggedIn ? 
+        { state.isLoggedIn ? 
           (<Col style={{color:'gray', marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
-            {loginUserInfo.nickname}님, 어서오세요🎉
+            {userInfo.nickname}님, 어서오세요🎉
           </Col>
         ) : (
           <Col style={{marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}><br/></Col>
         )
         }
       </Row>
-      <AppRouter boards={boards} loginUserInfo={loginUserInfo} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
+      <AppRouter boards={boards} userInfo={userInfo} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
     </div>
   );
 }
