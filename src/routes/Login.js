@@ -40,7 +40,9 @@ function Login(){
           .post(`http://3.36.85.194:42988/login`, loginObj)
           .then(response => {
             let accessToken = response.data.accessToken
+            let refreshToken = response.data.refreshToken
             localStorage.setItem("accessToken", accessToken)
+            localStorage.setItem("refreshToken", refreshToken)
             //토큰만 저장, 유저정보는 App.js에서 저장
             dispatch(LoggedIn())
             navigate("/")

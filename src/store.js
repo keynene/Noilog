@@ -61,6 +61,7 @@ const isLoggedIn = createSlice({
     },
     LoggedOut(state){
       localStorage.removeItem("accessToken")
+      localStorage.removeItem("refreshToken")
       return state = false
     }
   }

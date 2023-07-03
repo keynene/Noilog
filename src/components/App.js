@@ -10,7 +10,6 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedIn, setUserInfo } from 'store.js';
 
 /* etc */
 import { Row, Col } from 'react-bootstrap';

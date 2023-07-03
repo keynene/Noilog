@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
 import ReactQuill from 'react-quill';
@@ -9,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { increaseBoardNumber, createBoardObj, setOpenBoard } from 'store';
 
-function BoardFactory(){
+function BoardFactory({loginUserInfo}){
 	let state = useSelector((state) => state)
 	let navigate = useNavigate();
 	let dispatch = useDispatch();
@@ -62,29 +63,52 @@ function BoardFactory(){
 			}
 		}
 
-		let createdBoardObj = {
-			boardNumber : state.boardNumber.num,
-			title : boardTitle,
-			content : boardContent,
-			writer : state.userInfo.id,
-			viewCount : [],
-			likeCount : [],
-			commentCount : 0,
-			createDate : getDate(),
-			creatorNickname : state.userInfo.nickname,
-		}
+    let accessToken = localStorage.getItem("accessToken")
+    let refreshToken = localStorage.getItem("refreshToken")
+    let config = {
+      headers : {
+        "access-token" : accessToken,
+        "refresh-token" : refreshToken
+      },
+    }
 
-		dispatch(increaseBoardNumber());
-		dispatch(createBoardObj(createdBoardObj));
+    let data = {
+      "title": boardTitle,
+      "content" : boardContent,
+    }
+    console.log(data)
+
+    axios
+      .post(`http://3.36.85.194:42988/api/v1/posts`, data, config)
+      .then(response => {
+        alert('😎게시글 등록이 완료되었습니다😎')
+        navigate("/")
+      })
+      .catch(err => console.log(err))
+
+		// let createdBoardObj = {
+		// 	boardNumber : state.boardNumber.num,
+		// 	title : boardTitle,
+		// 	content : boardContent,
+		// 	writer : state.userInfo.id,
+		// 	viewCount : [],
+		// 	likeCount : [],
+		// 	commentCount : 0,
+		// 	createDate : getDate(),
+		// 	creatorNickname : state.userInfo.nickname,
+		// }
+
+		// dispatch(increaseBoardNumber());
+		// dispatch(createBoardObj(createdBoardObj));
 
 		setBoardTitle("");
 		setBoardContent("");
 
-		createdBoardObj = null;
+		data = null;
 
-		alert("게시글 작성이 완료되었습니다!")
-		dispatch(setOpenBoard(state.boardNumber.num))
-		navigate("/boarddetail")
+		// alert("게시글 작성이 완료되었습니다!")
+		// dispatch(setOpenBoard(state.boardNumber.num))
+		// navigate("/boarddetail")
 
 	}
 
