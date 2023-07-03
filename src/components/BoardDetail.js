@@ -7,16 +7,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { boardEditingOff, onChangedPage } from 'store';
+import { boardEditingOff } from 'store';
 
 /* Components */
 import BoardEditForm from './BoardEditForm';
 import BoardDetailObj from './BoardDetailObj';
 import axios from 'axios';
 
-function BoardDetail({boards, maxPostNum}){
+function BoardDetail({boards, loginUserInfo, maxPostNum}){
   let {postNumber} = useParams();
-  let [openBoard, setOpenBoard] = useState([]);
+  let [openBoard, setOpenBoard] = useState();
 
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -29,12 +29,12 @@ function BoardDetail({boards, maxPostNum}){
     if (openBoard !== undefined){
       setIsLoading(false)
     }
-    if (state.isLoggedIn && isLoading === false){
-      if (state.userInfo.nickname === openBoard.writer.nickname){
+    if (state.loginState.isLoggedIn && isLoading === false && openBoard !== []){
+      if (loginUserInfo.memberNumber === openBoard.writer.memberNumber){
         setIsBoardOwner(true)
       } else {setIsBoardOwner(false)}
     } else {setIsBoardOwner(false)}
-  },[state.isLoggedIn, state.userInfo, openBoard, isLoading])
+  },[loginUserInfo, state.loginState, openBoard, isLoading])
 
   useEffect(()=>{
     axios

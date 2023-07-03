@@ -12,7 +12,7 @@ import Login from '../routes/Login.js';
 import BoardFactory from './BoardFactory.js';
 import BoardDetail from './BoardDetail.js';
 
-function AppRouter({boards, lastPage, firstPage, maxPostNum}){
+function AppRouter({boards, loginUserInfo, lastPage, firstPage, maxPostNum}){
 	let state = useSelector((state) => state)
 	return(
 		<Routes>
@@ -39,7 +39,7 @@ function AppRouter({boards, lastPage, firstPage, maxPostNum}){
 			<Route path="/boardfactory" element={ <BoardFactory /> } />
 
 			{/* 게시글열람페이지 */}
-			<Route path="/boarddetail/:postNumber" element={ <BoardDetail boards={boards} maxPostNum={maxPostNum} />} /> 
+			<Route path="/boarddetail/:postNumber" element={ <BoardDetail boards={boards} loginUserInfo={loginUserInfo} maxPostNum={maxPostNum} />} /> 
 		</Routes>
 	)
 }

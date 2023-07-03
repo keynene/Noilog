@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoggedIn, setUserInfo } from 'store.js';
 
 /* etc */
-import { Table, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 function App() {
   let dispatch = useDispatch();
@@ -82,19 +82,17 @@ function App() {
   return (
     <div className="App">
       <Navigation />
-      <Table>
-        <Row>
-          { state.loginState.isLoggedIn ? 
-            (<Col style={{color:'gray', marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
-              {loginUserInfo.nickname}님, 어서오세요🎉
-            </Col>
-          ) : (
-            <Col style={{marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}> </Col>
-          )
-          }
-        </Row>
-      </Table>
-      <AppRouter boards={boards} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
+      <Row>
+        { state.loginState.isLoggedIn ? 
+          (<Col style={{color:'gray', marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
+            {loginUserInfo.nickname}님, 어서오세요🎉
+          </Col>
+        ) : (
+          <Col style={{marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}><br/></Col>
+        )
+        }
+      </Row>
+      <AppRouter boards={boards} loginUserInfo={loginUserInfo} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
     </div>
   );
 }

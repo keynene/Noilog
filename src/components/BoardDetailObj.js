@@ -15,7 +15,7 @@ import BoardWriteButton from './BoardWriteButton';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn, setOpenBoard, increaseBoardViewCount } from 'store';
+import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn, increaseBoardViewCount } from 'store';
 
 function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoading, maxPostNum }){
 	let state = useSelector((state) => state)

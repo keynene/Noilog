@@ -51,6 +51,7 @@ function Login(){
           .then(response => {
             let accessToken = response.data.accessToken
             localStorage.setItem("accessToken", accessToken)
+            //토큰만 저장, 유저정보는 App.js에서 저장
             dispatch(setLoginTrue())
             navigate("/")
           })
