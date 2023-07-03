@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 /* Actions */
-import { LoggedIn, setLoginUserInfo, setUserInfo, loginSuccess } from '../store.js';
+import { LoggedIn, setLoginUserInfo, setLoginTrue } from '../store.js';
 function Login(){
 
 	const [uid, setUid] = useState("");
@@ -51,22 +51,8 @@ function Login(){
           .then(response => {
             let accessToken = response.data.accessToken
             localStorage.setItem("accessToken", accessToken)
-
-            let token = localStorage.getItem("accessToken")
-            let config = {
-              headers : {
-                "access-token" : token
-              }
-            }
-
-            axios
-              .get(`http://3.36.85.194:42988/api/v1/members`, config)
-              .then(response => {
-                let userInfoCopy = {...response.data.data}
-                dispatch(setLoginUserInfo(userInfoCopy))
-                console.log(state.loginUserInfo)
-              })
-              .catch(err => console.log(err.message))
+            dispatch(setLoginTrue())
+            navigate("/")
           })
           .catch(err => console.log(err.message))
 			}

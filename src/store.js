@@ -1,5 +1,4 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
 
 const isLoggedIn = createSlice({
 	name : 'isLoggedIn',
@@ -26,21 +25,41 @@ const isLoggedIn = createSlice({
 	}
 })
 
-const loginUserInfo = createSlice({
-  name : 'loginUserInfo',
-  initialState : {
-    memberNumber: null,
-    username: '',
-    nickname: '',
-    name: '',
-    email: '',
+/** 리덕스에 유저정보 object 저장하기 시도했으나 실패함 (유저정보는 app.js 에 있음) */
+// const loginUserInfo = createSlice({
+//   name : 'loginUserInfo',
+//   initialState : {
+//     memberNumber: 0,
+//     username: '',
+//     nickname: '',
+//     name: '',
+//     email: '',
+//     createdDate: '',
+//   },
+
+//   reducers : {
+//     setLoginUserInfo(state, action){
+//       let copy = {...action.payload}
+//       state.memberNumber = copy.memberNumber
+//       state.username = copy.username
+//       state.nickname = copy.nickname
+//       state.name = copy.name
+//       state.email = copy.email
+//       state.createdDate = copy.createdDate
+//       console.log(state)
+//     }
+//   }
+// })
+
+const loginState = createSlice({
+  name: 'loginState',
+  initialState: {
+    isLoggedIn : false
   },
 
   reducers : {
-    setLoginUserInfo(state, action){
-      console.log(action.payload)
-			state = {...action.payload}
-			return state
+    setLoginTrue(state){
+      state.isLoggedIn = true
     }
   }
 })
@@ -410,7 +429,8 @@ const boardCommentObj = createSlice({
 export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
 export let { setUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions
-export let { setLoginUserInfo } = loginUserInfo.actions
+// export let { setLoginUserInfo } = loginUserInfo.actions
+export let { setLoginTrue } = loginState.actions
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { increasePostNumber } = postNumber.actions 
@@ -433,7 +453,8 @@ export default configureStore({
 		isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
 		userInfo : userInfo.reducer,
-    loginUserInfo : loginUserInfo.reducer,
+    // loginUserInfo : loginUserInfo.reducer,
+    loginState : loginState.reducer,
 
 		feedObj : feedObj.reducer,
 		postNumber : postNumber.reducer,
