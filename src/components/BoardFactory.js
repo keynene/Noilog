@@ -7,13 +7,11 @@ import 'react-quill/dist/quill.snow.css';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { increaseBoardNumber, createBoardObj, setOpenBoard } from 'store';
+import { useSelector } from 'react-redux';
 
 function BoardFactory({loginUserInfo}){
 	let state = useSelector((state) => state)
 	let navigate = useNavigate();
-	let dispatch = useDispatch();
 	
 	let [boardTitle, setBoardTitle] = useState('');
 	let [boardContent, setBoardContent] = useState('');
@@ -27,23 +25,6 @@ function BoardFactory({loginUserInfo}){
 
 	const onContentsChange = (e) => {
 		setBoardContent(e)
-	}
-
-	const getDate = () => {
-		let date = new Date();
-		let year = date.getFullYear();
-		let month = ("0" + (1+date.getMonth())).slice(-2);
-		let day = ("0"+date.getDate()).slice(-2);
-		let hours = ('0' + date.getHours()).slice(-2); 
-		let minutes = ('0' + date.getMinutes()).slice(-2);
-		let seconds = ('0' + date.getSeconds()).slice(-2); 
-		
-		let setDate = {
-			setDateMDHM : `${month}-${day} ${hours}:${minutes}`,
-			setDateYMDHMS : `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-		}
-		
-		return setDate
 	}
 
 	const onSubmit = (e) => {
@@ -76,7 +57,6 @@ function BoardFactory({loginUserInfo}){
       "title": boardTitle,
       "content" : boardContent,
     }
-    console.log(data)
 
     axios
       .post(`http://3.36.85.194:42988/api/v1/posts`, data, config)
@@ -86,30 +66,10 @@ function BoardFactory({loginUserInfo}){
       })
       .catch(err => console.log(err))
 
-		// let createdBoardObj = {
-		// 	boardNumber : state.boardNumber.num,
-		// 	title : boardTitle,
-		// 	content : boardContent,
-		// 	writer : state.userInfo.id,
-		// 	viewCount : [],
-		// 	likeCount : [],
-		// 	commentCount : 0,
-		// 	createDate : getDate(),
-		// 	creatorNickname : state.userInfo.nickname,
-		// }
-
-		// dispatch(increaseBoardNumber());
-		// dispatch(createBoardObj(createdBoardObj));
-
 		setBoardTitle("");
 		setBoardContent("");
 
 		data = null;
-
-		// alert("게시글 작성이 완료되었습니다!")
-		// dispatch(setOpenBoard(state.boardNumber.num))
-		// navigate("/boarddetail")
-
 	}
 
 	const modules = {

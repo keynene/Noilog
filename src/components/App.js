@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 /* etc */
 import { Row, Col } from 'react-bootstrap';
+import { useQuery } from 'react-query';
 
 function App() {
   let dispatch = useDispatch();
@@ -27,10 +28,12 @@ function App() {
   /** 로그인 성공하면 회원정보 받아오기 (로그인 성공 여부는 Login.js파일에 있음) */
   useEffect(()=>{
     if (state.isLoggedIn){
-      let token = localStorage.getItem("accessToken")
+      let accessToken = localStorage.getItem("accessToken")
+      let refreshToken = localStorage.getItem("refreshToken")
       let config = {
         headers : {
-          "access-token" : token
+          "access-token" : accessToken,
+          "refresh-token" : refreshToken
         }
       }
 
@@ -44,6 +47,7 @@ function App() {
     }
     else {
       localStorage.removeItem("accessToken")
+      localStorage.removeItem("refreshToken")
     }
   },[state.isLoggedIn])
 
@@ -62,6 +66,24 @@ function App() {
         console.log("error=> ",error.message);
       })
   },[state.currentPage.page])
+
+  let boardData = useQuery(['boardData'],()=>{
+    return (
+      axios
+      .get(`http://3.36.85.194:42988/api/v1/posts/search?page=${state.currentPage.page}`)
+      .then(response => {
+        let boardCopy = [...response.data.data.posts]
+        setBoards(boardCopy)
+
+        setLastPage(parseInt(response.data.data.lastPage))
+        setFirstPage(parseInt(1))
+        setMaxPostNum(parseInt(response.data.data.posts[0].postNumber))
+      })
+      .catch((error)=>{
+        console.log("error=> ",error.message);
+      })
+    )
+  })
 
   return (
     <div className="App">
