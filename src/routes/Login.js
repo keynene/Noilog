@@ -47,7 +47,11 @@ function Login(){
             dispatch(LoggedIn())
             navigate("/")
           })
-          .catch(err => console.log(err.message))
+          .catch(err => {
+            if(err.response && err.response.status === 400){
+              alert('🙅🏻‍♀️회원정보가 없습니다🙅🏻‍♀️')
+            }
+          })
 			}
 			else if (uid === ""){
 				alert('아이디를 입력해주세요')
@@ -55,10 +59,8 @@ function Login(){
 			else if (upassword === ""){
 				alert('비밀번호를 입력해주세요')
 			}
-		// } catch { alert('없는 아이디입니다!') }
-		} catch(error) { 
-      console.log(error.message) 
-      //에러코드에 따른 에러메세지 작성하기
+		} catch(err) { 
+      console.log(err.message) 
     }
 		
 	}

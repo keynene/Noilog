@@ -33,6 +33,7 @@ function App() {
   
   /** 로그인 성공하면 회원정보 받아오기 (로그인 성공 여부는 Login.js파일에 있음) */
   useEffect(()=>{
+    console.log(state.isLoggedIn)
     if (localStorage.length > 0){
       if (localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null){
         setAccessToken(localStorage.getItem("accessToken"))
@@ -45,6 +46,7 @@ function App() {
         "refresh-token" : refreshToken
       }
     }
+    console.log(config)
     axios
       .get(`http://3.36.85.194:42988/api/v1/members`, config)
       .then(response => {
@@ -52,7 +54,7 @@ function App() {
         let userInfoCopy = {...response.data.data}
         setUserInfo(userInfoCopy)
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err.response))
   },[state.isLoggedIn])
 
   /** 데이터 받아오기 (axios) */
