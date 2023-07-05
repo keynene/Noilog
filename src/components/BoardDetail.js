@@ -42,7 +42,6 @@ function BoardDetail({boards, userInfo, maxPostNum}){
       .then(response => { 
         let getData = response.data.data
         setOpenBoard(getData)
-        console.log(response.data)
       })
       .catch(err =>  console.log(err.message) )
   },[postNumber])

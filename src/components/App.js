@@ -10,6 +10,7 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
+import { LoggedIn } from 'store';
 
 /* etc */
 import { Row, Col } from 'react-bootstrap';
@@ -23,32 +24,35 @@ function App() {
   let [firstPage, setFirstPage] = useState(1);
   let [maxPostNum, setMaxPostNum] = useState(0);
   let [userInfo, setUserInfo] = useState({});
-  let [accessToken, setAccessToken] = useState('');
+  let [accessToken, setAccessToken] = useState(
+    localStorage.length > 0 ? localStorage.getItem("accessToken") : ''
+  );
+    let [refreshToken, setRefreshToken] = useState(
+    localStorage.length > 0 ? localStorage.getItem("refreshToken") : ''
+  );
   
   /** 로그인 성공하면 회원정보 받아오기 (로그인 성공 여부는 Login.js파일에 있음) */
   useEffect(()=>{
-    if (state.isLoggedIn){
-      let accessToken = localStorage.getItem("accessToken")
-      let refreshToken = localStorage.getItem("refreshToken")
-      let config = {
-        headers : {
-          "access-token" : accessToken,
-          "refresh-token" : refreshToken
-        }
+    if (localStorage.length > 0){
+      if (localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null){
+        setAccessToken(localStorage.getItem("accessToken"))
+        setRefreshToken(localStorage.getItem("refreshToken"))
       }
-
-      axios
-        .get(`http://3.36.85.194:42988/api/v1/members`, config)
-        .then(response => {
-          let userInfoCopy = {...response.data.data}
-          setUserInfo(userInfoCopy)
-        })
-        .catch(err => console.log(err.message))
     }
-    else {
-      localStorage.removeItem("accessToken")
-      localStorage.removeItem("refreshToken")
+    let config = {
+      headers : {
+        "access-token" : accessToken,
+        "refresh-token" : refreshToken
+      }
     }
+    axios
+      .get(`http://3.36.85.194:42988/api/v1/members`, config)
+      .then(response => {
+        dispatch(LoggedIn())
+        let userInfoCopy = {...response.data.data}
+        setUserInfo(userInfoCopy)
+      })
+      .catch(err => console.log(err))
   },[state.isLoggedIn])
 
   /** 데이터 받아오기 (axios) */
