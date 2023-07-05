@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 
@@ -7,9 +8,9 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editBoardObj, boardEditingOff } from 'store';
 
-function BoardEditForm({ boards }){
-	let [editTitle, setEditTitle] = useState(boards.title);
-  let [editContent, setEditContent] = useState(boards.content);
+function BoardEditForm({ openBoard }){
+	let [editTitle, setEditTitle] = useState(openBoard.title);
+  let [editContent, setEditContent] = useState(openBoard.content);
 
 	let dispatch = useDispatch();
 	let navigate = useNavigate();
@@ -38,11 +39,27 @@ function BoardEditForm({ boards }){
 		}
 
     let editData = {
-			boardNumber : i,
-			editTitle,
-			editContent
+			postNumber : i,
+			title : editTitle,
+			content : editContent
 		}
-		dispatch(editBoardObj(editData))
+
+    let config = {
+      headers : {
+        "access-token" : localStorage.getItem("accessToken"),
+        "refresh-token" : localStorage.getItem("refreshToken")
+      }
+    }
+
+    axios
+      .put(`http://3.36.85.194:42988/v1/posts`, editData, config)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => console.log(err))
+
+
+		// dispatch(editBoardObj(editData))
 
 		dispatch(boardEditingOff())
 
@@ -90,7 +107,7 @@ function BoardEditForm({ boards }){
 					dispatch(boardEditingOff())
 				}
 			}} style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}>취소하기</Button>
-			<Button variant="dark" type="submit" onClick={()=>{onEditButtonClick(boards.boardNumber)}}>수정하기</Button>
+			<Button variant="dark" type="submit" onClick={()=>{onEditButtonClick(openBoard.boardNumber)}}>수정하기</Button>
 		</form>
 	)
 }

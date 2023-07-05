@@ -34,27 +34,27 @@ function App() {
   /** 로그인 성공하면 회원정보 받아오기 (로그인 성공 여부는 Login.js파일에 있음) */
   useEffect(()=>{
     console.log(state.isLoggedIn)
+    let config = {
+      headers : {
+        "accesstoken" : accessToken,
+        "refreshtoken" : refreshToken
+      }
+    }
     if (localStorage.length > 0){
       if (localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null){
         setAccessToken(localStorage.getItem("accessToken"))
         setRefreshToken(localStorage.getItem("refreshToken"))
       }
+      console.log(config)
+      axios
+        .get(`http://3.36.85.194:42988/api/v1/members`, config)
+        .then(response => {
+          dispatch(LoggedIn())
+          let userInfoCopy = {...response.data.data}
+          setUserInfo(userInfoCopy)
+        })
+        .catch(err => console.log(err.response))
     }
-    let config = {
-      headers : {
-        "access-token" : accessToken,
-        "refresh-token" : refreshToken
-      }
-    }
-    console.log(config)
-    axios
-      .get(`http://3.36.85.194:42988/api/v1/members`, config)
-      .then(response => {
-        dispatch(LoggedIn())
-        let userInfoCopy = {...response.data.data}
-        setUserInfo(userInfoCopy)
-      })
-      .catch(err => console.log(err.response))
   },[state.isLoggedIn])
 
   /** 데이터 받아오기 (axios) */
@@ -69,7 +69,7 @@ function App() {
         setMaxPostNum(parseInt(response.data.data.posts[0].postNumber))
       })
       .catch((error)=>{
-        console.log("error=> ",error.message);
+        console.log("error=> ",error.config);
       })
   },[state.currentPage.page])
 
@@ -86,7 +86,7 @@ function App() {
         setMaxPostNum(parseInt(response.data.data.posts[0].postNumber))
       })
       .catch((error)=>{
-        console.log("error=> ",error.message);
+        console.log("error=> ",error);
       })
     )
   })

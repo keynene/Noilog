@@ -104,18 +104,18 @@ const isFeedEditing = createSlice({
 const isBoardEditing = createSlice({
 	name : 'isBoardEditing',
 	initialState : {
-		boardNumber : null,
+		postNumber : null,
 		editState : false
 	},
 
 	reducers : {
 		boardEditingOn(state,action){
-			state.boardNumber = action.payload
+			state.postNumber = action.payload
 			state.editState = true
 		},
 		
 		boardEditingOff(state){
-			state.boardNumber = null
+			state.postNumber = null
 			state.editState = false
 		},
 	}
