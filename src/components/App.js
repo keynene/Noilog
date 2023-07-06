@@ -23,7 +23,7 @@ function App() {
   let [lastPage, setLastPage] = useState(0);
   let [firstPage, setFirstPage] = useState(1);
   let [maxPostNum, setMaxPostNum] = useState(0);
-  let [userInfo, setUserInfo] = useState({});
+  let [userInfo, setUserInfo] = useState();
   let [accessToken, setAccessToken] = useState(
     localStorage.length > 0 ? localStorage.getItem("accessToken") : ''
   );
@@ -55,7 +55,7 @@ function App() {
         })
         .catch(err => console.log(err.response))
     }
-  },[state.isLoggedIn])
+  },[state.isLoggedIn, localStorage])
 
   /** 데이터 받아오기 (axios) */
   useEffect(()=>{
@@ -69,7 +69,7 @@ function App() {
         setMaxPostNum(parseInt(response.data.data.posts[0].postNumber))
       })
       .catch((error)=>{
-        console.log("error=> ",error.config);
+        console.log("error=> ",error);
       })
   },[state.currentPage.page])
 
@@ -90,12 +90,13 @@ function App() {
       })
     )
   })
+  console.log(userInfo)
 
   return (
     <div className="App">
       <Navigation />
       <Row>
-        { state.isLoggedIn ? 
+        { state.isLoggedIn && userInfo !== undefined ? 
           (<Col style={{color:'gray', marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
             {userInfo.nickname}님, 어서오세요🎉
           </Col>

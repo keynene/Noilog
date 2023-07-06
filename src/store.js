@@ -53,7 +53,12 @@ import {configureStore, createSlice} from '@reduxjs/toolkit';
 
 const isLoggedIn = createSlice({
   name: 'isLoggedIn',
-  initialState: false,
+  initialState: 
+    localStorage.length > 0 ? 
+      localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null ?
+        true : false //localStorage의 accessToken, refreshToken 둘 다 null이 아닐 때
+      : false //localStorage 길이가 0일때 (access, refresh 둘 다 없을 때)
+  ,
 
   reducers : {
     LoggedIn(state){

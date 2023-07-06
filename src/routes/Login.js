@@ -39,9 +39,9 @@ function Login(){
         axios
           .post(`http://3.36.85.194:42988/login`, loginObj)
           .then(response => {
-            console.log(response)
-            let accessToken = response.headers.accessToken
-            let refreshToken = response.headers.refreshToken
+            console.log(response.headers.accesstoken)
+            let accessToken = response.headers.accesstoken
+            let refreshToken = response.headers.refreshtoken
             localStorage.setItem("accessToken", accessToken)
             localStorage.setItem("refreshToken", refreshToken)
             //토큰만 저장, 유저정보는 App.js에서 저장
