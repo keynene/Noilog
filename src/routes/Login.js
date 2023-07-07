@@ -32,14 +32,22 @@ function Login(){
 	const onSubmit = (e) => {
 		e.preventDefault();
 		try {
+      let config = {
+        headers : {
+          "accesstoken" : localStorage.getItem("accessToken"),
+          "refreshtoken" : localStorage.getItem("refreshToken"),
+          // "Content-Type" : 'application/json',
+          // "Access-Control-Allow-Origin" : 'http://localhost:3000',
+        }
+      }
 			if (uid !== "" && upassword !== ""){
         loginObj.password = upassword
         loginObj.username = uid
 
         axios
-          .post(`http://3.36.85.194:42988/login`, loginObj)
+          .post(`http://3.36.85.194:42988/login`, loginObj,config)
           .then(response => {
-            console.log(response.headers.accesstoken)
+            console.log(response)
             let accessToken = response.headers.accesstoken
             let refreshToken = response.headers.refreshtoken
             localStorage.setItem("accessToken", accessToken)
@@ -52,6 +60,7 @@ function Login(){
             if(err.response && err.response.status === 400){
               alert('🙅🏻‍♀️회원정보가 없습니다🙅🏻‍♀️')
             }
+            console.log(err.response)
           })
 			}
 			else if (uid === ""){

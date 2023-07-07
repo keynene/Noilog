@@ -37,7 +37,9 @@ function App() {
     let config = {
       headers : {
         "accesstoken" : accessToken,
-        "refreshtoken" : refreshToken
+        "refreshtoken" : refreshToken,
+        // "Content-Type" : 'application/json',
+        // "Access-Control-Allow-Origin" : 'http://localhost:3000',
       }
     }
     if (localStorage.length > 0){
@@ -59,7 +61,15 @@ function App() {
 
   /** 데이터 받아오기 (axios) */
   useEffect(()=>{
-    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${state.currentPage.page}`)
+    let config = {
+      headers : {
+        "accesstoken" : accessToken,
+        "refreshtoken" : refreshToken,
+        // "Content-Type" : 'application/json',
+        // "Access-Control-Allow-Origin" : 'http://localhost:3000',
+      }
+    }
+    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${state.currentPage.page}`,config)
       .then(response => {
         let boardCopy = [...response.data.data.posts]
         setBoards(boardCopy)
