@@ -48,8 +48,8 @@ function BoardFactory({loginUserInfo}){
     let refreshToken = localStorage.getItem("refreshToken")
     let config = {
       headers : {
-        "access-token" : accessToken,
-        "refresh-token" : refreshToken
+        "accesstoken" : accessToken,
+        "refreshtoken" : refreshToken
       },
     }
 
@@ -57,6 +57,7 @@ function BoardFactory({loginUserInfo}){
       "title": boardTitle,
       "content" : boardContent,
     }
+    console.log(config)
 
     axios
       .post(`http://3.36.85.194:42988/api/v1/posts`, data, config)

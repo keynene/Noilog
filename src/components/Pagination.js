@@ -78,6 +78,8 @@ function Pagination({ lastPage, firstPage }){
 				<PageLi onClick={()=>{onFirstButtonClick()}}><PageSpan>{"<<"}</PageSpan></PageLi>
 				<PageLi onClick={()=>{onPrevButtonClick()}}><PageSpan>{"<"}</PageSpan></PageLi>
 				{pageNumbers.map((number) => (
+          //1~5페이지
+          state.currentPage.page <= 3 && number <= 5 ? (
           <PageLi key={number} className="page-item">
 						{ state.currentPage.page === number ? (
               <PageSpan onClick={() => onPageButtonClick(number) } className="page-link" style={{color:'#ff8298'}}>
@@ -90,6 +92,21 @@ function Pagination({ lastPage, firstPage }){
               )
             }
 					</PageLi>
+        ) : (
+          //끝-5 ~ 끝 페이지              // 중간페이지 구현해야함
+          <PageLi key={number} className="page-item">
+						{ state.currentPage.page === number ? (
+              <PageSpan onClick={() => onPageButtonClick(number) } className="page-link" style={{color:'#ff8298'}}>
+                {number}
+              </PageSpan>
+              ) : (
+              <PageSpan onClick={() => onPageButtonClick(number) } className="page-link">
+                {number}
+              </PageSpan>
+              )
+            }
+					</PageLi>
+        )
 				))}
 				<PageLi onClick={()=>{onNextButtonClick()}}><PageSpan>{">"}</PageSpan></PageLi>
 				<PageLi onClick={()=>{onLastButtonClick()}}><PageSpan>{">>"}</PageSpan></PageLi>
