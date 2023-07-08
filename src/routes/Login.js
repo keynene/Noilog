@@ -32,20 +32,22 @@ function Login(){
 	const onSubmit = (e) => {
 		e.preventDefault();
 		try {
-      let config = {
-        headers : {
-          "accesstoken" : localStorage.getItem("accessToken"),
-          "refreshtoken" : localStorage.getItem("refreshToken"),
-          // "Content-Type" : 'application/json',
-          // "Access-Control-Allow-Origin" : 'http://localhost:3000',
-        }
-      }
+      // let config = {
+      //   headers : {
+      //     "accesstoken" : localStorage.getItem("accessToken"),
+      //     "refreshtoken" : localStorage.getItem("refreshToken"),
+      //     // "Content-Type" : 'application/json',
+      //     // "Access-Control-Allow-Origin" : 'http://localhost:3000',
+      //   }
+      // }
 			if (uid !== "" && upassword !== ""){
         loginObj.password = upassword
         loginObj.username = uid
 
+        console.log(loginObj)
+
         axios
-          .post(`http://3.36.85.194:42988/login`, loginObj,config)
+          .post(`http://3.36.85.194:42988/login`, loginObj)
           .then(response => {
             console.log(response)
             let accessToken = response.headers.accesstoken
