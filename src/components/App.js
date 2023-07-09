@@ -13,10 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoggedIn } from 'store';
 
 /* etc */
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import { useQuery } from 'react-query';
-
-axios.defaults.withCredentials = true;
 
 function App() {
   let dispatch = useDispatch();
@@ -35,12 +33,10 @@ function App() {
     let [refreshToken, setRefreshToken] = useState(
     localStorage.length > 0 ? localStorage.getItem("refreshToken") : ''
   );
-  let contentType = 'application/json'
 
-  /** 로그인 성공하면 회원정보 받아오기 (로그인 성공 여부는 Login.js파일에 있음) */
+  /** 토큰들 localStorage에 업데이트 */
   useEffect(()=>{
     if (localStorage.length > 0){
-      console.log('local업데이트 확인')
       if (localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null){
         setAccessToken(localStorage.getItem("accessToken"))
         setRefreshToken(localStorage.getItem("refreshToken"))
@@ -49,31 +45,26 @@ function App() {
     }
   },[state.isLoggedIn])
 
+  /** 유저데이터 받아오기 (axios) */
   useEffect(()=>{
-    console.log('토큰들 갱신 시 멤버스 겟 요청')
     if (state.isLoggedIn){
       let config = {
         headers : {
           "accesstoken" : accessToken,
           "refreshtoken" : refreshToken,
-          "Content-Type" : contentType,
         },
-        // "Content-Type" : `application/json`,
       }
-      console.log(config)
       axios
         .get(`http://3.36.85.194:42988/api/v1/members`, config)
         .then(response => {
           let userInfoCopy = {...response.data.data}
           setUserInfo(userInfoCopy)
-          console.log('성공')
-          console.log('성공')
         })
         .catch(err => console.log(err))
     }
   },[accessToken, refreshToken])
 
-  /** 데이터 받아오기 (axios) */
+  /** 게시글 데이터 받아오기 (axios) */
   useEffect(()=>{
     axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${state.currentPage.page}`)
       .then(response => {
@@ -89,6 +80,7 @@ function App() {
       })
   },[state.currentPage.page])
 
+  /** 게시글 데이터 실시간으로 받아오기 (다음프로젝트에서는 그닥) */
   let boardData = useQuery(['boardData'],()=>{
     return (
       axios
