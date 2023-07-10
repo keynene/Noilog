@@ -10,10 +10,10 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedIn } from 'store';
+import { setNewToken, LoggedIn } from 'store';
 
 /* etc */
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { useQuery } from 'react-query';
 
 function App() {
@@ -23,7 +23,6 @@ function App() {
   let [lastPage, setLastPage] = useState(0);
   let [firstPage, setFirstPage] = useState(1);
   let [maxPostNum, setMaxPostNum] = useState(0);
-  let [isLoading, setIsLoading] = useState(true);
   
   let [userInfo, setUserInfo] = useState();
 
@@ -40,14 +39,14 @@ function App() {
       if (localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null){
         setAccessToken(localStorage.getItem("accessToken"))
         setRefreshToken(localStorage.getItem("refreshToken"))
-        setIsLoading(false)
+        dispatch(LoggedIn())
       }
     }
-  },[state.isLoggedIn])
+  },[state.isLoggedIn.value])
 
   /** 유저데이터 받아오기 (axios) */
   useEffect(()=>{
-    if (state.isLoggedIn){
+    if (state.isLoggedIn.value){
       let config = {
         headers : {
           "accesstoken" : accessToken,
@@ -59,6 +58,7 @@ function App() {
         .then(response => {
           let userInfoCopy = {...response.data.data}
           setUserInfo(userInfoCopy)
+          dispatch(setNewToken(response.headers.newtoken))
         })
         .catch(err => console.log(err))
     }
@@ -88,6 +88,7 @@ function App() {
       .then(response => {
         let boardCopy = [...response.data.data.posts]
         setBoards(boardCopy)
+        dispatch(setNewToken(response.headers.newtoken))
 
         setLastPage(parseInt(response.data.data.lastPage))
         setFirstPage(parseInt(1))
@@ -103,7 +104,7 @@ function App() {
     <div className="App">
       <Navigation />
       <Row>
-        { state.isLoggedIn && userInfo !== undefined ? 
+        { state.isLoggedIn.value && userInfo !== undefined ? 
           (<Col style={{color:'gray', marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
             {userInfo.nickname}님, 어서오세요🎉
           </Col>

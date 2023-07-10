@@ -29,12 +29,12 @@ function BoardDetail({boards, userInfo, maxPostNum}){
     if (openBoard !== undefined){
       setIsLoading(false)
     }
-    if (state.isLoggedIn && isLoading === false && openBoard !== []){
+    if (state.isLoggedIn.value && isLoading === false && openBoard !== []){
       if (userInfo.memberNumber === openBoard.writer.memberNumber){
         setIsBoardOwner(true)
       } else {setIsBoardOwner(false)}
     } else {setIsBoardOwner(false)}
-  },[userInfo, state.isLoggedIn, openBoard, isLoading])
+  },[userInfo, state.isLoggedIn.value, openBoard, isLoading])
 
   useEffect(()=>{
     axios

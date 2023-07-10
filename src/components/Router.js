@@ -23,7 +23,7 @@ function AppRouter({boards, userInfo, lastPage, firstPage, maxPostNum}){
 			<Route path="/join" element={ <Join /> } />
 
 			{/* 마이페이지 */}
-			{ state.isLoggedIn === true ? 
+			{ state.isLoggedIn.value === true ? 
 				<Route path="/mypage" element={ <MyPage /> } />
 				:
 				<Route path="/join" element={ <Join /> } />

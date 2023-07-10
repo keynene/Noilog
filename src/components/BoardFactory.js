@@ -7,11 +7,13 @@ import 'react-quill/dist/quill.snow.css';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNewToken } from 'store';
 
-function BoardFactory({loginUserInfo}){
+function BoardFactory(){
 	let state = useSelector((state) => state)
 	let navigate = useNavigate();
+  let dispatch = useDispatch();
 	
 	let [boardTitle, setBoardTitle] = useState('');
 	let [boardContent, setBoardContent] = useState('');
@@ -38,7 +40,7 @@ function BoardFactory({loginUserInfo}){
 			return alert('글 내용을 입력해주세요')
 		}
 
-		if (state.isLoggedIn === false){
+		if (state.isLoggedIn.value === false){
 			if (window.confirm('로그인 후 이용해주세요! 로그인 화면으로 이동할까요?')){
 				navigate("/login")
 			}
@@ -57,12 +59,12 @@ function BoardFactory({loginUserInfo}){
       "title": boardTitle,
       "content" : boardContent,
     }
-    console.log(config)
 
     axios
       .post(`http://3.36.85.194:42988/api/v1/posts`, data, config)
       .then(response => {
         alert('😎게시글 등록이 완료되었습니다😎')
+        dispatch(setNewToken(response.headers.newtoken))
         navigate("/")
       })
       .catch(err => console.log(err))

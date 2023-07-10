@@ -53,22 +53,29 @@ import {configureStore, createSlice} from '@reduxjs/toolkit';
 
 const isLoggedIn = createSlice({
   name: 'isLoggedIn',
-  initialState: 
-    localStorage.length > 0 ? 
-      localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null ?
-        true : false //localStorage의 accessToken, refreshToken 둘 다 null이 아닐 때
-      : false //localStorage 길이가 0일때 (access, refresh 둘 다 없을 때)
+  initialState: {
+    value : 
+      localStorage.length > 0 ? 
+        localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null ?
+          true : false //localStorage의 accessToken, refreshToken 둘 다 null이 아닐 때
+        : false //localStorage 길이가 0일때 (access, refresh 둘 다 없을 때)
+    }
   ,
 
   reducers : {
     LoggedIn(state){
-      return state = true
+      state.value = true
     },
     LoggedOut(state){
       localStorage.removeItem("accessToken")
       localStorage.removeItem("refreshToken")
       window.location.reload("/");
-      return state = false
+      state.value = false
+    },
+    setNewToken(state, action){
+      if (state.value && action.payload !== ''){
+        localStorage.setItem("accessToken", action.payload)
+      }
     }
   }
 })
@@ -435,7 +442,7 @@ const boardCommentObj = createSlice({
 	}
 })
 
-export let { LoggedIn, LoggedOut } = isLoggedIn.actions 
+export let { LoggedIn, LoggedOut, setNewToken } = isLoggedIn.actions 
 export let { setUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions
 

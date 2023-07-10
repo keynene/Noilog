@@ -20,21 +20,21 @@ function Navigation(){
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
             <Nav.Link onClick={()=>{ navigate('/feed') }}>Feed</Nav.Link>
             {
-              state.isLoggedIn === true ? 
+              state.isLoggedIn.value === true ? 
 								<Nav.Link onClick={()=>{ navigate('/mypage') }}>MyPage</Nav.Link>
               :
 								<Nav.Link onClick={()=>{ navigate('/join') }}>Join Us</Nav.Link>
             }
 
             { 
-              state.isLoggedIn === true ? 
+              state.isLoggedIn.value === true ? 
                 null
               :
                 <Nav.Link onClick={()=>{ navigate('/login') }}>Login</Nav.Link>
             }
 
             {
-              state.isLoggedIn === true ?
+              state.isLoggedIn.value === true ?
                 <Nav.Link onClick={()=>{ 
                   dispatch(LoggedOut('')) 
                   alert('로그아웃 되었습니다')

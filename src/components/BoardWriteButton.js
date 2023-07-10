@@ -10,7 +10,7 @@ function BoardWriteButton(){
 
 	return(
 		<Button variant="dark" onClick={()=>{
-			if (state.isLoggedIn === true){
+			if (state.isLoggedIn.value === true){
 				navigate("/boardFactory")
 			}
 			else {
