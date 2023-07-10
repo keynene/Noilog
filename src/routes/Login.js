@@ -36,8 +36,6 @@ function Login(){
         loginObj.password = upassword
         loginObj.username = uid
 
-        console.log(loginObj)
-
         axios
           .post(`http://3.36.85.194:42988/login`, loginObj)
           .then(response => {
