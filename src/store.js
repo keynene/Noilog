@@ -1,56 +1,5 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit';
 
-// const isLoggedIn = createSlice({
-// 	name : 'isLoggedIn',
-// 	initialState : false,
-
-// 	reducers : {
-// 		LoggedIn(state, action){
-// 			let data = {
-// 				login : true,
-// 				loginId : action.payload
-// 			}
-// 			localStorage.setItem('login',JSON.stringify(data))
-// 			return state = true
-// 		},
-
-// 		LoggedOut(state, action){
-// 			let data = {
-// 				login : false,
-// 				loginId : action.payload
-// 			}
-// 			localStorage.setItem('login',JSON.stringify(data))
-// 			return state = false
-// 		}
-// 	}
-// })
-
-/** 리덕스에 유저정보 object 저장하기 시도했으나 실패함 (유저정보는 app.js 에 있음) */
-// const loginUserInfo = createSlice({
-//   name : 'loginUserInfo',
-//   initialState : {
-//     memberNumber: 0,
-//     username: '',
-//     nickname: '',
-//     name: '',
-//     email: '',
-//     createdDate: '',
-//   },
-
-//   reducers : {
-//     setLoginUserInfo(state, action){
-//       let copy = {...action.payload}
-//       state.memberNumber = copy.memberNumber
-//       state.username = copy.username
-//       state.nickname = copy.nickname
-//       state.name = copy.name
-//       state.email = copy.email
-//       state.createdDate = copy.createdDate
-//       console.log(state)
-//     }
-//   }
-// })
-
 const isLoggedIn = createSlice({
   name: 'isLoggedIn',
   initialState: {
@@ -382,14 +331,6 @@ const boardObj = createSlice({
 			state[index].title = ""
 			state[index].content =""
 		},
-		
-		editBoardObj(state,action){
-			let copy = [...state]
-			let index = state.findIndex((x)=> x.boardNumber === action.payload.boardNumber )
-			copy[index].title = action.payload.editTitle
-			copy[index].content = action.payload.editContent
-			state = [...copy]
-		}
 	}
 })
 

@@ -5,8 +5,7 @@ import { Button } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
 
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { editBoardObj, boardEditingOff } from 'store';
+import { boardEditingOff } from 'store';
 
 let API_URL = "http://3.36.85.194:42988/api/v1";
 let postNumber = "postNumber";
@@ -16,7 +15,6 @@ function BoardEditForm({ openBoard }){
   let [editContent, setEditContent] = useState(openBoard.content);
 
 	let dispatch = useDispatch();
-	let navigate = useNavigate();
 
 	const onTitleChange = (e) => {
 		const {
@@ -25,20 +23,16 @@ function BoardEditForm({ openBoard }){
 		setEditTitle(value);
 	}
 
-  const onContentChange = (e) => {
-		setEditContent(e);
-	}
+  const onContentChange = (e) => { setEditContent(e); }
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-  }
+  const onSubmit = (e) => { e.preventDefault(); }
 
   const onEditButtonClick = (i) => {
     if (editTitle === ""){
-      return alert('')
+      return alert('수정할 게시글 제목을 입력해주세요')
     }
     if (editContent === ""){
-			return alert('수정할 피드 내용을 입력해주세요')
+			return alert('수정할 게시글 내용을 입력해주세요')
 		}
 
     let editData = {

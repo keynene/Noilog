@@ -17,6 +17,8 @@ function Login(){
 	let dispatch = useDispatch()
 	let navigate = useNavigate();
 
+  let LOGIN_API_URL = "http://3.36.85.194:42988/login";
+
 	const onChange = (e) => {
 		const {
 			target: {name, value},
@@ -37,14 +39,16 @@ function Login(){
         loginObj.username = uid
 
         axios
-          .post(`http://3.36.85.194:42988/login`, loginObj)
+          .post(LOGIN_API_URL, loginObj)
           .then(response => {
             let accessToken = response.headers.accesstoken
             let refreshToken = response.headers.refreshtoken
+            
             localStorage.setItem("accessToken", accessToken)
             localStorage.setItem("refreshToken", refreshToken)
             //토큰만 저장, 유저정보는 App.js에서 저장
             dispatch(LoggedIn())
+            
             navigate("/")
           })
           .catch(err => {
@@ -54,16 +58,18 @@ function Login(){
             console.log(err.response)
           })
 			}
+
 			else if (uid === ""){
 				alert('아이디를 입력해주세요')
 			}
+
 			else if (upassword === ""){
 				alert('비밀번호를 입력해주세요')
 			}
+
 		} catch(err) { 
       console.log(err.message) 
     }
-		
 	}
 
 	return(

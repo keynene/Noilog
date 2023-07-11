@@ -24,6 +24,8 @@ function BoardDetail({boards, userInfo, maxPostNum}){
   let [isBoardOwner, setIsBoardOwner] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
 
+  let API_URL = "http://3.36.85.194:42988/api/v1";
+
   
   useEffect(()=>{
     if (openBoard !== undefined){
@@ -41,7 +43,7 @@ function BoardDetail({boards, userInfo, maxPostNum}){
 
   useEffect(()=>{
     axios
-      .get(`http://3.36.85.194:42988/api/v1/posts/${postNumber}`)
+      .get(`${API_URL}/posts/${postNumber}`)
       .then(response => { 
         let getData = response.data.data
         setOpenBoard(getData)

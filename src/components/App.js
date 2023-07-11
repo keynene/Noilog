@@ -26,47 +26,38 @@ function App() {
   
   let [userInfo, setUserInfo] = useState();
 
-  let [accessToken, setAccessToken] = useState(
-    localStorage.length > 0 ? localStorage.getItem("accessToken") : ''
-  );
-    let [refreshToken, setRefreshToken] = useState(
-    localStorage.length > 0 ? localStorage.getItem("refreshToken") : ''
-  );
-
-  /** 토큰들 localStorage에 업데이트 */
-  useEffect(()=>{
-    if (localStorage.length > 0){
-      if (localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null){
-        setAccessToken(localStorage.getItem("accessToken"))
-        setRefreshToken(localStorage.getItem("refreshToken"))
-        dispatch(LoggedIn())
-      }
+  let getConfig = () => {
+    let config = {
+      headers : {
+        "accesstoken" : localStorage.getItem("accessToken"),
+        "refreshtoken" : localStorage.getItem("refreshToken"),
+      },
     }
-  },[state.isLoggedIn.value])
+    return config
+  }
+
+  let API_URL = "http://3.36.85.194:42988/api/v1";
 
   /** 유저데이터 받아오기 (axios) */
   useEffect(()=>{
     if (state.isLoggedIn.value){
-      let config = {
-        headers : {
-          "accesstoken" : accessToken,
-          "refreshtoken" : refreshToken,
-        },
-      }
+      let config = getConfig()
+
       axios
-        .get(`http://3.36.85.194:42988/api/v1/members`, config)
+        .get(`${API_URL}/members`, config)
         .then(response => {
           let userInfoCopy = {...response.data.data}
           setUserInfo(userInfoCopy)
+
           dispatch(setNewToken(response.headers.newtoken))
         })
         .catch(err => console.log(err))
     }
-  },[accessToken, refreshToken])
+  },[state.isLoggedIn.value])
 
   /** 게시글 데이터 받아오기 (axios) */
   useEffect(()=>{
-    axios.get(`http://3.36.85.194:42988/api/v1/posts/search?page=${state.currentPage.page}`)
+    axios.get(`${API_URL}/posts/search?page=${state.currentPage.page}`)
       .then(response => {
         let boardCopy = [...response.data.data.posts]
         setBoards(boardCopy)
@@ -84,10 +75,11 @@ function App() {
   let boardData = useQuery(['boardData'],()=>{
     return (
       axios
-      .get(`http://3.36.85.194:42988/api/v1/posts/search?page=${state.currentPage.page}`)
+      .get(`${API_URL}/posts/search?page=${state.currentPage.page}`)
       .then(response => {
         let boardCopy = [...response.data.data.posts]
         setBoards(boardCopy)
+        
         dispatch(setNewToken(response.headers.newtoken))
 
         setLastPage(parseInt(response.data.data.lastPage))
