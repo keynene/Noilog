@@ -29,11 +29,14 @@ function BoardDetail({boards, userInfo, maxPostNum}){
     if (openBoard !== undefined){
       setIsLoading(false)
     }
-    if (state.isLoggedIn.value && isLoading === false && openBoard !== []){
+  },[openBoard])
+
+  useEffect(()=>{
+    if (state.isLoggedIn.value && isLoading === false && userInfo !== undefined){
       if (userInfo.memberNumber === openBoard.writer.memberNumber){
-        setIsBoardOwner(true)
-      } else {setIsBoardOwner(false)}
-    } else {setIsBoardOwner(false)}
+        return setIsBoardOwner(true)
+      } return setIsBoardOwner(false)
+    } return setIsBoardOwner(false)
   },[userInfo, state.isLoggedIn.value, openBoard, isLoading])
 
   useEffect(()=>{

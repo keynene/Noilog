@@ -34,7 +34,7 @@ function BoardFactory(){
 
 		if (boardTitle === ''){
 			return alert('제목을 입력해주세요')
-		}
+		}             
 
 		if (boardContent === ''){
 			return alert('글 내용을 입력해주세요')

@@ -8,6 +8,9 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editBoardObj, boardEditingOff } from 'store';
 
+let API_URL = "http://3.36.85.194:42988/api/v1";
+let postNumber = "postNumber";
+
 function BoardEditForm({ openBoard }){
 	let [editTitle, setEditTitle] = useState(openBoard.title);
   let [editContent, setEditContent] = useState(openBoard.content);
@@ -39,35 +42,29 @@ function BoardEditForm({ openBoard }){
 		}
 
     let editData = {
-			postNumber : i,
-			title : editTitle,
-			content : editContent
+			"title" : editTitle,
+			"content" : editContent
 		}
 
     let config = {
       headers : {
-        "access-token" : localStorage.getItem("accessToken"),
-        "refresh-token" : localStorage.getItem("refreshToken")
+        "accesstoken" : localStorage.getItem("accessToken"),
+        "refreshtoken" : localStorage.getItem("refreshToken")
       }
     }
 
     axios
-      .put(`http://3.36.85.194:42988/v1/posts`, editData, config)
+      .put(`${API_URL}/posts?${postNumber}=${openBoard.postNumber}`, editData, config)
       .then(response => {
-        console.log(response)
+        alert('수정되었습니다 😎')
+        window.location.reload(`/boarddetail/${openBoard.postNumber}`);
       })
       .catch(err => console.log(err))
 
-
-		// dispatch(editBoardObj(editData))
-
 		dispatch(boardEditingOff())
 
-		alert('수정이 완료되었습니다!')
 		setEditTitle('')
 		setEditContent('')
-
-    navigate("/boarddetail")
   }
 
   const modules = {
