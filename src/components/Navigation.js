@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +11,30 @@ function Navigation(){
   let dispatch = useDispatch();
 	let navigate = useNavigate();
   let state = useSelector((state) => {return state})
+
+  let getConfig = () => {
+    let config = {
+      headers : {
+        "accesstoken" : localStorage.getItem("accessToken"),
+        "refreshtoken" : localStorage.getItem("refreshToken"),
+      },
+    }
+    return config
+  }
+
+  let API_URL = "http://3.36.85.194:42988";
+
+  const logoutRequest = () => {
+    let config = getConfig()
+
+    axios
+      .post(`${API_URL}/logout`,{},config)
+      .then(response => {
+        dispatch(LoggedOut('')) 
+        alert('로그아웃 되었습니다 😀')
+      })
+      .catch(err => console.log(err))
+  }
 
 	return (
 		<div>
@@ -36,9 +61,7 @@ function Navigation(){
             {
               state.isLoggedIn.value === true ?
                 <Nav.Link onClick={()=>{ 
-                  dispatch(LoggedOut('')) 
-                  alert('로그아웃 되었습니다')
-                  navigate("/")
+                  logoutRequest()
                 }} >Logout</Nav.Link>
               :
                 null

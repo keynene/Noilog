@@ -17,7 +17,7 @@ function Login(){
 	let dispatch = useDispatch()
 	let navigate = useNavigate();
 
-  let LOGIN_API_URL = "http://3.36.85.194:42988/login";
+  let API_URL = "http://3.36.85.194:42988";
 
 	const onChange = (e) => {
 		const {
@@ -39,7 +39,7 @@ function Login(){
         loginObj.username = uid
 
         axios
-          .post(LOGIN_API_URL, loginObj)
+          .post(`${API_URL}/login`, loginObj)
           .then(response => {
             let accessToken = response.headers.accesstoken
             let refreshToken = response.headers.refreshtoken
