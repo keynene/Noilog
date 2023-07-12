@@ -24,6 +24,19 @@ function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoadi
 
   let [boardComments, setBoardComments] = useState([]);
 
+  let API_URL = "http://3.36.85.194:42988/api/v1";
+  let postNumber = "postNumber";
+
+  let getConfig = () => {
+    let config = {
+      headers : {
+        "accesstoken" : localStorage.getItem("accessToken"),
+        "refreshtoken" : localStorage.getItem("refreshToken")
+      }
+    }
+    return config
+  }
+
 	useEffect(()=>{
     setBoardComments([...state.boardCommentObj])
   },[state.boardCommentObj])
@@ -40,18 +53,19 @@ function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoadi
 		}
 		return data
 	}
-	
-  const onEditButtonClick = () => {
-    if (window.confirm('게시글을 수정하시겠습니까?')){
-      dispatch(boardEditingOn(openBoard.postNumber))
-    }
-  }
 
   const onDeleteButtonClick = () => {
     if (window.confirm('게시글을 삭제하시겠습니까?')){
-      dispatch(deleteBoardObj(openBoard.boardNumber))
-      alert('삭제되었습니다.')
-      navigate("/")
+      let config = getConfig()
+
+      axios
+        .delete(`${API_URL}/posts?${postNumber}=${openBoard.postNumber}`,config)
+        .then(async(response) => {
+          console.log(response)
+          alert('삭제되었습니다.')
+          await navigate('/')
+        })
+        .catch(err => console.log(err))
     }
     
   }
@@ -88,7 +102,6 @@ function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoadi
             openBoard={openBoard} 
             boards={boards} 
             navigate={navigate} 
-            onEditButtonClick={onEditButtonClick} 
             onDeleteButtonClick={onDeleteButtonClick}
           />
         </Col>
@@ -115,7 +128,7 @@ function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoadi
         <Col style={{textAlign:'left'}}>
           {/* 수삭목댓 컴포넌트 */}
           <BoardUpDelInCom 
-            isBoardOwner={isBoardOwner} openBoard={openBoard} boards={boards} navigate={navigate} onEditButtonClick={onEditButtonClick} onDeleteButtonClick={onDeleteButtonClick}/>
+            isBoardOwner={isBoardOwner} openBoard={openBoard} boards={boards} navigate={navigate} onDeleteButtonClick={onDeleteButtonClick}/>
         </Col>
         <Col style={{textAlign:'right'}}>
           { isBoardOwner ? (
@@ -123,7 +136,7 @@ function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoadi
             <Button 
               variant="light" 
               style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} 
-              onClick={()=>{onEditButtonClick()}}
+              onClick={()=>{dispatch(boardEditingOn(openBoard.postNumber))}}
             >수정</Button> 
             <Button
               variant="light"
@@ -192,13 +205,14 @@ function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoadi
 
 
 /* 수정/삭제/목록/댓글 컴포넌트 */
-function BoardUpDelInCom({ openBoard, isBoardOwner, navigate, onEditButtonClick, onDeleteButtonClick }){
+function BoardUpDelInCom({ openBoard, isBoardOwner, navigate, onDeleteButtonClick }){
+  let dispatch = useDispatch();
   return (
     <div>
       { isBoardOwner ? (
         // 글작성자이면 수삭목댓
         <div style={{fontSize:14, color:'gray'}}>
-          <span style={{cursor:'pointer'}} onClick={()=>{ onEditButtonClick() }}>수정</span><span> | </span>
+          <span style={{cursor:'pointer'}} onClick={()=>{ dispatch(boardEditingOn(openBoard.postNumber)) }}>수정</span><span> | </span>
           <span style={{cursor:'pointer'}} onClick={()=>{ onDeleteButtonClick() }}>삭제</span><span> | </span>
           <span style={{cursor:'pointer'}} onClick={()=>{navigate("/")}}>목록</span><span> | </span>
           <span style={{cursor:'pointer'}}>댓글(<span style={{color:'#F94B4B'}}>{openBoard.commentCount}</span>)</span>

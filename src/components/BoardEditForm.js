@@ -25,6 +25,16 @@ function BoardEditForm({ openBoard }){
 
   const onContentChange = (e) => { setEditContent(e); }
 
+  let getConfig = () => {
+    let config = {
+      headers : {
+        "accesstoken" : localStorage.getItem("accessToken"),
+        "refreshtoken" : localStorage.getItem("refreshToken")
+      }
+    }
+    return config
+  }
+
   const onSubmit = (e) => { e.preventDefault(); }
 
   const onEditButtonClick = (i) => {
@@ -40,12 +50,7 @@ function BoardEditForm({ openBoard }){
 			"content" : editContent
 		}
 
-    let config = {
-      headers : {
-        "accesstoken" : localStorage.getItem("accessToken"),
-        "refreshtoken" : localStorage.getItem("refreshToken")
-      }
-    }
+    let config = getConfig()
 
     axios
       .put(`${API_URL}/posts?${postNumber}=${openBoard.postNumber}`, editData, config)

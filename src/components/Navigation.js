@@ -29,9 +29,10 @@ function Navigation(){
 
     axios
       .post(`${API_URL}/logout`,{},config)
-      .then(response => {
+      .then(async(response) => {
         dispatch(LoggedOut('')) 
         alert('로그아웃 되었습니다 😀')
+        await navigate('/')
       })
       .catch(err => console.log(err))
   }

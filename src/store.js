@@ -18,7 +18,6 @@ const isLoggedIn = createSlice({
     LoggedOut(state){
       localStorage.removeItem("accessToken")
       localStorage.removeItem("refreshToken")
-      window.location.reload("/");
       state.value = false
     },
     setNewToken(state, action){
@@ -71,8 +70,10 @@ const isBoardEditing = createSlice({
 
 	reducers : {
 		boardEditingOn(state,action){
-			state.postNumber = action.payload
-			state.editState = true
+      if (window.confirm('게시글을 수정하시겠습니까?')){
+        state.postNumber = action.payload
+        state.editState = true
+      }
 		},
 		
 		boardEditingOff(state){
