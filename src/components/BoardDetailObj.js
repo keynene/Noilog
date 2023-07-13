@@ -15,9 +15,9 @@ import BoardWriteButton from './BoardWriteButton';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { onBoardLikeCountChange, deleteBoardObj, boardEditingOn, increaseBoardViewCount } from 'store';
+import { boardEditingOn } from 'store';
 
-function BoardDetailObj({ openBoard, setOpenBoard, isBoardOwner, boards, isLoading, maxPostNum }){
+function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum }){
 	let state = useSelector((state) => state)
 	let navigate = useNavigate();
 	let dispatch = useDispatch();
@@ -236,7 +236,8 @@ function LikeButton({ openBoard, state, dispatch, navigate, dataObj }){
       style={{fontSize:25, padding:'5px 20px 10px 20px',border:'1px solid rgb(200,200,200)'}}
       onClick={()=>{
         if(state.isLoggedIn === true){
-          dispatch(onBoardLikeCountChange(dataObj()))
+          //추천버튼 클릭 시 +되는 기능 요청 (axios)
+          // dispatch(onBoardLikeCountChange(dataObj()))
         } else {
           if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
             navigate("/login")

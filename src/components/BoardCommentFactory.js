@@ -5,7 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { increaseBoardCommentNumber, createBoardCommentObj, increaseBoardCommentCount } from 'store';
+import { increaseBoardCommentNumber, createBoardCommentObj } from 'store';
 
 function BoardCommentFactory({ boards }){
 	let [boardComment, setBoardComment] = useState('');
@@ -56,7 +56,7 @@ function BoardCommentFactory({ boards }){
 
 		dispatch(increaseBoardCommentNumber())
 		dispatch(createBoardCommentObj(createdBoardCommentObj))
-		dispatch(increaseBoardCommentCount(boards.boardNumber))
+		// dispatch(increaseBoardCommentCount(boards.boardNumber))
 
 		
 		setBoardComment("")

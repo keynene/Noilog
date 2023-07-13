@@ -6,7 +6,7 @@ import { GrEdit } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import { useDispatch, useSelector } from 'react-redux';
-import { decreaseBoardCommentCount, deleteBoardCommentObj, boardCommentEditingOn } from 'store';
+import { deleteBoardCommentObj, boardCommentEditingOn } from 'store';
 import BoardCommentEditForm from './BoardCommentEditForm';
 
 function BoardComments({ boardComments, boards, ci, isBoardCommentOwner }){
@@ -66,7 +66,7 @@ function BoardCommentEditDeleteButton({ dispatch, boardComments, ci }){
 			<span style={{cursor:'pointer', marginLeft:15, color:'black'}} onClick={()=>{
 				if (window.confirm('정말 댓글을 삭제하시겠습니까?')){
 					dispatch(deleteBoardCommentObj(boardComments[ci].commentNumber))
-					dispatch(decreaseBoardCommentCount(boardComments[ci].boardNumber))
+					// dispatch(decreaseBoardCommentCount(boardComments[ci].boardNumber))
 				}
 			}}><RiDeleteBin6Line/>
 			</span>

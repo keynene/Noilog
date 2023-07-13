@@ -135,18 +135,6 @@ const postNumber = createSlice({
 	}
 })
 
-const boardNumber = createSlice({
-	name : 'boardNumber',
-	initialState : {
-		num : 0
-	},
-	reducers : {
-		increaseBoardNumber(state){
-			state.num = state.num+1
-		}
-	}
-})
-
 const nowOpenBoard = createSlice({  //#수정완
 	name : 'nowOpenBoard',
 	initialState : {
@@ -179,32 +167,6 @@ const boardCommentNumber = createSlice({
 	reducers : {
 		increaseBoardCommentNumber(state){
 			state.num = state.num+1
-		}
-	}
-})
-
-const userObj = createSlice({
-	name : 'userObj',
-	initialState : null,
-
-	reducers : {
-		createUserObj(state,action){
-			alert(`${action.payload.nickname}님! 회원가입이 완료되었습니다!🎉`)
-			localStorage.setItem(JSON.stringify(action.payload.id), JSON.stringify(action.payload))
-			
-			return (
-				state = {
-					id:action.payload.id,
-					password:action.payload.password,
-					email:action.payload.email,
-					name:action.payload.name,
-					nickname:action.payload.nickname
-				}
-			)
-		},
-
-		logOutUserObj(state){
-			return state = null
 		}
 	}
 })
@@ -259,52 +221,6 @@ const feedObj = createSlice({
 	}
 })
 
-const boardObj = createSlice({
-	name : 'boardObj',
-	initialState : [],
-
-	reducers : {
-		createBoardObj(state,action){
-			let copy = {...action.payload}
-			state.push(copy)
-		},
-		
-		onBoardLikeCountChange(state,action){
-			let index = state.findIndex((x)=> x.boardNumber === action.payload.boardNumber )
-			if (state[index].likeCount.includes(action.payload.id) === false){
-				state[index].likeCount.push(action.payload.id);
-			}
-			else {
-				let dataIndex = state[index].likeCount.indexOf(action.payload.id)
-				state[index].likeCount.splice(dataIndex,1)
-			}
-		},
-
-		increaseBoardViewCount(state,action){
-			let index = state.findIndex((x)=> x.postNumber === action.payload.postNumber )
-			if (state[index].viewCount.includes(action.payload.id) === false){
-				state[index].viewCount.push(action.payload.id)
-			}
-		},
-
-		increaseBoardCommentCount(state,action){
-			let index = state.findIndex((x)=> x.boardNumber === action.payload )
-			state[index].commentCount ++;
-		},
-		
-		decreaseBoardCommentCount(state,action){
-			let index = state.findIndex((x)=> x.boardNumber === action.payload )
-			state[index].commentCount --;
-		},
-		
-		deleteBoardObj(state,action){
-			let index = state.findIndex((x)=> x.boardNumber === action.payload )
-			state[index].title = ""
-			state[index].content =""
-		},
-	}
-})
-
 const commentObj = createSlice({
 	name : 'commentObj',
 	initialState: [],
@@ -355,7 +271,6 @@ const boardCommentObj = createSlice({
 })
 
 export let { LoggedIn, LoggedOut, setNewToken } = isLoggedIn.actions 
-export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { increasePostNumber } = postNumber.actions 
@@ -365,8 +280,6 @@ export let { increaseCommentNumber } = commentNumber.actions
 export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 
 export let { onChangedPage } = currentPage.actions 
-export let { createBoardObj, onBoardLikeCountChange, increaseBoardViewCount, increaseBoardCommentCount, decreaseBoardCommentCount, deleteBoardObj, editBoardObj } = boardObj.actions 
-export let { increaseBoardNumber } = boardNumber.actions 
 export let { boardEditingOn, boardEditingOff } = isBoardEditing.actions 
 export let { increaseBoardCommentNumber } = boardCommentNumber.actions 
 export let { setOpenBoard } = nowOpenBoard.actions 
@@ -376,7 +289,6 @@ export let { boardCommentEditingOn, boardCommentEditingOff } = isBoardCommentEdi
 export default configureStore({
 	reducer: {
 		isLoggedIn : isLoggedIn.reducer,
-		userObj : userObj.reducer,
 
 		feedObj : feedObj.reducer,
 		postNumber : postNumber.reducer,
@@ -386,8 +298,6 @@ export default configureStore({
 		isCommentEditing : isCommentEditing.reducer,
 		
     currentPage : currentPage.reducer,
-		boardObj : boardObj.reducer,
-		boardNumber : boardNumber.reducer,
 		nowOpenBoard : nowOpenBoard.reducer,
 		isBoardEditing : isBoardEditing.reducer,
 		boardCommentObj : boardCommentObj.reducer,
