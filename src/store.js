@@ -183,36 +183,6 @@ const boardCommentNumber = createSlice({
 	}
 })
 
-const userInfo = createSlice({
-	name : 'userInfo',
-	initialState : {
-		id:'',
-		password:'',
-		email:'',
-		name:'',
-		nickname:'',
-	},
-
-	reducers : {
-		setUserInfo(state,action){
-			let copy = {...action.payload}
-			state = {...copy}
-			return state
-		},
-		popUserInfo(state){
-			let copy = {
-				id:'',
-				password:'',
-				email:'',
-				name:'',
-				nickname:'',
-			}
-			state = {...copy}
-			return state
-		},
-	}
-})
-
 const userObj = createSlice({
 	name : 'userObj',
 	initialState : null,
@@ -385,7 +355,6 @@ const boardCommentObj = createSlice({
 })
 
 export let { LoggedIn, LoggedOut, setNewToken } = isLoggedIn.actions 
-export let { setUserInfo, popUserInfo } = userInfo.actions 
 export let { createUserObj, logOutUserObj, deleteUserObj } = userObj.actions
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
@@ -408,7 +377,6 @@ export default configureStore({
 	reducer: {
 		isLoggedIn : isLoggedIn.reducer,
 		userObj : userObj.reducer,
-		userInfo : userInfo.reducer,
 
 		feedObj : feedObj.reducer,
 		postNumber : postNumber.reducer,

@@ -51,7 +51,7 @@ function App() {
 
           dispatch(setNewToken(response.headers.newtoken))
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err.response))
     }
   },[state.isLoggedIn.value])
 
