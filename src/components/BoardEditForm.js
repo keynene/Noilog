@@ -57,6 +57,9 @@ function BoardEditForm({ openBoard }){
       .then(response => {
         alert('수정되었습니다 😎')
         window.location.reload(`/boarddetail/${openBoard.postNumber}`);
+        //리로드 안시키고 async await 하는법 찾아보자
+        //그 다음은 Detail 컴포넌트 분리 좀 하고
+        //댓글기능 하던지 
       })
       .catch(err => console.log(err))
 

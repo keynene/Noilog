@@ -62,10 +62,10 @@ function BoardFactory(){
 
     axios
       .post(`http://3.36.85.194:42988/api/v1/posts`, data, config)
-      .then(response => {
+      .then(async(response) => {
         alert('😎게시글 등록이 완료되었습니다😎')
         dispatch(setNewToken(response.headers.newtoken))
-        navigate("/")
+        await navigate("/")
       })
       .catch(err => console.log(err))
 
