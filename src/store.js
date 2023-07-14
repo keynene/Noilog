@@ -7,7 +7,8 @@ const isLoggedIn = createSlice({
       localStorage.length > 0 ? 
         localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null ?
           true : false //localStorage의 accessToken, refreshToken 둘 다 null이 아닐 때
-        : false //localStorage 길이가 0일때 (access, refresh 둘 다 없을 때)
+        : false, //localStorage 길이가 0일때 (access, refresh 둘 다 없을 때)
+    isDeleted : false
     }
   ,
 
@@ -24,7 +25,13 @@ const isLoggedIn = createSlice({
       if (state.value && action.payload !== ''){
         localStorage.setItem("accessToken", action.payload)
       }
-    }
+    },
+    setDeletedUser(state){
+      state.isDeleted = true
+    },
+    setRecoveredUser(state){
+      state.isDeleted = false
+    },
   }
 })
 
@@ -270,7 +277,7 @@ const boardCommentObj = createSlice({
 	}
 })
 
-export let { LoggedIn, LoggedOut, setNewToken } = isLoggedIn.actions 
+export let { LoggedIn, LoggedOut, setNewToken, setDeletedUser, setRecoveredUser } = isLoggedIn.actions 
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { increasePostNumber } = postNumber.actions 

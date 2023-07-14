@@ -34,7 +34,12 @@ function Navigation(){
         alert('로그아웃 되었습니다 😀')
         await navigate('/')
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        if (err.response.data.message === `탈퇴대기 상태인 회원이에요.`){
+          dispatch(LoggedOut())
+          alert('로그아웃 되었습니다 😀')
+        }
+      })
   }
 
 	return (

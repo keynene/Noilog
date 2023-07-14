@@ -10,11 +10,12 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { setNewToken, LoggedIn } from 'store';
+import { setNewToken, LoggedIn, setRecoveredUser } from 'store';
 
 /* etc */
 import { Row, Col } from 'react-bootstrap';
 import { useQuery } from 'react-query';
+import { setDeletedUser } from 'store';
 
 function App() {
   let dispatch = useDispatch();
@@ -25,6 +26,8 @@ function App() {
   let [maxPostNum, setMaxPostNum] = useState(0);
   
   let [userInfo, setUserInfo] = useState();
+  
+  let API_URL = "http://3.36.85.194:42988/api/v1";
 
   let getConfig = () => {
     let config = {
@@ -36,7 +39,17 @@ function App() {
     return config
   }
 
-  let API_URL = "http://3.36.85.194:42988/api/v1";
+  /** 탈퇴대기 회원 복구신청 (axios) */
+  const recoveryUserRequest = (config) => {
+    axios
+      .get(`${API_URL}/members/recovery`, config)
+      .then(response => {
+        dispatch(setRecoveredUser())
+        alert(`계정 복구가 완료되었습니다 😍`)
+      })
+      .catch(err => console.log(err))
+  }
+
 
   /** 유저데이터 받아오기 (axios) */
   useEffect(()=>{
@@ -48,15 +61,21 @@ function App() {
         .then(response => {
           let userInfoCopy = {...response.data.data}
           setUserInfo(userInfoCopy)
-          console.log(response.data.data)
 
           dispatch(setNewToken(response.headers.newtoken))
         })
         .catch(err => {
+          console.log(err)
           if(err.response.status === 401){
             alert(`로그인 기간이 만료되었습니다. 다시 로그인 해주세요 😅`)
             dispatch(LoggedOut())
             navigate('/')
+          }
+          if(err.response.data.message === '탈퇴대기 상태인 회원이에요.'){
+            if(window.confirm(`현재 탈퇴대기 상태입니다. 계정 복구를 원하시면 확인을 눌러주세요 😋`)){
+              recoveryUserRequest(getConfig())
+            }
+            else { dispatch(setDeletedUser()) }
           }
         })
     }
