@@ -48,10 +48,11 @@ function App() {
         .then(response => {
           let userInfoCopy = {...response.data.data}
           setUserInfo(userInfoCopy)
+          console.log(response.data.data)
 
           dispatch(setNewToken(response.headers.newtoken))
         })
-        .catch(err => console.log(err.response))
+        .catch(err => console.log(err))
     }
   },[state.isLoggedIn.value])
 

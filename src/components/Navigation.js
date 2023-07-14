@@ -67,6 +67,11 @@ function Navigation(){
               :
                 null
             }
+            <Nav.Link onClick={()=>{ 
+              logoutRequest()
+            }} >Logout</Nav.Link>
+
+            <Nav.Link onClick={()=>{ navigate('/join') }}>Join Us</Nav.Link>
 
           </Nav>
         </Container>

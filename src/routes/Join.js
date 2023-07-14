@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
-
-/* Actions */
-import { LoggedIn } from '../store.js';
 
 function Join(){
-	const [uid, setUid] = useState("");
+	const [uusername, setUusername] = useState("");
   const [upassword, setUpassword] = useState("");
 	const [uemail, setUemail] = useState("");
 	const [uname, setUnName] = useState("");
 	const [unickname, setUnickname] = useState("");
 	
 	let navigate = useNavigate();
-	const [joinUserObj, setJoinUserObj] = useState(null);
+	const joinUserObj = 
+    {
+      username:"",
+      password:"",
+      email:"",
+      name:"",
+      nickname:"",
+    };
 
-	let dispatch = useDispatch();
+  let API_URL = "http://3.36.85.194:42988";
 
 	const onChange = (e) => {
 		const {
 			target: { name, value },
 		} = e;
 
-		if (name === 'id'){
-			setUid(value)
+		if (name === 'username'){
+			setUusername(value)
 		} else if (name === 'password'){
 			setUpassword(value)
 		} else if (name === 'email'){
@@ -35,35 +39,21 @@ function Join(){
 		}
 	}
 
+  let signupRequest = (createReq) => {
+    axios
+      .post(`${API_URL}/signup`, createReq)
+      .then(response => {
+        console.log(response)
+        alert(`회원가입이 완료됐어요 😎`)
+        navigate("/login")
+      })
+      .catch(err => console.log(err))
+  }
+
 	const onSubmit = (e) => {
 		e.preventDefault();
-		/* Join us 버튼 1번 클릭 시 콘솔 "1 2" 
-		               2번째 클릭 시  콘솔 "1 2 3" */
-		// console.log('1')
 		try{
-			if (uid !== "" && upassword !== "" && uemail !== "" && uname !== "" && unickname !== ""){
-				if (localStorage.getItem(JSON.stringify(uid)) !== null){
-					alert('이미 존재하는 아이디입니다.')
-				}
-				else {
-					setJoinUserObj({
-						id:uid,
-						password:upassword,
-						email:uemail,
-						name:uname,
-						nickname:unickname
-					})
-					// console.log('2')
-					// dispatch(createUserObj(joinUserObj))
-					alert(`${joinUserObj.nickname}님! 회원가입이 완료되었습니다!🎉`)
-					localStorage.setItem(JSON.stringify(joinUserObj.id), JSON.stringify(joinUserObj))
-					// console.log('3')
-					dispatch(LoggedIn(joinUserObj.id))
-					setJoinUserObj(null)
-					navigate('/')
-				}
-			}
-			else if (uid === ""){
+      if (uusername === ""){
 				alert('아이디를 입력해주세요!')
 			}
 			else if (upassword === ""){
@@ -78,6 +68,15 @@ function Join(){
 			else if (unickname === ""){
 				alert('닉네임을 입력해주세요!')
 			}
+      else {
+        joinUserObj.username = uusername
+        joinUserObj.password = upassword
+        joinUserObj.email = uemail
+        joinUserObj.name = uname
+        joinUserObj.nickname = unickname
+
+        signupRequest(joinUserObj)
+      }
 		} catch{}
 	}
 
@@ -85,7 +84,7 @@ function Join(){
 		<div>
 			<h4 style={{marginBottom:30, marginTop:30}} >Join</h4>
 			<form onSubmit={onSubmit}>
-				<p><input type="text" name="id" placeholder="Id" value={uid} onChange={onChange} /> </p>
+				<p><input type="text" name="username" placeholder="username" value={uusername} onChange={onChange} /> </p>
 				<p><input type="password" name="password" placeholder="Password" value={upassword} onChange={onChange} autoComplete="on" /></p>
 				<p><input type="email" name="email" placeholder="Email" value={uemail} onChange={onChange} /></p>
 				<p><input type="text" name="name" placeholder="Name" value={uname} onChange={onChange} /></p>
