@@ -71,7 +71,13 @@ function MyPage(){
           setMyInfo(myInfoCopy)
           setIsLoading(false)
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          if(err.response.status === 401){
+            alert(`로그인 기간이 만료되었습니다. 다시 로그인 해주세요 😅`)
+            dispatch(LoggedOut())
+            navigate('/')
+          }
+        })
     }
   },[])
 
