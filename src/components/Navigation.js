@@ -8,9 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoggedOut } from 'store.js';
 
 function Navigation(){
+  let state = useSelector((state) => state)
+  let SURVER_URL = useSelector((state) => state.SURVER_URL)
+
   let dispatch = useDispatch();
 	let navigate = useNavigate();
-  let state = useSelector((state) => {return state})
 
   let getConfig = () => {
     let config = {
@@ -22,13 +24,11 @@ function Navigation(){
     return config
   }
 
-  let API_URL = "http://3.36.85.194:42988";
-
   const logoutRequest = () => {
     let config = getConfig()
 
     axios
-      .post(`${API_URL}/logout`,{},config)
+      .post(`${SURVER_URL}/logout`,{},config)
       .then(async(response) => {
         dispatch(LoggedOut()) 
         alert('로그아웃 되었습니다 😀')

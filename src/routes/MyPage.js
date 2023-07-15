@@ -7,16 +7,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import sampleImgUrl from '../img/sample.jpg'
 
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedOut, setDeletedUser, setRecoveredUser } from 'store.js';
+import { LoggedOut } from 'store.js';
 
 function MyPage(){
-	let state = useSelector((state) => {return state})
+	let state = useSelector((state) => state)
+	let SERVER_URL = useSelector((state) => state.SERVER_URL)
+	let MEMBER_URL = useSelector((state) => state.MEMBER_URL)
+
 	let dispatch = useDispatch();
 	let navigate = useNavigate();
   let [isLoading, setIsLoading] = useState(true)
-  let [isDeletedUser, setIsDeletedUser] = useState(false)
-
-  let API_URL = "http://3.36.85.194:42988";
 
   let [myInfo, setMyInfo] = useState();
 
@@ -33,7 +33,7 @@ function MyPage(){
   /** 로그아웃 요청 (axios-logout) */
   const logoutRequest = (config) => {
     axios
-      .post(`${API_URL}/logout`,{}, config)
+      .post(`${SERVER_URL}/logout`,{}, config)
       .then((response) => {
         navigate('/')
         dispatch(LoggedOut()) 
@@ -45,25 +45,12 @@ function MyPage(){
   /** 회원탈퇴 요청 (axios-delete) */
   const deleteUserRequest = (config) => {
     axios
-      .delete(`${API_URL}/api/v1/members`, config)
+      .delete(`${MEMBER_URL}`, config)
       .then(response => {
         alert(`회원탈퇴가 완료되었습니다 😥
 *탈퇴한 계정은 2시간 이내 복구신청이 가능합니다*`)
         navigate("/")
         dispatch(LoggedOut())
-      })
-      .catch(err => console.log(err))
-  }
-
-  /** 탈퇴대기 회원 복구신청 (axios) */
-  const recoveryUserRequest = (config) => {
-    axios
-      .get(`${API_URL}/api/v1/members/recovery`, config)
-      .then(response => {
-        console.log(response)
-        dispatch(setRecoveredUser())
-        alert(`계정 복구가 완료되었습니다 😍`)
-        navigate("/")
       })
       .catch(err => console.log(err))
   }
@@ -86,7 +73,7 @@ function MyPage(){
     if (state.isLoggedIn.value){
       let config = getConfig()
       axios
-        .get(`${API_URL}/api/v1/members`, config)
+        .get(`${MEMBER_URL}`, config)
         .then(response => {
           let myInfoCopy = {...response.data.data}
           setMyInfo(myInfoCopy)
@@ -98,16 +85,6 @@ function MyPage(){
             dispatch(LoggedOut())
             navigate('/')
           }
-          if(err.response.data.message === '탈퇴대기 상태인 회원이에요.'){
-            if(window.confirm(`현재 탈퇴대기 상태입니다. 계정 복구를 원하시면 확인을 눌러주세요 😋`)){
-              recoveryUserRequest(getConfig())
-            }
-            else { 
-              dispatch(setDeletedUser())
-              setIsLoading(false)
-              setIsDeletedUser(true)
-            }
-          }
         })
     }
   },[])
@@ -115,14 +92,6 @@ function MyPage(){
 	return(
 		<div>
       { isLoading ? <>loading...</> :
-        isDeletedUser ? 
-          <>
-            탈퇴대기중인 계정은 마이페이지를 이용하실 수 없습니다😥 <br/>
-            계정 복구를 원하시면 아래 버튼을 눌러주세요 ! <br/>
-            <br/>
-            <button onClick={()=>{recoveryUserRequest(getConfig())}}>계정복구</button>
-          </> 
-        :
         <Container style={{marginTop:30, width:800}}>
           <Row>
             <Col><img src={sampleImgUrl} alt="" width="133px" height="158px" /></Col>

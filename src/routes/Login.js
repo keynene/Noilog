@@ -1,11 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 /* Actions */
 import { LoggedIn } from '../store.js';
 function Login(){
+
+  let SURVER_URL = useSelector((state) => state.SURVER_URL)
 
 	const [uid, setUid] = useState("");
   const [upassword, setUpassword] = useState("");
@@ -16,8 +18,6 @@ function Login(){
 
 	let dispatch = useDispatch()
 	let navigate = useNavigate();
-
-  let API_URL = "http://3.36.85.194:42988";
 
 	const onChange = (e) => {
 		const {
@@ -31,6 +31,28 @@ function Login(){
 		}
 	}
 
+  const loginRequest = (config) => {
+    axios
+      .post(`${SURVER_URL}/login`, config)
+      .then(response => {
+        let accessToken = response.headers.accesstoken
+        let refreshToken = response.headers.refreshtoken
+        
+        localStorage.setItem("accessToken", accessToken)
+        localStorage.setItem("refreshToken", refreshToken)
+        //토큰만 저장, 유저정보는 App.js에서 저장
+        dispatch(LoggedIn())
+
+        navigate("/")
+      })
+      .catch(err => {
+        if(err.response && err.response.status === 400){
+          alert('🙅🏻‍♀️회원정보가 없습니다🙅🏻‍♀️')
+        }
+        console.log(err.response)
+      })
+  }
+
 	const onSubmit = (e) => {
 		e.preventDefault();
 		try {
@@ -38,25 +60,7 @@ function Login(){
         loginObj.password = upassword
         loginObj.username = uid
 
-        axios
-          .post(`${API_URL}/login`, loginObj)
-          .then(response => {
-            let accessToken = response.headers.accesstoken
-            let refreshToken = response.headers.refreshtoken
-            
-            localStorage.setItem("accessToken", accessToken)
-            localStorage.setItem("refreshToken", refreshToken)
-            //토큰만 저장, 유저정보는 App.js에서 저장
-            dispatch(LoggedIn())
-            
-            navigate("/")
-          })
-          .catch(err => {
-            if(err.response && err.response.status === 400){
-              alert('🙅🏻‍♀️회원정보가 없습니다🙅🏻‍♀️')
-            }
-            console.log(err.response)
-          })
+        loginRequest(loginObj)
 			}
 
 			else if (uid === ""){

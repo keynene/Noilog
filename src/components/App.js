@@ -10,24 +10,27 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { setNewToken, LoggedIn, setRecoveredUser } from 'store';
+import { setNewToken, setRecoveredUser, setDeletedUser, LoggedOut } from 'store';
 
 /* etc */
 import { Row, Col } from 'react-bootstrap';
 import { useQuery } from 'react-query';
-import { setDeletedUser } from 'store';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
   let dispatch = useDispatch();
+  let navigate = useNavigate();
+  
   let state = useSelector((state) => state)
+  let API_URL = useSelector((state) => state.API_URL)
+  let PAGE_URL = useSelector((state) => state.PAGE_URL)
+
   let [boards, setBoards] = useState([]);
   let [lastPage, setLastPage] = useState(0);
   let [firstPage, setFirstPage] = useState(1);
   let [maxPostNum, setMaxPostNum] = useState(0);
   
   let [userInfo, setUserInfo] = useState();
-  
-  let API_URL = "http://3.36.85.194:42988/api/v1";
 
   let getConfig = () => {
     let config = {
@@ -75,7 +78,7 @@ function App() {
             if(window.confirm(`현재 탈퇴대기 상태입니다. 계정 복구를 원하시면 확인을 눌러주세요 😋`)){
               recoveryUserRequest(getConfig())
             }
-            else { dispatch(setDeletedUser()) }
+            else { dispatch(LoggedOut()) }
           }
         })
     }
@@ -83,7 +86,7 @@ function App() {
 
   /** 게시글 데이터 받아오기 (axios) */
   useEffect(()=>{
-    axios.get(`${API_URL}/posts/search?page=${state.currentPage.page}`)
+    axios.get(`${PAGE_URL}${state.currentPage.page}`)
       .then(response => {
         let boardCopy = [...response.data.data.posts]
         setBoards(boardCopy)
@@ -101,7 +104,7 @@ function App() {
   let boardData = useQuery(['boardData'],()=>{
     return (
       axios
-      .get(`${API_URL}/posts/search?page=${state.currentPage.page}`)
+      .get(`${PAGE_URL}${state.currentPage.page}`)
       .then(response => {
         let boardCopy = [...response.data.data.posts]
         setBoards(boardCopy)

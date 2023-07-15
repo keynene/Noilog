@@ -9,14 +9,39 @@ import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setNewToken } from 'store';
+import { getToken } from 'store';
 
 function BoardFactory(){
 	let state = useSelector((state) => state)
+	let POST_URL = useSelector((state) => state.POST_URL)
+
 	let navigate = useNavigate();
   let dispatch = useDispatch();
 	
 	let [boardTitle, setBoardTitle] = useState('');
 	let [boardContent, setBoardContent] = useState('');
+
+  let getConfig = () => {
+    let config = {
+      headers : {
+        "accesstoken" : localStorage.getItem("accessToken"),
+        "refreshtoken" : localStorage.getItem("refreshToken"),
+      },
+    }
+    return config
+  }
+
+  /** 게시글 작성 요청 (axios) */
+  const postRequest = (data, config) => {
+    axios
+      .post(`${POST_URL}`, data, config)
+      .then(async(response) => {
+        alert('😎게시글 등록이 완료되었습니다😎')
+        dispatch(setNewToken(response.headers.newtoken))
+        await navigate("/")
+      })
+      .catch(err => console.log(err))
+  }
 	
 	const onTitleChange = (e) => {
 		const {
@@ -46,28 +71,11 @@ function BoardFactory(){
 			}
 		}
 
-    let accessToken = localStorage.getItem("accessToken")
-    let refreshToken = localStorage.getItem("refreshToken")
-    let config = {
-      headers : {
-        "accesstoken" : accessToken,
-        "refreshtoken" : refreshToken
-      },
-    }
-
     let data = {
       "title": boardTitle,
       "content" : boardContent,
     }
-
-    axios
-      .post(`http://3.36.85.194:42988/api/v1/posts`, data, config)
-      .then(async(response) => {
-        alert('😎게시글 등록이 완료되었습니다😎')
-        dispatch(setNewToken(response.headers.newtoken))
-        await navigate("/")
-      })
-      .catch(err => console.log(err))
+    postRequest(data, getConfig())
 
 		setBoardTitle("");
 		setBoardContent("");

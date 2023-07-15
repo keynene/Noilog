@@ -1,5 +1,26 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit';
 
+const SURVER_URL = createSlice({
+  name : 'SERVER_URL',
+  initialState : 'http://3.36.85.194:42988'
+})
+const API_URL = createSlice({
+  name : 'API_URL',
+  initialState : 'http://3.36.85.194:42988/api/v1'
+})
+const PAGE_URL = createSlice({
+  name : 'API_URL',
+  initialState : 'http://3.36.85.194:42988/api/v1/posts/search?page='
+})
+const POST_URL = createSlice({
+  name : 'API_URL',
+  initialState : 'http://3.36.85.194:42988/api/v1/posts'
+})
+const MEMBER_URL = createSlice({
+  name : 'API_URL',
+  initialState : 'http://3.36.85.194:42988/api/v1/members'
+})
+
 const isLoggedIn = createSlice({
   name: 'isLoggedIn',
   initialState: {
@@ -295,6 +316,12 @@ export let { boardCommentEditingOn, boardCommentEditingOff } = isBoardCommentEdi
 
 export default configureStore({
 	reducer: {
+		SURVER_URL : SURVER_URL.reducer,
+		API_URL : API_URL.reducer,
+		PAGE_URL : PAGE_URL.reducer,
+		POST_URL : POST_URL.reducer,
+		MEMBER_URL : MEMBER_URL.reducer,
+
 		isLoggedIn : isLoggedIn.reducer,
 
 		feedObj : feedObj.reducer,
