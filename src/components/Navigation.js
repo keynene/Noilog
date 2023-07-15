@@ -35,7 +35,12 @@ function Navigation(){
         await navigate('/')
       })
       .catch(err => {
+        console.log(err)
         if (err.response.data.message === `탈퇴대기 상태인 회원이에요.`){
+          dispatch(LoggedOut())
+          alert('로그아웃 되었습니다 😀')
+        }
+        if (err.response.data.message === `모든 토큰 만료. 로그인 해주세요`){
           dispatch(LoggedOut())
           alert('로그아웃 되었습니다 😀')
         }
