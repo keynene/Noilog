@@ -10,7 +10,7 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { setNewToken, setRecoveredUser, setDeletedUser, LoggedOut } from 'store';
+import { setNewToken, LoggedOut } from 'store';
 
 /* etc */
 import { Row, Col } from 'react-bootstrap';
@@ -47,7 +47,6 @@ function App() {
     axios
       .get(`${API_URL}/members/recovery`, config)
       .then(response => {
-        dispatch(setRecoveredUser())
         alert(`계정 복구가 완료되었습니다 😍`)
       })
       .catch(err => console.log(err))
@@ -75,7 +74,8 @@ function App() {
             navigate('/')
           }
           if(err.response.data.message === '탈퇴대기 상태인 회원이에요.'){
-            if(window.confirm(`현재 탈퇴대기 상태입니다. 계정 복구를 원하시면 확인을 눌러주세요 😋`)){
+            if(window.confirm(`현재 탈퇴대기 상태입니다. 계정 복구를 원하시면 확인을 눌러주세요 😋
+취소를 누르면 로그아웃됩니다.`)){
               recoveryUserRequest(getConfig())
             }
             else { dispatch(LoggedOut()) }

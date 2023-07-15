@@ -9,16 +9,20 @@ const API_URL = createSlice({
   initialState : 'http://3.36.85.194:42988/api/v1'
 })
 const PAGE_URL = createSlice({
-  name : 'API_URL',
+  name : 'PAGE_URL',
   initialState : 'http://3.36.85.194:42988/api/v1/posts/search?page='
 })
 const POST_URL = createSlice({
-  name : 'API_URL',
+  name : 'POST_URL',
   initialState : 'http://3.36.85.194:42988/api/v1/posts'
 })
 const MEMBER_URL = createSlice({
-  name : 'API_URL',
+  name : 'MEMBER_URL',
   initialState : 'http://3.36.85.194:42988/api/v1/members'
+})
+const COMMENTS_URL = createSlice({
+  name : 'COMMENTS_URL',
+  initialState : 'http://3.36.85.194:42988/api/v1/comments'
 })
 
 const isLoggedIn = createSlice({
@@ -29,7 +33,6 @@ const isLoggedIn = createSlice({
         localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null ?
           true : false //localStorage의 accessToken, refreshToken 둘 다 null이 아닐 때
         : false, //localStorage 길이가 0일때 (access, refresh 둘 다 없을 때)
-    isDeleted : false
     }
   ,
 
@@ -46,12 +49,6 @@ const isLoggedIn = createSlice({
       if (state.value && action.payload !== ''){
         localStorage.setItem("accessToken", action.payload)
       }
-    },
-    setDeletedUser(state){
-      state.isDeleted = true
-    },
-    setRecoveredUser(state){
-      state.isDeleted = false
     },
   }
 })
@@ -159,18 +156,6 @@ const postNumber = createSlice({
 	reducers : {
 		increasePostNumber(state){
 			state.num = state.num+1
-		}
-	}
-})
-
-const nowOpenBoard = createSlice({  //#수정완
-	name : 'nowOpenBoard',
-	initialState : {
-		postNumber : 0,
-	},
-	reducers : {
-		setOpenBoard(state,action){
-			state.postNumber = action.payload
 		}
 	}
 })
@@ -298,7 +283,7 @@ const boardCommentObj = createSlice({
 	}
 })
 
-export let { LoggedIn, LoggedOut, setNewToken, setDeletedUser, setRecoveredUser } = isLoggedIn.actions 
+export let { LoggedIn, LoggedOut, setNewToken, } = isLoggedIn.actions 
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { increasePostNumber } = postNumber.actions 
@@ -310,7 +295,6 @@ export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions
 export let { onChangedPage } = currentPage.actions 
 export let { boardEditingOn, boardEditingOff } = isBoardEditing.actions 
 export let { increaseBoardCommentNumber } = boardCommentNumber.actions 
-export let { setOpenBoard } = nowOpenBoard.actions 
 export let { createBoardCommentObj, deleteBoardCommentObj, editBoardCommentObj } = boardCommentObj.actions 
 export let { boardCommentEditingOn, boardCommentEditingOff } = isBoardCommentEditing.actions 
 
@@ -321,6 +305,7 @@ export default configureStore({
 		PAGE_URL : PAGE_URL.reducer,
 		POST_URL : POST_URL.reducer,
 		MEMBER_URL : MEMBER_URL.reducer,
+		COMMENTS_URL : COMMENTS_URL.reducer,
 
 		isLoggedIn : isLoggedIn.reducer,
 
@@ -332,7 +317,6 @@ export default configureStore({
 		isCommentEditing : isCommentEditing.reducer,
 		
     currentPage : currentPage.reducer,
-		nowOpenBoard : nowOpenBoard.reducer,
 		isBoardEditing : isBoardEditing.reducer,
 		boardCommentObj : boardCommentObj.reducer,
 		boardCommentNumber : boardCommentNumber.reducer,

@@ -18,14 +18,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { boardEditingOn } from 'store';
 
 function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum }){
-	let state = useSelector((state) => state)
-	let navigate = useNavigate();
+  let navigate = useNavigate();
 	let dispatch = useDispatch();
-
-  let [boardComments, setBoardComments] = useState([]);
-
-  let API_URL = "http://3.36.85.194:42988/api/v1";
+  
+	let state = useSelector((state) => state)
+	let API_URL = useSelector((state) => state.API_URL)
   let postNumber = "postNumber";
+  
+  let [boardComments, setBoardComments] = useState([]);
 
   let getConfig = () => {
     let config = {
@@ -61,7 +61,6 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum
       axios
         .delete(`${API_URL}/posts?${postNumber}=${openBoard.postNumber}`,config)
         .then(async(response) => {
-          console.log(response)
           alert('삭제되었습니다.')
           await navigate('/')
         })

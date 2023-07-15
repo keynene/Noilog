@@ -20,13 +20,13 @@ function BoardDetail({boards, userInfo, maxPostNum}){
 
   let navigate = useNavigate();
   let dispatch = useDispatch();
+
   let state = useSelector((state) => state)
+  let API_URL = useSelector((state) => state.API_URL)
+  
   let [isBoardOwner, setIsBoardOwner] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
 
-  let API_URL = "http://3.36.85.194:42988/api/v1";
-
-  
   useEffect(()=>{
     if (openBoard !== undefined){
       setIsLoading(false)

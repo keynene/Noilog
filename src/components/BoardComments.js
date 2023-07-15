@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import { Row, Col } from 'react-bootstrap';
 
@@ -9,9 +10,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteBoardCommentObj, boardCommentEditingOn } from 'store';
 import BoardCommentEditForm from './BoardCommentEditForm';
 
-function BoardComments({ boardComments, boards, ci, isBoardCommentOwner }){
+function BoardComments({ openBoard, boardComments, boards, ci, isBoardCommentOwner }){
 	let dispatch = useDispatch();
+
 	let state = useSelector((state) => state)
+
+  let COMMENTS_URL = useSelector((state) => state.COMMENTS_URL)
+  let postNumber = 'postNumber'
+
+  let [comments, setComments] = useState([]);
+
+  useEffect(()=>{
+    console.log('?')
+    axios
+      .get(`${COMMENTS_URL}/search?${postNumber}=${openBoard.postNumber}`)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => console.log(err))
+  },[openBoard])
 
 	const EditingAndTrueCommentNumber = (ci) => {
 		if (state.isBoardCommentEditing.editState){
