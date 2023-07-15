@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 /* Redux, State */
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setCommentPostedTrue } from 'store';
 
 function BoardCommentFactory({ openBoard, boards }){
 	let navigate = useNavigate();
+  let dispatch = useDispatch();
   
   let state = useSelector((state) => state);
   let COMMENTS_URL = useSelector((state) => state.COMMENTS_URL);
@@ -17,7 +19,7 @@ function BoardCommentFactory({ openBoard, boards }){
 	let [comment, setComment] = useState('');
   let commentObj = { content : '' };
   
-	const onBoardCommentChange = (e) => {
+	const onCommentChange = (e) => {
 		const {
 			target: { value },
 		} = e;
@@ -35,13 +37,12 @@ function BoardCommentFactory({ openBoard, boards }){
   }
 
   const commentPostRequest = (data, config) => {
-    console.log(`${COMMENTS_URL}?${postNumber}=${openBoard.postNumber}`)
     axios
       .post(`${COMMENTS_URL}?${postNumber}=${openBoard.postNumber}`, data, config)
       .catch(err => console.log(err))
   }
 
-	const onBoardCommentSubmit = (e) => {
+	const onCommentSubmit = (e) => {
 		e.preventDefault();
 
 		if (state.isLoggedIn.value === false){
@@ -56,6 +57,7 @@ function BoardCommentFactory({ openBoard, boards }){
 
     commentObj.content = comment
     commentPostRequest(commentObj, getConfig())
+    dispatch(setCommentPostedTrue())
 		
 		setComment("")
 	}
@@ -64,10 +66,15 @@ function BoardCommentFactory({ openBoard, boards }){
 	return(
 		<Row>
 			<Col style={{paddingTop:20, paddingBottom:20, textAlign:'left', borderBottom:'1px solid #ccc'}}>
-				<form onSubmit={onBoardCommentSubmit} className="comment_container" style={{border:'1px solid rgb(200,200,200)'}}>
-					<textarea className="comment_textarea" placeholder="댓글 달기..." color="gray" value={comment} onChange={onBoardCommentChange} />
-					{/* textarea에 value, onchange 추가 */}
-					<input className="comment_submit" type="submit" value="↑" onClick={()=>{ }} />
+				<form onSubmit={onCommentSubmit} className="comment_container" style={{border:'1px solid rgb(200,200,200)'}}>
+					<textarea 
+            className="comment_textarea" 
+            placeholder="댓글 달기..." 
+            color="gray" 
+            value={comment} 
+            onChange={onCommentChange} 
+          />
+					<input className="comment_submit" type="submit" value="↑"/>
 				</form>
 			</Col>
 		</Row>

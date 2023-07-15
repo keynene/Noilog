@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { boardEditingOff } from 'store';
+import { boardEditingOff, setViewPointNull } from 'store';
 
 /* Components */
 import BoardEditForm from './BoardEditForm';
@@ -47,8 +47,21 @@ function BoardDetail({boards, userInfo, maxPostNum}){
       .then(response => { 
         let getData = response.data.data
         setOpenBoard(getData)
+        dispatch(setViewPointNull())
       })
-      .catch(err =>  console.log(err.message) )
+      .catch(err => {
+        //400에러 겁나 찍히긴 하는데 일단 원하는대로 작동함
+        if (err.response.status === 400 && err.response.data.message === `존재하지 않는 글이에요.`){
+          if (state.postViewPoint.value === 'prev'){
+            postNumber = parseInt(postNumber)-1
+            navigate(`/boarddetail/${postNumber}`)
+          }
+          else if (err.response.status === 400 && state.postViewPoint.value === 'next'){
+            postNumber = parseInt(postNumber)+1
+            navigate(`/boarddetail/${postNumber}`)
+          }
+        }
+      })
   },[postNumber])
 
   return (
@@ -88,7 +101,7 @@ function BoardDetail({boards, userInfo, maxPostNum}){
         <BoardEditForm openBoard={openBoard} />
       ) : (
       //수정중이 아닐때 게시글 출력
-        <BoardDetailObj openBoard={openBoard} setOpenBoard={setOpenBoard} isBoardOwner={isBoardOwner} boards={boards} isLoading={isLoading} maxPostNum={maxPostNum} />
+        <BoardDetailObj openBoard={openBoard} setOpenBoard={setOpenBoard} userInfo={userInfo} isBoardOwner={isBoardOwner} boards={boards} isLoading={isLoading} maxPostNum={maxPostNum} />
       )}
     </Container>
 	)

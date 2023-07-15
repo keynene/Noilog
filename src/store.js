@@ -66,6 +66,23 @@ const currentPage = createSlice({
   }
 })
 
+const postViewPoint = createSlice({
+  name : 'postViewPoint',
+  initialState : {value : ''},
+
+  reducers : {
+    setViewPointPrev(state){
+      state.value = 'prev'
+    },
+    setViewPointNext(state){
+      state.value = 'next'
+    },
+    setViewPointNull(state){
+      state.value = ''
+    },
+  }
+})
+
 const isFeedEditing = createSlice({
 	name : 'isFeedEditing',
 	initialState : {
@@ -126,6 +143,21 @@ const isCommentEditing = createSlice({
 			state.editState = false
 		},
 	}
+})
+
+//댓글작성 시 댓글불러오기 axios 버튼역할
+const isCommentPosted = createSlice({
+  name : 'isCommentPosted',
+  initialState : {value : false},
+
+  reducers : {
+    setCommentPostedTrue(state){
+      state.value = true
+    },
+    setCommentPostedFalse(state){
+      state.value = false
+    },
+  }
 })
 
 const isBoardCommentEditing = createSlice({
@@ -293,7 +325,9 @@ export let { increaseCommentNumber } = commentNumber.actions
 export let { commentEditingOn, commentEditingOff } = isCommentEditing.actions 
 
 export let { onChangedPage } = currentPage.actions 
+export let { setViewPointNext, setViewPointPrev, setViewPointNull } = postViewPoint.actions 
 export let { boardEditingOn, boardEditingOff } = isBoardEditing.actions 
+export let { setCommentPostedTrue, setCommentPostedFalse } = isCommentPosted.actions 
 export let { increaseBoardCommentNumber } = boardCommentNumber.actions 
 export let { createBoardCommentObj, deleteBoardCommentObj, editBoardCommentObj } = boardCommentObj.actions 
 export let { boardCommentEditingOn, boardCommentEditingOff } = isBoardCommentEditing.actions 
@@ -317,7 +351,9 @@ export default configureStore({
 		isCommentEditing : isCommentEditing.reducer,
 		
     currentPage : currentPage.reducer,
+    postViewPoint : postViewPoint.reducer,
 		isBoardEditing : isBoardEditing.reducer,
+		isCommentPosted : isCommentPosted.reducer,
 		boardCommentObj : boardCommentObj.reducer,
 		boardCommentNumber : boardCommentNumber.reducer,
 		isBoardCommentEditing : isBoardCommentEditing.reducer,

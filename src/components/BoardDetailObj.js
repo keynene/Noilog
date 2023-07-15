@@ -15,17 +15,18 @@ import BoardWriteButton from './BoardWriteButton';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { boardEditingOn } from 'store';
+import { boardEditingOn, setCommentPostedFalse, setViewPointNext, setViewPointPrev, setViewPointNull } from 'store';
 
-function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum }){
+function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, maxPostNum }){
   let navigate = useNavigate();
 	let dispatch = useDispatch();
   
 	let state = useSelector((state) => state)
 	let API_URL = useSelector((state) => state.API_URL)
-  let postNumber = "postNumber";
+  const COMMENTS_URL = useSelector((state) => state.COMMENTS_URL)
+  const postNumber = 'postNumber'
   
-  let [boardComments, setBoardComments] = useState([]);
+  let [comments, setComments] = useState([]);
 
   let getConfig = () => {
     let config = {
@@ -37,23 +38,33 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum
     return config
   }
 
-	useEffect(()=>{
-    setBoardComments([...state.boardCommentObj])
-  },[state.boardCommentObj])
+  /** 댓글 받아오기 (axios) */
+  useEffect(()=>{
+    if (openBoard !== undefined){
+      axios
+        .get(`${COMMENTS_URL}/search?${postNumber}=${openBoard.postNumber}`)
+        .then(response => {
+          setComments(response.data.data)
+          dispatch(setCommentPostedFalse())
+        })
+        .catch(err => console.log(err))
+    }
+  },[openBoard, state.isCommentPosted.value])
 
 	
   const MoveToTop = () => {
     window.scrollTo({ top:0, behavior:'smooth' });
   }
 
-  const dataObj = () => {
-		let data = {
-			id : state.userInfo.id,
-			boardNumber : state.nowOpenBoard.boardNumber
-		}
-		return data
-	}
+  // const dataObj = () => {
+	// 	let data = {
+	// 		id : state.userInfo.id,
+	// 		boardNumber : state.nowOpenBoard.boardNumber
+	// 	}
+	// 	return data
+	// }
 
+  /** 게시글 삭제하기 (axios) */
   const onDeleteButtonClick = () => {
     if (window.confirm('게시글을 삭제하시겠습니까?')){
       let config = getConfig()
@@ -66,11 +77,12 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum
         })
         .catch(err => console.log(err))
     }
-    
   }
 
   const onNextButtonClick = () => {
+    dispatch(setViewPointNext());
     if (openBoard.postNumber === maxPostNum){
+      dispatch(setViewPointNull())
       return alert('다음글이 없습니다!')
     }
     else {
@@ -80,7 +92,9 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum
   }
 
   const onPrevButtonClick = () => {
+    dispatch(setViewPointPrev());
     if (openBoard.postNumber === 1){
+      dispatch(setViewPointNull())
       return alert('이전글이 없습니다!')
     }
     else{
@@ -94,6 +108,9 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum
 		(
       <>
       <Row style={{marginTop:15}}>
+        <Col style={{textAlign:'left', paddingLeft:50, fontSize:20}}>
+          {openBoard.writer.nickname}
+        </Col>
         <Col style={{textAlign:'right'}}>
           {/* 수삭목댓 컴포넌트 */}
           <BoardUpDelInCom 
@@ -119,7 +136,7 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum
       {/* 추천버튼 컴포넌트 */}
       <Row>
         <Col style={{alignItems:'baseline'}}>
-          <LikeButton state={state} openBoard={openBoard} boards={boards} dispatch={dispatch} navigate={navigate} dataObj={dataObj} />
+          <LikeButton state={state} openBoard={openBoard} boards={boards} dispatch={dispatch} navigate={navigate} />
         </Col>
       </Row>
 
@@ -152,23 +169,23 @@ function BoardDetailObj({ openBoard, isBoardOwner, boards, isLoading, maxPostNum
 
       {/* 댓글출력 컴포넌트 */}
       <Row style={{marginTop:10}}>
-        <Col style={{textAlign:'left'}}><BiCommentDetail/> 댓글 ({openBoard.commentCount})</Col>
+        <Col style={{textAlign:'left'}}><BiCommentDetail/> 댓글 ({comments.length})</Col>
       </Row>
       <Row>
         <Col>
           <Container>
-            { boardComments.map((ca,ci) => 
+            { comments.map((ca,ci) => 
               <BoardComments 
                 openBoard={openBoard}
                 boards={boards} 
-                boardComments={boardComments} 
+                comments={comments} 
                 ci={ci} 
                 key={ci} 
-                isBoardCommentOwner={ 
-                  state.isLoggedIn ? state.userInfo.id === boardComments[ci].writer : false
+                isCommentOwner={ 
+                  state.isLoggedIn.value ? userInfo.memberNumber === comments[ci].writer.memberNumber : false
                 } 
               />
-            )}
+              )}
           </Container>
         </Col>
       </Row>
@@ -228,7 +245,7 @@ function BoardUpDelInCom({ openBoard, isBoardOwner, navigate, onDeleteButtonClic
 }
 
 /* 추천버튼 컴포넌트 */
-function LikeButton({ openBoard, state, dispatch, navigate, dataObj }){
+function LikeButton({ openBoard, state, dispatch, navigate }){
   return(
     <Button 
       variant="light" 
