@@ -4,17 +4,16 @@ import { Button } from 'react-bootstrap';
 
 import ReactQuill from 'react-quill';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { boardEditingOff } from 'store';
 
-let API_URL = "http://3.36.85.194:42988/api/v1";
-let postNumber = "postNumber";
-
-function BoardEditForm({ openBoard }){
+function BoardEditForm({ openBoard, setPostLoading }){
 	let [editTitle, setEditTitle] = useState(openBoard.title);
   let [editContent, setEditContent] = useState(openBoard.content);
 
 	let dispatch = useDispatch();
+  let API_URL = useSelector((state) => state.API_URL)
+  let postNumber = "postNumber";
 
 	const onTitleChange = (e) => {
 		const {
@@ -56,12 +55,16 @@ function BoardEditForm({ openBoard }){
       .put(`${API_URL}/posts?${postNumber}=${openBoard.postNumber}`, editData, config)
       .then(response => {
         alert('수정되었습니다 😎')
-        window.location.reload(`/boarddetail/${openBoard.postNumber}`);
+        setPostLoading(false)
+        // window.location.reload(`/boarddetail/${openBoard.postNumber}`);
         //리로드 안시키고 async await 하는법 찾아보자
         //그 다음은 Detail 컴포넌트 분리 좀 하고
         //댓글기능 하던지 
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        setPostLoading(false)
+      })
 
 		dispatch(boardEditingOff())
 
@@ -86,6 +89,7 @@ function BoardEditForm({ openBoard }){
 
 	return(
 		<form onSubmit={onSubmit}>
+      {setPostLoading(true)}
 			<p><input 
 				className='board_title' 
 				type="text" 

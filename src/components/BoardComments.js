@@ -7,25 +7,39 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteBoardCommentObj, boardCommentEditingOn } from 'store';
 
 import BoardCommentEditForm from './BoardCommentEditForm';
+import axios from 'axios';
 
-function BoardComments({ openBoard, comments, boards, ci, isCommentOwner }){
+//댓글 받아오기 axios 기능은 BoardDetailObj 컴포넌트 참고, 여기는 댓글 출력 컴포넌트
+
+function BoardComments({ openBoard, comments, boards, ci, isCommentOwner, setCommentLoading }){
 	let dispatch = useDispatch();
 
 	let state = useSelector((state) => state)
+	let COMMENTS_URL = useSelector((state) => state.COMMENTS_URL)
 
-	const EditingAndTrueCommentNumber = (ci) => {
+	const EditingAndTrueCommentNumber = (commentNumber) => {
 		if (state.isBoardCommentEditing.editState){
-			if (state.isBoardCommentEditing.commentNumber === ci){
+			if (state.isBoardCommentEditing.commentNumber === commentNumber){
 				return true
 			}
 		}
 		return false
 	}
 
+  let getConfig = () => {
+    let config = {
+      headers : {
+        "accesstoken" : localStorage.getItem("accessToken"),
+        "refreshtoken" : localStorage.getItem("refreshToken")
+      }
+    }
+    return config
+  }
+
 	return (
 		<>
 		{ 
-			EditingAndTrueCommentNumber(ci) === false ? ( //수정중이 아니면(일반폼)
+			EditingAndTrueCommentNumber(comments[ci].commentNumber) === false ? ( //수정중이 아니면(일반폼)
 				<>
 					<Row style={{textAlign:'left', marginTop:10,marginBottom:10}}>
 						<Col>
@@ -33,9 +47,9 @@ function BoardComments({ openBoard, comments, boards, ci, isCommentOwner }){
 							<span style={{color:'gray', fontSize:13.5}}>({comments[ci].createdDate})</span>
 						</Col>
 						{
-							//수정삭제 버튼 컴포넌트
+							//수정삭제 아이콘 컴포넌트
 							isCommentOwner ? ( //댓글 작성자일때만 수정삭제버튼 보임
-								<BoardCommentEditDeleteButton dispatch={dispatch} comments={comments} ci={ci} />
+								<BoardCommentEditDeleteButton dispatch={dispatch} comments={comments} ci={ci} COMMENTS_URL={COMMENTS_URL} config={getConfig()} />
 							) : null //조건 3 : 댓글 작성자일때만 수정삭제버튼 보임
 						}
 					</Row>
@@ -44,26 +58,32 @@ function BoardComments({ openBoard, comments, boards, ci, isCommentOwner }){
 					</Row>
 				</>
 			) : ( //수정중이라면(수정폼)
-				<BoardCommentEditForm comments={comments} ci={ci} />
+				<BoardCommentEditForm comments={comments} ci={ci} getConfig={getConfig} COMMENTS_URL={COMMENTS_URL} setCommentLoading={setCommentLoading} />
 			)
 		}
 		</>
 	)
 }
 
-// 수정삭제버튼 컴포넌트
-function BoardCommentEditDeleteButton({ dispatch, comments, ci }){
+// 수정삭제 아이콘 컴포넌트
+function BoardCommentEditDeleteButton({ dispatch, comments, ci, COMMENTS_URL, config }){
+  const commentDeleteRequest = (commentNumber) => {
+    axios
+      .delete(`${COMMENTS_URL}/commentNumber?=${commentNumber}`, config)
+      .then(response => console.log(response))
+      .catch(err => console.log(err))
+  }
+
 	return(
 		<Col style={{textAlign:'right'}}>
 			<span style={{cursor:'pointer'}} onClick={()=>{ 
 				if (window.confirm('댓글을 수정하시겠습니까?')){
-					dispatch(boardCommentEditingOn(ci))
+					dispatch(boardCommentEditingOn(comments[ci].commentNumber))
 				}
 			}}><GrEdit/></span>
 			<span style={{cursor:'pointer', marginLeft:15, color:'black'}} onClick={()=>{
 				if (window.confirm('정말 댓글을 삭제하시겠습니까?')){
-					dispatch(deleteBoardCommentObj(comments[ci].commentNumber))
-					// dispatch(decreaseBoardCommentCount(comments[ci].boardNumber))
+          commentDeleteRequest(comments[ci].commentNumber)
 				}
 			}}><RiDeleteBin6Line/>
 			</span>

@@ -26,7 +26,9 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
   const COMMENTS_URL = useSelector((state) => state.COMMENTS_URL)
   const postNumber = 'postNumber'
   
+  
   let [comments, setComments] = useState([]);
+  let [commentLoading, setCommentLoading] = useState(false)
 
   let getConfig = () => {
     let config = {
@@ -40,7 +42,7 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
 
   /** 댓글 받아오기 (axios) */
   useEffect(()=>{
-    if (openBoard !== undefined){
+    if (openBoard !== undefined && commentLoading === false){
       axios
         .get(`${COMMENTS_URL}/search?${postNumber}=${openBoard.postNumber}`)
         .then(response => {
@@ -49,20 +51,12 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
         })
         .catch(err => console.log(err))
     }
-  },[openBoard, state.isCommentPosted.value])
+  },[openBoard, state.isCommentPosted.value, commentLoading])
 
 	
   const MoveToTop = () => {
     window.scrollTo({ top:0, behavior:'smooth' });
   }
-
-  // const dataObj = () => {
-	// 	let data = {
-	// 		id : state.userInfo.id,
-	// 		boardNumber : state.nowOpenBoard.boardNumber
-	// 	}
-	// 	return data
-	// }
 
   /** 게시글 삭제하기 (axios) */
   const onDeleteButtonClick = () => {
@@ -184,6 +178,7 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
                 isCommentOwner={ 
                   state.isLoggedIn.value ? userInfo.memberNumber === comments[ci].writer.memberNumber : false
                 } 
+                setCommentLoading={setCommentLoading}
               />
               )}
           </Container>

@@ -25,7 +25,8 @@ function BoardDetail({boards, userInfo, maxPostNum}){
   let API_URL = useSelector((state) => state.API_URL)
   
   let [isBoardOwner, setIsBoardOwner] = useState(false);
-  let [isLoading, setIsLoading] = useState(true);
+  let [isLoading, setIsLoading] = useState(true); //useEffect의 데이터 레이징을 위한 변수
+  let [postLoading, setPostLoading] = useState(false); //수정 끝나고 데이터 받아오기 위한 변수
 
   useEffect(()=>{
     if (openBoard !== undefined){
@@ -41,28 +42,31 @@ function BoardDetail({boards, userInfo, maxPostNum}){
     } return setIsBoardOwner(false)
   },[userInfo, state.isLoggedIn.value, openBoard, isLoading])
 
+  /** 상세페이지 받아오기 (axios) */
   useEffect(()=>{
-    axios
-      .get(`${API_URL}/posts/${postNumber}`)
-      .then(response => { 
-        let getData = response.data.data
-        setOpenBoard(getData)
-        dispatch(setViewPointNull())
-      })
-      .catch(err => {
-        //400에러 겁나 찍히긴 하는데 일단 원하는대로 작동함
-        if (err.response.status === 400 && err.response.data.message === `존재하지 않는 글이에요.`){
-          if (state.postViewPoint.value === 'prev'){
-            postNumber = parseInt(postNumber)-1
-            navigate(`/boarddetail/${postNumber}`)
+    if (postLoading === false){
+      axios
+        .get(`${API_URL}/posts/${postNumber}`)
+        .then(response => { 
+          let getData = response.data.data
+          setOpenBoard(getData)
+          dispatch(setViewPointNull())
+        })
+        .catch(err => {
+          //400에러 겁나 찍히긴 하는데 일단 원하는대로 작동함
+          if (err.response.status === 400 && err.response.data.message === `존재하지 않는 글이에요.`){
+            if (state.postViewPoint.value === 'prev'){
+              postNumber = parseInt(postNumber)-1
+              navigate(`/boarddetail/${postNumber}`)
+            }
+            else if (err.response.status === 400 && state.postViewPoint.value === 'next'){
+              postNumber = parseInt(postNumber)+1
+              navigate(`/boarddetail/${postNumber}`)
+            }
           }
-          else if (err.response.status === 400 && state.postViewPoint.value === 'next'){
-            postNumber = parseInt(postNumber)+1
-            navigate(`/boarddetail/${postNumber}`)
-          }
-        }
-      })
-  },[postNumber])
+        })
+    }
+  },[postNumber, postLoading])
 
   return (
     <Container style={{width:800, marginTop:10, marginBottom:100}}>
@@ -98,7 +102,7 @@ function BoardDetail({boards, userInfo, maxPostNum}){
 
       {/* 수정폼 컴포넌트 */}
       { state.isBoardEditing.editState ? (
-        <BoardEditForm openBoard={openBoard} />
+        <BoardEditForm openBoard={openBoard} setPostLoading={setPostLoading} />
       ) : (
       //수정중이 아닐때 게시글 출력
         <BoardDetailObj openBoard={openBoard} setOpenBoard={setOpenBoard} userInfo={userInfo} isBoardOwner={isBoardOwner} boards={boards} isLoading={isLoading} maxPostNum={maxPostNum} />

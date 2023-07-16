@@ -291,30 +291,6 @@ const commentObj = createSlice({
 	}
 })
 
-const boardCommentObj = createSlice({
-	name : 'boardCommentObj',
-	initialState: [],
-
-	reducers : {
-		createBoardCommentObj(state,action){
-			let copy = {...action.payload}
-			state.push(copy)
-		},
-		
-		deleteBoardCommentObj(state,action){
-			let index = state.findIndex((x)=> x.commentNumber === action.payload )
-			state[index].content = ""
-		},
-		
-		editBoardCommentObj(state,action){
-			let copy = [...state]
-			let index = state.findIndex((x)=> x.commentNumber === action.payload.commentNumber )
-			copy[index].content = action.payload.editComment
-			state = [...copy]
-		}
-	}
-})
-
 export let { LoggedIn, LoggedOut, setNewToken, } = isLoggedIn.actions 
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
@@ -329,7 +305,6 @@ export let { setViewPointNext, setViewPointPrev, setViewPointNull } = postViewPo
 export let { boardEditingOn, boardEditingOff } = isBoardEditing.actions 
 export let { setCommentPostedTrue, setCommentPostedFalse } = isCommentPosted.actions 
 export let { increaseBoardCommentNumber } = boardCommentNumber.actions 
-export let { createBoardCommentObj, deleteBoardCommentObj, editBoardCommentObj } = boardCommentObj.actions 
 export let { boardCommentEditingOn, boardCommentEditingOff } = isBoardCommentEditing.actions 
 
 export default configureStore({
@@ -354,7 +329,6 @@ export default configureStore({
     postViewPoint : postViewPoint.reducer,
 		isBoardEditing : isBoardEditing.reducer,
 		isCommentPosted : isCommentPosted.reducer,
-		boardCommentObj : boardCommentObj.reducer,
 		boardCommentNumber : boardCommentNumber.reducer,
 		isBoardCommentEditing : isBoardCommentEditing.reducer,
 	}
