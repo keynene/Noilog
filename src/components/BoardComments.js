@@ -49,7 +49,7 @@ function BoardComments({ openBoard, comments, boards, ci, isCommentOwner, setCom
 						{
 							//수정삭제 아이콘 컴포넌트
 							isCommentOwner ? ( //댓글 작성자일때만 수정삭제버튼 보임
-								<BoardCommentEditDeleteButton dispatch={dispatch} comments={comments} ci={ci} COMMENTS_URL={COMMENTS_URL} config={getConfig()} />
+								<BoardCommentEditDeleteButton dispatch={dispatch} comments={comments} ci={ci} COMMENTS_URL={COMMENTS_URL} config={getConfig()} setCommentLoading={setCommentLoading} />
 							) : null //조건 3 : 댓글 작성자일때만 수정삭제버튼 보임
 						}
 					</Row>
@@ -72,12 +72,14 @@ function BoardComments({ openBoard, comments, boards, ci, isCommentOwner, setCom
 }
 
 // 수정삭제 아이콘 컴포넌트
-function BoardCommentEditDeleteButton({ dispatch, comments, ci, COMMENTS_URL, config }){
+function BoardCommentEditDeleteButton({ dispatch, comments, ci, COMMENTS_URL, config, setCommentLoading }){
   const commentDeleteRequest = (commentNumber) => {
     axios
-      .delete(`${COMMENTS_URL}/commentNumber?=${commentNumber}`, config)
-      .then(response => console.log(response))
-      .catch(err => console.log(err))
+      .delete(`${COMMENTS_URL}?commentNumber=${commentNumber}`, config)
+      .then(response => {
+        setCommentLoading(false)
+      })
+      .catch(err => { console.log(err) })
   }
 
 	return(
@@ -89,8 +91,9 @@ function BoardCommentEditDeleteButton({ dispatch, comments, ci, COMMENTS_URL, co
 			}}><GrEdit/></span>
 			<span style={{cursor:'pointer', marginLeft:15, color:'black'}} onClick={()=>{
 				if (window.confirm('정말 댓글을 삭제하시겠습니까?')){
-          commentDeleteRequest(comments[ci].commentNumber)
-				}
+          setCommentLoading(true)
+          commentDeleteRequest(comments[ci].commentNumber, config)
+				} else { setCommentLoading(false)}
 			}}><RiDeleteBin6Line/>
 			</span>
 		</Col>
