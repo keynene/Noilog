@@ -87,7 +87,7 @@ function MyPage(){
           }
         })
     }
-  },[])
+  },[MEMBER_URL, dispatch, navigate, state.isLoggedIn.value])
 
 	return(
 		<div>

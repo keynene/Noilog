@@ -2,12 +2,8 @@ import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useDispatch } from 'react-redux';
-import { setOpenBoard } from 'store';
-
 function BoardRow({ boards}){
 	let navigate = useNavigate();
-	let dispatch = useDispatch();
 
   function getDate(date) {
     let md = date.slice(5,10)
@@ -25,13 +21,10 @@ function BoardRow({ boards}){
 					style={{textDecoration:'none', color:'black', cursor:'pointer', marginRight:5}} 
 					onClick={()=>{
 						navigate(`/boarddetail/${boards[i].postNumber}`)
-            // dispatch(setOpenBoard(boards[i].postNumber))
-						// dispatch(increaseBoardViewCount(dataObj())) //수정
 					}}
 				>{boards[i].title}
 				</span>
-				{/* <span style={{color:'red', fontWeight:'bold'}}>[{boards[i].commentCount}]</span> */}
-				<span style={{color:'red', fontWeight:'bold'}}>[0]</span>
+				<span style={{color:'red', fontWeight:'bold'}}>[{boards[i].commentCount}]</span>
 			</td>
 			<td style={{width:100}}>{boards[i].writer.nickname}</td>
 			<td style={{width:100}}>{getDate(boards[i].createdDate)}</td> 

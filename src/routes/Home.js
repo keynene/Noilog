@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Table } from 'react-bootstrap';
 
@@ -9,8 +9,6 @@ import Pagination from 'components/Pagination.js'
 
 function Home({boards, lastPage, firstPage}){
 	
-	const [loading, setLoading] = useState(false);
-
 	return (
 		<div style={{maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
 			<h4 style={{marginTop:30}} >Board</h4>	
@@ -38,7 +36,6 @@ function Home({boards, lastPage, firstPage}){
         </tbody>
         ) : (
         <tbody>
-          {loading && <div> loading... </div>}
           <BoardRow boards={boards}/>
         </tbody>
         )}

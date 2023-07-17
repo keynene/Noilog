@@ -204,18 +204,6 @@ const commentNumber = createSlice({
 	}
 })
 
-const boardCommentNumber = createSlice({
-	name : 'boardCommentNumber',
-	initialState : {
-		num : 0
-	},
-	reducers : {
-		increaseBoardCommentNumber(state){
-			state.num = state.num+1
-		}
-	}
-})
-
 const feedObj = createSlice({
 	name : 'feedObj',
 	initialState : [],
@@ -304,7 +292,6 @@ export let { onChangedPage } = currentPage.actions
 export let { setViewPointNext, setViewPointPrev, setViewPointNull } = postViewPoint.actions 
 export let { boardEditingOn, boardEditingOff } = isBoardEditing.actions 
 export let { setCommentPostedTrue, setCommentPostedFalse } = isCommentPosted.actions 
-export let { increaseBoardCommentNumber } = boardCommentNumber.actions 
 export let { boardCommentEditingOn, boardCommentEditingOff } = isBoardCommentEditing.actions 
 
 export default configureStore({
@@ -329,7 +316,6 @@ export default configureStore({
     postViewPoint : postViewPoint.reducer,
 		isBoardEditing : isBoardEditing.reducer,
 		isCommentPosted : isCommentPosted.reducer,
-		boardCommentNumber : boardCommentNumber.reducer,
 		isBoardCommentEditing : isBoardCommentEditing.reducer,
 	}
 })

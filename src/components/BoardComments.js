@@ -4,7 +4,7 @@ import { GrEdit } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteBoardCommentObj, boardCommentEditingOn } from 'store';
+import { boardCommentEditingOn } from 'store';
 
 import BoardCommentEditForm from './BoardCommentEditForm';
 import axios from 'axios';
@@ -58,7 +58,13 @@ function BoardComments({ openBoard, comments, boards, ci, isCommentOwner, setCom
 					</Row>
 				</>
 			) : ( //수정중이라면(수정폼)
-				<BoardCommentEditForm comments={comments} ci={ci} getConfig={getConfig} COMMENTS_URL={COMMENTS_URL} setCommentLoading={setCommentLoading} />
+				<BoardCommentEditForm 
+          comments={comments}
+          ci={ci}
+          getConfig={getConfig}
+          COMMENTS_URL={COMMENTS_URL}
+          setCommentLoading={setCommentLoading}
+        />
 			)
 		}
 		</>

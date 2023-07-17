@@ -51,7 +51,7 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
         })
         .catch(err => console.log(err))
     }
-  },[openBoard, state.isCommentPosted.value, commentLoading])
+  },[openBoard, state.isCommentPosted.value, commentLoading, COMMENTS_URL, dispatch])
 
 	
   const MoveToTop = () => {
