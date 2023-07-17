@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import { boardCommentEditingOff } from 'store';
 
-function BoardCommentEditForm({ comments, ci, getConfig, COMMENTS_URL, setCommentLoading }){
+function BoardCommentEditForm({ comments, ci, getConfig, COMMENTS_URL, setCommentLoading, setPostLoading }){
 	let dispatch = useDispatch();
 
 	let [editComment, setEditComment] = useState('');
@@ -22,10 +22,12 @@ function BoardCommentEditForm({ comments, ci, getConfig, COMMENTS_URL, setCommen
       .then(response => {
         alert('댓글 수정이 완료되었습니다! 😎')
         setCommentLoading(false)
+        setPostLoading(false)
       })
       .catch(err => {
         console.log(err)
         setCommentLoading(false)
+        setPostLoading(false)
       })
   }
 
@@ -45,6 +47,7 @@ function BoardCommentEditForm({ comments, ci, getConfig, COMMENTS_URL, setCommen
 			return alert("수정할 댓글 내용을 입력해주세요!")
 		}
     editData.content = editComment
+    setPostLoading(true)
 
     commentEditRequest(getConfig(), editData, commentNumber)
 		dispatch(boardCommentEditingOff())

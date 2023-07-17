@@ -32,6 +32,8 @@ function App() {
   
   let [userInfo, setUserInfo] = useState();
 
+  let [mainPageLoading, setMainPageLoading] = useState(false);
+
   let getConfig = () => {
     let config = {
       headers : {
@@ -86,19 +88,21 @@ function App() {
 
   /** 게시글 데이터 받아오기 (axios) */
   useEffect(()=>{
-    axios.get(`${PAGE_URL}${state.currentPage.page}`)
-      .then(response => {
-        let boardCopy = [...response.data.data.posts]
-        setBoards(boardCopy)
+    if (mainPageLoading === false){
+      axios.get(`${PAGE_URL}${state.currentPage.page}`)
+        .then(response => {
+          let boardCopy = [...response.data.data.posts]
+          setBoards(boardCopy)
 
-        setLastPage(parseInt(response.data.data.lastPage))
-        setFirstPage(parseInt(1))
-        setMaxPostNum(parseInt(response.data.data.posts[0].postNumber))
-      })
-      .catch((error)=>{
-        console.log("error=> ",error);
-      })
-  },[state.currentPage.page])
+          setLastPage(parseInt(response.data.data.lastPage))
+          setFirstPage(parseInt(1))
+          setMaxPostNum(parseInt(response.data.data.posts[0].postNumber))
+        })
+        .catch((error)=>{
+          console.log("error=> ",error);
+        })
+    }
+  },[state.currentPage.page, mainPageLoading])
 
   /** 게시글 데이터 실시간으로 받아오기 (다음프로젝트에서는 그닥) */
   let boardData = useQuery(['boardData'],()=>{
@@ -134,7 +138,7 @@ function App() {
           )
         }
       </Row>
-      <AppRouter boards={boards} userInfo={userInfo} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
+      <AppRouter boards={boards} userInfo={userInfo} setMainPageLoading={setMainPageLoading} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
     </div>
   );
 }

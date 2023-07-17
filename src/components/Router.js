@@ -12,7 +12,7 @@ import Login from '../routes/Login.js';
 import BoardFactory from './BoardFactory.js';
 import BoardDetail from './BoardDetail.js';
 
-function AppRouter({boards, userInfo, lastPage, firstPage, maxPostNum}){
+function AppRouter({boards, userInfo, setMainPageLoading, lastPage, firstPage, maxPostNum}){
 	let state = useSelector((state) => state)
 	return(
 		<Routes>
@@ -36,10 +36,10 @@ function AppRouter({boards, userInfo, lastPage, firstPage, maxPostNum}){
 			<Route path="/feed" element={ <Feed /> } /> 
 
 			{/* 게시글작성페이지 */}
-			<Route path="/boardfactory" element={ <BoardFactory userInfo={userInfo} /> } />
+			<Route path="/boardfactory" element={ <BoardFactory setMainPageLoading={setMainPageLoading} /> } />
 
 			{/* 게시글열람페이지 */}
-			<Route path="/boarddetail/:postNumber" element={ <BoardDetail boards={boards} userInfo={userInfo} maxPostNum={maxPostNum} />} /> 
+			<Route path="/boarddetail/:postNumber" element={ <BoardDetail userInfo={userInfo} setMainPageLoading={setMainPageLoading} maxPostNum={maxPostNum} />} /> 
 		</Routes>
 	)
 }

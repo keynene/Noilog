@@ -17,7 +17,7 @@ import BoardWriteButton from './BoardWriteButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { boardEditingOn, setCommentPostedFalse, setViewPointNext, setViewPointPrev, setViewPointNull } from 'store';
 
-function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, maxPostNum }){
+function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isLoading, maxPostNum }){
   let navigate = useNavigate();
 	let dispatch = useDispatch();
   
@@ -62,14 +62,19 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
   const onDeleteButtonClick = () => {
     if (window.confirm('게시글을 삭제하시겠습니까?')){
       let config = getConfig()
+      setPostLoading(true)
 
       axios
         .delete(`${API_URL}/posts?${postNumber}=${openBoard.postNumber}`,config)
         .then(async(response) => {
           alert('삭제되었습니다.')
+          setPostLoading(false)
           await navigate('/')
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          console.log(err)
+          setPostLoading(false)
+        })
     }
   }
 
@@ -110,7 +115,6 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
           <BoardUpDelInCom 
             isBoardOwner={isBoardOwner} 
             openBoard={openBoard} 
-            boards={boards} 
             navigate={navigate} 
             onDeleteButtonClick={onDeleteButtonClick}
           />
@@ -130,7 +134,7 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
       {/* 추천버튼 컴포넌트 */}
       <Row>
         <Col style={{alignItems:'baseline'}}>
-          <LikeButton state={state} openBoard={openBoard} boards={boards} dispatch={dispatch} navigate={navigate} />
+          <LikeButton state={state} openBoard={openBoard} navigate={navigate} />
         </Col>
       </Row>
 
@@ -138,7 +142,7 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
         <Col style={{textAlign:'left'}}>
           {/* 수삭목댓 컴포넌트 */}
           <BoardUpDelInCom 
-            isBoardOwner={isBoardOwner} openBoard={openBoard} boards={boards} navigate={navigate} onDeleteButtonClick={onDeleteButtonClick}/>
+            isBoardOwner={isBoardOwner} openBoard={openBoard} navigate={navigate} onDeleteButtonClick={onDeleteButtonClick}/>
         </Col>
         <Col style={{textAlign:'right'}}>
           { isBoardOwner ? (
@@ -170,15 +174,16 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
           <Container>
             { comments.map((ca,ci) => 
               <BoardComments 
-                openBoard={openBoard}
-                boards={boards} 
                 comments={comments} 
                 ci={ci} 
                 key={ci} 
                 isCommentOwner={ 
-                  state.isLoggedIn.value ? userInfo.memberNumber === comments[ci].writer.memberNumber : false
+                  state.isLoggedIn.value ? 
+                    userInfo.memberNumber === comments[ci].writer.memberNumber 
+                  : false
                 } 
                 setCommentLoading={setCommentLoading}
+                setPostLoading={setPostLoading}
               />
               )}
           </Container>
@@ -186,7 +191,11 @@ function BoardDetailObj({ openBoard, userInfo, isBoardOwner, boards, isLoading, 
       </Row>
 
       {/* 댓글달기 컴포넌트 */}
-      <BoardCommentFactory openBoard={openBoard} boards={boards} />
+      <BoardCommentFactory
+        openBoard={openBoard}
+        setPostLoading={setPostLoading}
+        setCommentLoading={setCommentLoading}
+      />
 
       {/* 목록, 다음글, 이전글, 맨위로, 글쓰기 버튼 */}
       <Row style={{textAlign:'left' , marginTop:30}}>
@@ -240,7 +249,7 @@ function BoardUpDelInCom({ openBoard, isBoardOwner, navigate, onDeleteButtonClic
 }
 
 /* 추천버튼 컴포넌트 */
-function LikeButton({ openBoard, state, dispatch, navigate }){
+function LikeButton({ openBoard, state, navigate }){
   return(
     <Button 
       variant="light" 
@@ -248,7 +257,6 @@ function LikeButton({ openBoard, state, dispatch, navigate }){
       onClick={()=>{
         if(state.isLoggedIn === true){
           //추천버튼 클릭 시 +되는 기능 요청 (axios)
-          // dispatch(onBoardLikeCountChange(dataObj()))
         } else {
           if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
             navigate("/login")

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNewToken } from 'store';
 
-function BoardFactory(){
+function BoardFactory({setMainPageLoading}){
 	let state = useSelector((state) => state)
 	let POST_URL = useSelector((state) => state.POST_URL)
 
@@ -19,6 +19,10 @@ function BoardFactory(){
 	
 	let [boardTitle, setBoardTitle] = useState('');
 	let [boardContent, setBoardContent] = useState('');
+  let data = {
+    title : '',
+    content : ''
+  }
 
   let getConfig = () => {
     let config = {
@@ -36,10 +40,14 @@ function BoardFactory(){
       .post(`${POST_URL}`, data, config)
       .then(async(response) => {
         alert('😎게시글 등록이 완료되었습니다😎')
+        setMainPageLoading(false)
         dispatch(setNewToken(response.headers.newtoken))
         await navigate("/")
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        setMainPageLoading(false)
+      })
   }
 	
 	const onTitleChange = (e) => {
@@ -70,16 +78,14 @@ function BoardFactory(){
 			}
 		}
 
-    let data = {
-      "title": boardTitle,
-      "content" : boardContent,
-    }
+    data.title = boardTitle
+    data.content = boardContent
+
+    setMainPageLoading(true)
     postRequest(data, getConfig())
 
 		setBoardTitle("");
 		setBoardContent("");
-
-		data = null;
 	}
 
 	const modules = {

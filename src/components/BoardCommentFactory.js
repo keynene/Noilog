@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setCommentPostedTrue } from 'store';
 
-function BoardCommentFactory({ openBoard, boards }){
+function BoardCommentFactory({ openBoard, setPostLoading, setCommentLoading }){
 	let navigate = useNavigate();
   let dispatch = useDispatch();
   
@@ -39,6 +39,10 @@ function BoardCommentFactory({ openBoard, boards }){
   const commentPostRequest = (data, config) => {
     axios
       .post(`${COMMENTS_URL}?${postNumber}=${openBoard.postNumber}`, data, config)
+      .then(response => {
+        setCommentLoading(false)
+        setPostLoading(false)
+      })
       .catch(err => console.log(err))
   }
 
@@ -55,6 +59,8 @@ function BoardCommentFactory({ openBoard, boards }){
 			return alert('댓글 내용을 입력해주세요!')
 		}
 
+    setCommentLoading(true)
+    setPostLoading(true)
     commentObj.content = comment
     commentPostRequest(commentObj, getConfig())
     dispatch(setCommentPostedTrue())

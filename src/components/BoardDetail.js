@@ -14,7 +14,7 @@ import BoardEditForm from './BoardEditForm';
 import BoardDetailObj from './BoardDetailObj';
 import axios from 'axios';
 
-function BoardDetail({boards, userInfo, maxPostNum}){
+function BoardDetail({userInfo, setMainPageLoading, maxPostNum}){
   let {postNumber} = useParams();
   let [openBoard, setOpenBoard] = useState();
 
@@ -45,15 +45,19 @@ function BoardDetail({boards, userInfo, maxPostNum}){
   /** 상세페이지 받아오기 (axios) */
   useEffect(()=>{
     if (postLoading === false){
+      setMainPageLoading(true)
       axios
         .get(`${API_URL}/posts/${postNumber}`)
         .then(response => { 
           let getData = response.data.data
           setOpenBoard(getData)
           dispatch(setViewPointNull())
+
+          setMainPageLoading(false)
         })
         .catch(err => {
           //400에러 겁나 찍히긴 하는데 일단 원하는대로 작동함
+          setMainPageLoading(false)
           if (err.response.status === 400 && err.response.data.message === `존재하지 않는 글이에요.`){
             if (state.postViewPoint.value === 'prev'){
               postNumber = parseInt(postNumber)-1
@@ -105,7 +109,14 @@ function BoardDetail({boards, userInfo, maxPostNum}){
         <BoardEditForm openBoard={openBoard} setPostLoading={setPostLoading} />
       ) : (
       //수정중이 아닐때 게시글 출력
-        <BoardDetailObj openBoard={openBoard} setOpenBoard={setOpenBoard} userInfo={userInfo} isBoardOwner={isBoardOwner} boards={boards} isLoading={isLoading} maxPostNum={maxPostNum} />
+        <BoardDetailObj
+          openBoard={openBoard}
+          setPostLoading={setPostLoading}
+          userInfo={userInfo}
+          isBoardOwner={isBoardOwner}
+          isLoading={isLoading}
+          maxPostNum={maxPostNum}
+        />
       )}
     </Container>
 	)

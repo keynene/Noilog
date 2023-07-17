@@ -11,13 +11,15 @@ import axios from 'axios';
 
 //댓글 받아오기 axios 기능은 BoardDetailObj 컴포넌트 참고, 여기는 댓글 출력 컴포넌트
 
-function BoardComments({ openBoard, comments, boards, ci, isCommentOwner, setCommentLoading }){
+function BoardComments({ comments, ci, isCommentOwner, setCommentLoading, setPostLoading }){
 	let dispatch = useDispatch();
 
 	let state = useSelector((state) => state)
 	let COMMENTS_URL = useSelector((state) => state.COMMENTS_URL)
 
-	const EditingAndTrueCommentNumber = (commentNumber) => {
+  let commentNumber = comments[ci].commentNumber
+
+	const EditingAndTrueCommentNumber = () => {
 		if (state.isBoardCommentEditing.editState){
 			if (state.isBoardCommentEditing.commentNumber === commentNumber){
 				return true
@@ -39,7 +41,7 @@ function BoardComments({ openBoard, comments, boards, ci, isCommentOwner, setCom
 	return (
 		<>
 		{ 
-			EditingAndTrueCommentNumber(comments[ci].commentNumber) === false ? ( //수정중이 아니면(일반폼)
+			EditingAndTrueCommentNumber() === false ? ( //수정중이 아니면(일반폼)
 				<>
 					<Row style={{textAlign:'left', marginTop:10,marginBottom:10}}>
 						<Col>
@@ -47,10 +49,17 @@ function BoardComments({ openBoard, comments, boards, ci, isCommentOwner, setCom
 							<span style={{color:'gray', fontSize:13.5}}>({comments[ci].createdDate})</span>
 						</Col>
 						{
-							//수정삭제 아이콘 컴포넌트
-							isCommentOwner ? ( //댓글 작성자일때만 수정삭제버튼 보임
-								<BoardCommentEditDeleteButton dispatch={dispatch} comments={comments} ci={ci} COMMENTS_URL={COMMENTS_URL} config={getConfig()} setCommentLoading={setCommentLoading} />
-							) : null //조건 3 : 댓글 작성자일때만 수정삭제버튼 보임
+							//댓글 작성자일때만 수정삭제버튼 보임
+							isCommentOwner && ( 
+								<BoardCommentEditDeleteButton 
+                  dispatch={dispatch}
+                  commentNumber={commentNumber}
+                  COMMENTS_URL={COMMENTS_URL}
+                  config={getConfig()}
+                  setCommentLoading={setCommentLoading}
+                  setPostLoading={setPostLoading}
+                />
+              )
 						}
 					</Row>
 					<Row style={{textAlign:'left', paddingBottom:20, borderBottom:'1px solid #ccc'}}>
@@ -61,9 +70,10 @@ function BoardComments({ openBoard, comments, boards, ci, isCommentOwner, setCom
 				<BoardCommentEditForm 
           comments={comments}
           ci={ci}
-          getConfig={getConfig}
+          getConfig={getConfig} //getConfig를 사용해야 하니까 함수호출(getConfig())이 아닌, 함수 그대로를 전달
           COMMENTS_URL={COMMENTS_URL}
           setCommentLoading={setCommentLoading}
+          setPostLoading={setPostLoading}
         />
 			)
 		}
@@ -72,28 +82,37 @@ function BoardComments({ openBoard, comments, boards, ci, isCommentOwner, setCom
 }
 
 // 수정삭제 아이콘 컴포넌트
-function BoardCommentEditDeleteButton({ dispatch, comments, ci, COMMENTS_URL, config, setCommentLoading }){
-  const commentDeleteRequest = (commentNumber) => {
+function BoardCommentEditDeleteButton({ dispatch, commentNumber, COMMENTS_URL, config, setCommentLoading, setPostLoading }){
+  const commentDeleteRequest = () => {
     axios
       .delete(`${COMMENTS_URL}?commentNumber=${commentNumber}`, config)
       .then(response => {
         setCommentLoading(false)
+        setPostLoading(false)
       })
-      .catch(err => { console.log(err) })
+      .catch(err => console.log(err) )
   }
 
 	return(
-		<Col style={{textAlign:'right'}}>
+    <Col style={{textAlign:'right'}}>
+      {/* 댓글 수정 아이콘 */}
 			<span style={{cursor:'pointer'}} onClick={()=>{ 
 				if (window.confirm('댓글을 수정하시겠습니까?')){
-					dispatch(boardCommentEditingOn(comments[ci].commentNumber))
+					dispatch(boardCommentEditingOn(commentNumber))
 				}
 			}}><GrEdit/></span>
+
+      {/* 댓글 삭제 아이콘 */}
 			<span style={{cursor:'pointer', marginLeft:15, color:'black'}} onClick={()=>{
 				if (window.confirm('정말 댓글을 삭제하시겠습니까?')){
           setCommentLoading(true)
-          commentDeleteRequest(comments[ci].commentNumber, config)
-				} else { setCommentLoading(false)}
+          setPostLoading(true)
+          commentDeleteRequest(commentNumber)
+				} 
+        else { 
+          setCommentLoading(false)
+          setPostLoading(false)
+        }
 			}}><RiDeleteBin6Line/>
 			</span>
 		</Col>
