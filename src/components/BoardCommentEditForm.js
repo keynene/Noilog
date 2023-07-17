@@ -44,7 +44,6 @@ function BoardCommentEditForm({ comments, ci, getConfig, COMMENTS_URL, setCommen
 		if (editComment === ""){
 			return alert("수정할 댓글 내용을 입력해주세요!")
 		}
-
     editData.content = editComment
 
     commentEditRequest(getConfig(), editData, commentNumber)
