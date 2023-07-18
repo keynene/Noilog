@@ -8,7 +8,7 @@ import { FcLikePlaceholder } from "react-icons/fc";
 
 /* Components */
 import BoardWriteButton from './BoardWriteButton';
-import BoardCommentContainer from './BoardCommentContainer';
+import BoardCommentContainer from '../Comment/BoardCommentContainer';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
@@ -91,7 +91,7 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
         </Col>
         <Col style={{textAlign:'right'}}>
           {/* 수삭목댓 컴포넌트 */}
-          <BoardUpDelInCom 
+          <BoardUpDelInComSpan
             isBoardOwner={isBoardOwner} 
             openBoard={openBoard} 
             navigate={navigate} 
@@ -128,24 +128,24 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
       <Row style={{marginTop:30, alignItems:'flex-end', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
         <Col style={{textAlign:'left'}}>
           {/* 수삭목댓 컴포넌트 */}
-          <BoardUpDelInCom 
+          <BoardUpDelInComSpan 
             isBoardOwner={isBoardOwner} openBoard={openBoard} navigate={navigate} onDeleteButtonClick={onDeleteButtonClick}/>
         </Col>
         <Col style={{textAlign:'right'}}>
-          { isBoardOwner ? (
+          { isBoardOwner && (
             <>
-            <Button 
-              variant="light" 
-              style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} 
-              onClick={()=>{dispatch(boardEditingOn(openBoard.postNumber))}}
-            >수정</Button> 
-            <Button
-              variant="light"
-              style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}
-              onClick={()=>{onDeleteButtonClick()}}
-            >삭제</Button>
+              <Button 
+                variant="light" 
+                style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} 
+                onClick={()=>{dispatch(boardEditingOn(openBoard.postNumber))}}
+              >수정</Button> 
+              <Button
+                variant="light"
+                style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}
+                onClick={()=>{onDeleteButtonClick()}}
+              >삭제</Button>
             </>
-            ) : null 
+            )
           }
           <Button variant="light" style={{marginRight:10, border:'1px solid rgb(200,200,200)'}} onClick={()=>{navigate("/")}}>목록</Button>
           <BoardWriteButton />
@@ -179,7 +179,7 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
           <BoardWriteButton />
         </Col>
       </Row>
-      </>
+    </>
     )}
 		</>
 	)
@@ -187,7 +187,7 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
 
 
 /**  수정/삭제/목록/댓글 컴포넌트 */
-function BoardUpDelInCom({ openBoard, isBoardOwner, navigate, onDeleteButtonClick }){
+function BoardUpDelInComSpan({ openBoard, isBoardOwner, navigate, onDeleteButtonClick }){
   let dispatch = useDispatch();
   return (
     <div>

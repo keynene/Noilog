@@ -3,8 +3,8 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 
 /* Components */
-import BoardWriteButton from 'components/BoardWriteButton';
-import BoardRow from 'components/BoardRow';
+import BoardWriteButton from 'components/Board/BoardWriteButton';
+import BoardRow from 'components/Board/BoardRow';
 import Pagination from 'components/Pagination.js'
 
 function Home({boards, lastPage, firstPage}){

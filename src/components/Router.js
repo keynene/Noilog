@@ -9,8 +9,8 @@ import MyPage from 'routes/MyPage.js';
 import Feed from 'routes/Feed.js';
 import Join from '../routes/Join.js';
 import Login from '../routes/Login.js';
-import BoardFactory from './BoardFactory.js';
-import BoardDetail from './BoardDetail.js';
+import BoardFactory from './Board/BoardFactory.js';
+import BoardDetail from './Board/BoardDetail.js';
 
 function AppRouter({boards, userInfo, setMainPageLoading, lastPage, firstPage, maxPostNum}){
 	let state = useSelector((state) => state)
@@ -33,7 +33,7 @@ function AppRouter({boards, userInfo, setMainPageLoading, lastPage, firstPage, m
 			<Route path="/login" element={ <Login /> } /> 
 
 			{/* 피드페이지 */}
-			<Route path="/feed" element={ <Feed /> } /> 
+			{/* <Route path="/feed" element={ <Feed /> } />  */}
 
 			{/* 게시글작성페이지 */}
 			<Route path="/boardfactory" element={ <BoardFactory setMainPageLoading={setMainPageLoading} /> } />

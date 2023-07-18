@@ -54,7 +54,7 @@ function Navigation(){
           <Nav.Link className="navbar-brand" onClick={()=>{ navigate('/') }}>No ·_· ven</Nav.Link>
           <Nav className="me-auto">
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
-            <Nav.Link onClick={()=>{ navigate('/feed') }}>Feed</Nav.Link>
+            {/* <Nav.Link onClick={()=>{ navigate('/feed') }}>Feed</Nav.Link> */}
             {
               state.isLoggedIn.value === true ? 
 								<Nav.Link onClick={()=>{ navigate('/mypage') }}>MyPage</Nav.Link>
@@ -77,12 +77,6 @@ function Navigation(){
               :
                 null
             }
-            {/* <Nav.Link onClick={()=>{ 
-              logoutRequest()
-            }} >Logout</Nav.Link>
-
-            <Nav.Link onClick={()=>{ navigate('/join') }}>Join Us</Nav.Link> */}
-
           </Nav>
         </Container>
       </Navbar>

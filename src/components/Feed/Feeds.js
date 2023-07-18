@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { onLikeCountChange } from 'store.js';
 
-import sampleImgUrl from '../img/sample.jpg'
+import sampleImgUrl from '../../img/sample.jpg'
 
 // import { FaRegEye } from "react-icons/fa";
 import { FcLikePlaceholder } from "react-icons/fc";

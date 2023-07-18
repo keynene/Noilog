@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 /* Components */
-import FeedFactory from 'components/FeedFactory';
-import Feeds from 'components/Feeds';
+import FeedFactory from 'components/Feed/FeedFactory';
+import Feeds from 'components/Feed/Feeds';
 
 import { useSelector } from 'react-redux';
 

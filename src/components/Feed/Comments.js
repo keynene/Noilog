@@ -6,7 +6,7 @@ import {useDispatch, useSelector } from 'react-redux';
 import { commentEditingOn, deleteCommentObj, decreaseCommentCount } from 'store';
 
 /* Icons */
-import sampleImgUrl2 from '../img/sample2.jpg'
+import sampleImgUrl2 from '../../img/sample2.jpg'
 import { GrEdit } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 

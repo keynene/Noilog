@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 /* Icons */
-import sampleImgUrl2 from '../img/sample2.jpg'
+import sampleImgUrl2 from '../../img/sample2.jpg'
 
 import { useDispatch } from 'react-redux';
 import { commentEditingOff, editCommentObj } from 'store';
