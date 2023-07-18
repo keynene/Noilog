@@ -134,7 +134,15 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
       {/* 추천버튼 컴포넌트 */}
       <Row>
         <Col style={{alignItems:'baseline'}}>
-          <LikeButton state={state} openBoard={openBoard} navigate={navigate} />
+          <LikeButton 
+            state={state}
+            API_URL={API_URL}
+            postNumber={postNumber}
+            openBoard={openBoard}
+            getConfig={getConfig}
+            navigate={navigate}
+            setPostLoading={setPostLoading}
+          />
         </Col>
       </Row>
 
@@ -224,7 +232,7 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
 }
 
 
-/* 수정/삭제/목록/댓글 컴포넌트 */
+/**  수정/삭제/목록/댓글 컴포넌트 */
 function BoardUpDelInCom({ openBoard, isBoardOwner, navigate, onDeleteButtonClick }){
   let dispatch = useDispatch();
   return (
@@ -248,17 +256,32 @@ function BoardUpDelInCom({ openBoard, isBoardOwner, navigate, onDeleteButtonClic
   )
 }
 
-/* 추천버튼 컴포넌트 */
-function LikeButton({ openBoard, state, navigate }){
+/** 추천버튼 컴포넌트 */
+function LikeButton({ openBoard, API_URL, postNumber, state, getConfig, navigate, setPostLoading }){
+  //좋아요 요청 (axios)
+  const pushLickRequest = (config) => {
+    axios
+      .post(`${API_URL}/likes?${postNumber}=${openBoard.postNumber}`,{},config)
+      .then(response => {
+        console.log(response)
+        setPostLoading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setPostLoading(false)
+      })
+  }
+
   return(
     <Button 
       variant="light" 
       style={{fontSize:25, padding:'5px 20px 10px 20px',border:'1px solid rgb(200,200,200)'}}
       onClick={()=>{
-        if(state.isLoggedIn === true){
-          //추천버튼 클릭 시 +되는 기능 요청 (axios)
+        if(state.isLoggedIn.value){
+          setPostLoading(true)
+          pushLickRequest(getConfig())
         } else {
-          if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요!')){
+          if(window.confirm('권한이 없습니다. 로그인 후 이용해주세요 😅')){
             navigate("/login")
           }
         }
