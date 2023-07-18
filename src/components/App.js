@@ -10,7 +10,7 @@ import Navigation from './Navigation';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { setNewToken, LoggedOut } from 'store';
+import { setNewToken, LoggedOut, tokenDead } from 'store';
 
 /* etc */
 import { Row, Col } from 'react-bootstrap';
@@ -44,6 +44,14 @@ function App() {
     return config
   }
 
+  const isTokenDead = (message) => {
+    if (dispatch(tokenDead(message)) === true){
+      dispatch(LoggedOut())
+      navigate("/")
+      console.warn = function(){}
+    }
+  }
+
   /** 탈퇴대기 회원 복구신청 (axios) */
   const recoveryUserRequest = (config) => {
     axios
@@ -70,11 +78,8 @@ function App() {
         })
         .catch(err => {
           console.log(err)
-          if(err.response.status === 401){
-            alert(`로그인 기간이 만료되었습니다. 다시 로그인 해주세요 😅`)
-            dispatch(LoggedOut())
-            navigate('/')
-          }
+          isTokenDead(err.response.data.message)
+
           if(err.response.data.message === '탈퇴대기 상태인 회원이에요.'){
             if(window.confirm(`현재 탈퇴대기 상태입니다. 계정 복구를 원하시면 확인을 눌러주세요 😋
 취소를 누르면 로그아웃됩니다.`)){
@@ -127,7 +132,7 @@ function App() {
 
   return (
     <div className="App">
-      <Navigation />
+      <Navigation isTokenDead={isTokenDead} />
       <Row>
         { state.isLoggedIn.value && userInfo !== undefined ? 
           (<Col style={{color:'gray', marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
@@ -138,7 +143,7 @@ function App() {
           )
         }
       </Row>
-      <AppRouter boards={boards} userInfo={userInfo} setMainPageLoading={setMainPageLoading} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
+      <AppRouter boards={boards} userInfo={userInfo} isTokenDead={isTokenDead} setMainPageLoading={setMainPageLoading} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
     </div>
   );
 }

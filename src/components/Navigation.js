@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { LoggedOut } from 'store.js';
 
-function Navigation(){
+function Navigation({isTokenDead}){
   let state = useSelector((state) => state)
   let SURVER_URL = useSelector((state) => state.SURVER_URL)
 
@@ -24,9 +24,7 @@ function Navigation(){
     return config
   }
 
-  const logoutRequest = () => {
-    let config = getConfig()
-
+  const logoutRequest = (config) => {
     axios
       .post(`${SURVER_URL}/logout`,{},config)
       .then(async(response) => {
@@ -36,11 +34,9 @@ function Navigation(){
       })
       .catch(err => {
         console.log(err)
+        isTokenDead()
+
         if (err.response.data.message === `탈퇴대기 상태인 회원이에요.`){
-          dispatch(LoggedOut())
-          alert('로그아웃 되었습니다 😀')
-        }
-        if (err.response.data.message === `모든 토큰 만료. 로그인 해주세요`){
           dispatch(LoggedOut())
           alert('로그아웃 되었습니다 😀')
         }
@@ -72,7 +68,7 @@ function Navigation(){
             {
               state.isLoggedIn.value === true ?
                 <Nav.Link onClick={()=>{ 
-                  logoutRequest()
+                  logoutRequest(getConfig())
                 }} >Logout</Nav.Link>
               :
                 null

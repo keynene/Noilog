@@ -50,6 +50,12 @@ const isLoggedIn = createSlice({
         localStorage.setItem("accessToken", action.payload)
       }
     },
+    tokenDead(state, action){
+      if (action.payload === '모든 토큰 만료. 로그인 해주세요'){
+        alert(`로그인 기간이 만료되었습니다. 다시 로그인 해주세요 😅`)
+        return true
+      }
+    }
   }
 })
 
@@ -279,7 +285,7 @@ const commentObj = createSlice({
 	}
 })
 
-export let { LoggedIn, LoggedOut, setNewToken, } = isLoggedIn.actions 
+export let { LoggedIn, LoggedOut, setNewToken, tokenDead } = isLoggedIn.actions 
 
 export let { createFeedObj, increaseViewCount, onLikeCountChange, increaseCommentCount, decreaseCommentCount, deleteFeedObj, editFeedObj } = feedObj.actions 
 export let { increasePostNumber } = postNumber.actions 

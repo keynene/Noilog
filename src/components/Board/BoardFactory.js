@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNewToken } from 'store';
 
-function BoardFactory({setMainPageLoading}){
+function BoardFactory({isTokenDead, setMainPageLoading}){
 	let state = useSelector((state) => state)
 	let POST_URL = useSelector((state) => state.POST_URL)
 
@@ -47,6 +47,8 @@ function BoardFactory({setMainPageLoading}){
       .catch(err => {
         console.log(err)
         setMainPageLoading(false)
+        isTokenDead(err.response.data.message)
+        dispatch(setNewToken(err.response.headers.newtoken))
       })
   }
 	

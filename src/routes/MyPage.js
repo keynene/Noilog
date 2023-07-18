@@ -7,9 +7,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import sampleImgUrl from '../img/sample.jpg'
 
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedOut } from 'store.js';
+import { LoggedOut, setNewToken } from 'store.js';
 
-function MyPage(){
+function MyPage({isTokenDead}){
 	let state = useSelector((state) => state)
 	let SERVER_URL = useSelector((state) => state.SERVER_URL)
 	let MEMBER_URL = useSelector((state) => state.MEMBER_URL)
@@ -78,13 +78,12 @@ function MyPage(){
           let myInfoCopy = {...response.data.data}
           setMyInfo(myInfoCopy)
           setIsLoading(false)
+
+          dispatch(setNewToken(response.headers.newtoken))
         })
         .catch(err => {
-          if(err.response.status === 401){
-            alert(`로그인 기간이 만료되었습니다. 다시 로그인 해주세요 😅`)
-            dispatch(LoggedOut())
-            navigate('/')
-          }
+          isTokenDead()
+          dispatch(setNewToken(err.response.headers.newtoken))
         })
     }
   },[MEMBER_URL, dispatch, navigate, state.isLoggedIn.value])

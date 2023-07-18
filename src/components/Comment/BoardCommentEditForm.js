@@ -4,9 +4,9 @@ import { Row, Col } from 'react-bootstrap';
 
 import { useDispatch } from 'react-redux';
 
-import { boardCommentEditingOff } from 'store';
+import { boardCommentEditingOff, setNewToken } from 'store';
 
-function BoardCommentEditForm({ comments, ci, getConfig, COMMENTS_URL, setCommentLoading, setPostLoading }){
+function BoardCommentEditForm({ isTokenDead, comments, ci, getConfig, COMMENTS_URL, setCommentLoading, setPostLoading }){
 	let dispatch = useDispatch();
 
 	let [editComment, setEditComment] = useState('');
@@ -23,11 +23,16 @@ function BoardCommentEditForm({ comments, ci, getConfig, COMMENTS_URL, setCommen
         alert('댓글 수정이 완료되었습니다! 😎')
         setCommentLoading(false)
         setPostLoading(false)
+
+        dispatch(setNewToken(response.headers.newtoken))
       })
       .catch(err => {
         console.log(err)
         setCommentLoading(false)
         setPostLoading(false)
+        
+        isTokenDead(err.response.data.message)
+        dispatch(setNewToken(err.response.headers.newtoken))
       })
   }
 

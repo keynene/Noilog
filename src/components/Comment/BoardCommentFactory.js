@@ -6,9 +6,9 @@ import { Row, Col } from 'react-bootstrap';
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setCommentPostedTrue } from 'store';
+import { setCommentPostedTrue, setNewToken } from 'store';
 
-function BoardCommentFactory({ openBoard, setPostLoading, setCommentLoading }){
+function BoardCommentFactory({ isTokenDead, openBoard, setPostLoading, setCommentLoading }){
 	let navigate = useNavigate();
   let dispatch = useDispatch();
   
@@ -36,14 +36,24 @@ function BoardCommentFactory({ openBoard, setPostLoading, setCommentLoading }){
     return config
   }
 
+  /** 댓글 작성 요청 (axios) */
   const commentPostRequest = (data, config) => {
     axios
       .post(`${COMMENTS_URL}?${postNumber}=${openBoard.postNumber}`, data, config)
       .then(response => {
         setCommentLoading(false)
         setPostLoading(false)
+
+        dispatch(setNewToken(response.headers.newtoken))
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        setCommentLoading(false)
+        setPostLoading(false)
+
+        isTokenDead(err.response.data.message)
+        dispatch(setNewToken(err.response.headers.newtoken))
+      })
   }
 
 	const onCommentSubmit = (e) => {

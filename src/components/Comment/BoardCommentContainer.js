@@ -8,9 +8,9 @@ import BoardComments from './BoardComments';
 import BoardCommentFactory from './BoardCommentFactory';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setCommentPostedFalse } from 'store';
+import { setCommentPostedFalse, setNewToken } from 'store';
 
-function BoardCommentContainer({userInfo, openBoard, setPostLoading}){
+function BoardCommentContainer({userInfo, isTokenDead, openBoard, setPostLoading}){
 
   let state = useSelector((state) => state)
   let dispatch = useDispatch();
@@ -29,8 +29,14 @@ function BoardCommentContainer({userInfo, openBoard, setPostLoading}){
         .then(response => {
           setComments(response.data.data)
           dispatch(setCommentPostedFalse())
+
+          dispatch(setNewToken(response.headers.newtoken))
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          console.log(err)
+          isTokenDead(err.response.data.message)
+          dispatch(setNewToken(err.response.headers.newtoken))
+        })
     }
   },[openBoard, state.isCommentPosted.value, commentLoading, COMMENTS_URL, dispatch])
   
@@ -45,6 +51,7 @@ function BoardCommentContainer({userInfo, openBoard, setPostLoading}){
           <Container>
             { comments.map((ca,ci) => 
               <BoardComments 
+                isTokenDead={isTokenDead}
                 comments={comments} 
                 ci={ci} 
                 key={ci} 
@@ -63,6 +70,7 @@ function BoardCommentContainer({userInfo, openBoard, setPostLoading}){
 
       {/* 댓글달기 컴포넌트 */}
       <BoardCommentFactory
+        isTokenDead={isTokenDead}
         openBoard={openBoard}
         setPostLoading={setPostLoading}
         setCommentLoading={setCommentLoading}

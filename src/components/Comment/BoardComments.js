@@ -4,14 +4,14 @@ import { GrEdit } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import { useDispatch, useSelector } from 'react-redux';
-import { boardCommentEditingOn } from 'store';
+import { boardCommentEditingOn, setNewToken } from 'store';
 
 import BoardCommentEditForm from './BoardCommentEditForm';
 import axios from 'axios';
 
 //댓글 받아오기 axios 기능은 BoardDetailObj 컴포넌트 참고, 여기는 댓글 출력 컴포넌트
 
-function BoardComments({ comments, ci, isCommentOwner, setCommentLoading, setPostLoading }){
+function BoardComments({ isTokenDead, comments, ci, isCommentOwner, setCommentLoading, setPostLoading }){
 	let dispatch = useDispatch();
 
 	let state = useSelector((state) => state)
@@ -52,6 +52,7 @@ function BoardComments({ comments, ci, isCommentOwner, setCommentLoading, setPos
 							//댓글 작성자일때만 수정삭제버튼 보임
 							isCommentOwner && ( 
 								<BoardCommentEditDeleteButton 
+                  isTokenDead={isTokenDead}
                   dispatch={dispatch}
                   commentNumber={commentNumber}
                   COMMENTS_URL={COMMENTS_URL}
@@ -68,6 +69,7 @@ function BoardComments({ comments, ci, isCommentOwner, setCommentLoading, setPos
 				</>
 			) : ( //수정중이라면(수정폼)
 				<BoardCommentEditForm 
+          isTokenDead={isTokenDead}
           comments={comments}
           ci={ci}
           getConfig={getConfig} //getConfig를 사용해야 하니까 함수호출(getConfig())이 아닌, 함수 그대로를 전달
@@ -82,15 +84,24 @@ function BoardComments({ comments, ci, isCommentOwner, setCommentLoading, setPos
 }
 
 // 수정삭제 아이콘 컴포넌트
-function BoardCommentEditDeleteButton({ dispatch, commentNumber, COMMENTS_URL, config, setCommentLoading, setPostLoading }){
+function BoardCommentEditDeleteButton({ isTokenDead, dispatch, commentNumber, COMMENTS_URL, config, setCommentLoading, setPostLoading }){
   const commentDeleteRequest = () => {
     axios
       .delete(`${COMMENTS_URL}?commentNumber=${commentNumber}`, config)
       .then(response => {
         setCommentLoading(false)
         setPostLoading(false)
+
+        dispatch(setNewToken(response.headers.newtoken))
       })
-      .catch(err => console.log(err) )
+      .catch(err => {
+        console.log(err)
+        setCommentLoading(false)
+        setPostLoading(false)
+        
+        isTokenDead(err.response.data.message)
+        dispatch(setNewToken(err.response.headers.newtoken))
+      })
   }
 
 	return(

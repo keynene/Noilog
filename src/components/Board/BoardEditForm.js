@@ -5,15 +5,20 @@ import { Button } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { boardEditingOff } from 'store';
+import { boardEditingOff, setNewToken } from 'store';
 
-function BoardEditForm({ openBoard, setPostLoading }){
-	let [editTitle, setEditTitle] = useState(openBoard.title);
-  let [editContent, setEditContent] = useState(openBoard.content);
-
+function BoardEditForm({ isTokenDead, openBoard, setPostLoading }){
 	let dispatch = useDispatch();
+  
   let API_URL = useSelector((state) => state.API_URL)
   let postNumber = "postNumber";
+
+	let [editTitle, setEditTitle] = useState(openBoard.title);
+  let [editContent, setEditContent] = useState(openBoard.content);
+  let editData = {
+    title : '',
+    content : ''
+  }
 
 	const onTitleChange = (e) => {
 		const {
@@ -36,7 +41,25 @@ function BoardEditForm({ openBoard, setPostLoading }){
 
   const onSubmit = (e) => { e.preventDefault(); }
 
-  const onEditButtonClick = (i) => {
+  /** 게시글 수정 요청 (axios) */
+  const postEditRequest = (data, config) => {
+    axios
+    .put(`${API_URL}/posts?${postNumber}=${openBoard.postNumber}`, data, config)
+    .then(response => {
+      alert('수정되었습니다 😎')
+      setPostLoading(false)
+
+      dispatch(setNewToken(response.headers.newtoken))
+    })
+    .catch(err => {
+      console.log(err)
+      setPostLoading(false)
+      isTokenDead(err.response.data.message)
+      dispatch(setNewToken(err.response.headers.newtoken))
+    })
+  }
+
+  const onEditButtonClick = () => {
     if (editTitle === ""){
       return alert('수정할 게시글 제목을 입력해주세요')
     }
@@ -44,27 +67,10 @@ function BoardEditForm({ openBoard, setPostLoading }){
 			return alert('수정할 게시글 내용을 입력해주세요')
 		}
 
-    let editData = {
-			"title" : editTitle,
-			"content" : editContent
-		}
+    editData.title = editTitle
+    editData.content = editContent
 
-    let config = getConfig()
-
-    axios
-      .put(`${API_URL}/posts?${postNumber}=${openBoard.postNumber}`, editData, config)
-      .then(response => {
-        alert('수정되었습니다 😎')
-        setPostLoading(false)
-        // window.location.reload(`/boarddetail/${openBoard.postNumber}`);
-        //리로드 안시키고 async await 하는법 찾아보자
-        //그 다음은 Detail 컴포넌트 분리 좀 하고
-        //댓글기능 하던지 
-      })
-      .catch(err => {
-        console.log(err)
-        setPostLoading(false)
-      })
+    postEditRequest(editData,getConfig())
 
 		dispatch(boardEditingOff())
 
@@ -110,7 +116,7 @@ function BoardEditForm({ openBoard, setPostLoading }){
 					dispatch(boardEditingOff())
 				}
 			}} style={{marginRight:10, border:'1px solid rgb(200,200,200)'}}>취소하기</Button>
-			<Button variant="dark" type="submit" onClick={()=>{onEditButtonClick(openBoard.boardNumber)}}>수정하기</Button>
+			<Button variant="dark" type="submit" onClick={()=>{onEditButtonClick()}}>수정하기</Button>
 		</form>
 	)
 }

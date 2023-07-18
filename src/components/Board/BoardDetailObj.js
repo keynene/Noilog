@@ -14,7 +14,7 @@ import BoardCommentContainer from '../Comment/BoardCommentContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { boardEditingOn, setViewPointNext, setViewPointPrev, setViewPointNull } from 'store';
 
-function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isLoading, maxPostNum }){
+function BoardDetailObj({ userInfo, isTokenDead, openBoard, isBoardOwner, isLoading, setPostLoading, maxPostNum, setNewToken }){
   let navigate = useNavigate();
 	let dispatch = useDispatch();
   
@@ -31,7 +31,6 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
     }
     return config
   }
-
 	
   const MoveToTop = () => {
     window.scrollTo({ top:0, behavior:'smooth' });
@@ -48,11 +47,15 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
         .then(async(response) => {
           alert('삭제되었습니다.')
           setPostLoading(false)
+
+          dispatch(setNewToken(response.headers.newtoken))
           await navigate('/')
         })
         .catch(err => {
           console.log(err)
           setPostLoading(false)
+          isTokenDead(err.response.data.message)
+          dispatch(setNewToken(err.response.headers.newtoken))
         })
     }
   }
@@ -114,6 +117,7 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
       <Row>
         <Col style={{alignItems:'baseline'}}>
           <LikeButton 
+            isTokenDead={isTokenDead}
             state={state}
             API_URL={API_URL}
             postNumber={postNumber}
@@ -121,16 +125,24 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
             getConfig={getConfig}
             navigate={navigate}
             setPostLoading={setPostLoading}
+            dispatch={dispatch}
+            setNewToken={setNewToken}
           />
         </Col>
       </Row>
 
       <Row style={{marginTop:30, alignItems:'flex-end', paddingBottom:30, borderBottom:'1px solid #ccc'}}>
+        {/* 수삭목댓 컴포넌트 */}
         <Col style={{textAlign:'left'}}>
-          {/* 수삭목댓 컴포넌트 */}
           <BoardUpDelInComSpan 
-            isBoardOwner={isBoardOwner} openBoard={openBoard} navigate={navigate} onDeleteButtonClick={onDeleteButtonClick}/>
+            isBoardOwner={isBoardOwner}
+            openBoard={openBoard}
+            navigate={navigate}
+            onDeleteButtonClick={onDeleteButtonClick}
+          />
         </Col>
+
+        {/* 수삭목글 버튼 (작성자면 수정,삭제도 포함) */}
         <Col style={{textAlign:'right'}}>
           { isBoardOwner && (
             <>
@@ -155,6 +167,7 @@ function BoardDetailObj({ openBoard, setPostLoading, userInfo, isBoardOwner, isL
       {/* 댓글출력, 댓글작성 컨테이너 컴포넌트 */}
       <BoardCommentContainer
         userInfo={userInfo}
+        isTokenDead={isTokenDead}
         openBoard={openBoard}
         setPostLoading={setPostLoading} 
       />
@@ -211,18 +224,20 @@ function BoardUpDelInComSpan({ openBoard, isBoardOwner, navigate, onDeleteButton
 }
 
 /** 추천버튼 컴포넌트 */
-function LikeButton({ openBoard, API_URL, postNumber, state, getConfig, navigate, setPostLoading }){
-  //좋아요 요청 (axios)
+function LikeButton({ isTokenDead, openBoard, API_URL, postNumber, state, getConfig, navigate, setPostLoading, dispatch, setNewToken }){
+  /** 추천 요청 (axios) */
   const pushLickRequest = (config) => {
     axios
       .post(`${API_URL}/likes?${postNumber}=${openBoard.postNumber}`,{},config)
       .then(response => {
-        console.log(response)
         setPostLoading(false)
+        dispatch(setNewToken(response.headers.newtoken))
       })
       .catch(err => {
         console.log(err)
         setPostLoading(false)
+        isTokenDead(err.response.data.message)
+        dispatch(setNewToken(err.response.headers.newtoken))
       })
   }
 
