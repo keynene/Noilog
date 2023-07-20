@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 /* Redux, Actions */
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedOut } from 'store.js';
+import { LoggedOut, setNewToken } from 'store.js';
 
 function Navigation({isTokenDead}){
   let state = useSelector((state) => state)
@@ -34,6 +34,7 @@ function Navigation({isTokenDead}){
       })
       .catch(err => {
         console.log(err)
+        setNewToken()
         isTokenDead()
 
         if (err.response.data.message === `탈퇴대기 상태인 회원이에요.`){

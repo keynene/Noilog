@@ -47,7 +47,12 @@ function Join(){
         alert(`회원가입이 완료됐어요 😎`)
         navigate("/login")
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        if (err.response.data.message = '이미 존재하는 닉네임이에요.'){
+          alert('이미 존재하는 닉네임이예요 😅')
+        }
+      })
   }
 
 	const onSubmit = (e) => {
