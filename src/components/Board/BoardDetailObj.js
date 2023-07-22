@@ -46,14 +46,16 @@ function BoardDetailObj({ userInfo, isTokenDead, openBoard, isBoardOwner, isLoad
         .delete(`${API_URL}/posts?${postNumber}=${openBoard.postNumber}`,config)
         .then(async(response) => {
           alert('삭제되었습니다.')
+          await navigate('/')
           setPostLoading(false)
+          console.log(response.headers.newtoken)
 
           dispatch(setNewToken(response.headers.newtoken))
-          await navigate('/')
         })
         .catch(err => {
           console.log(err)
           setPostLoading(false)
+          console.log(err.response.headers.newtoken)
           isTokenDead(err.response.data.message)
           dispatch(setNewToken(err.response.headers.newtoken))
         })

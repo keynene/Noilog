@@ -34,8 +34,8 @@ function Navigation({isTokenDead}){
       })
       .catch(err => {
         console.log(err)
-        setNewToken()
-        isTokenDead()
+        dispatch(setNewToken(err.response.headers.newtoken))
+        isTokenDead(err.response.data.message)
 
         if (err.response.data.message === `탈퇴대기 상태인 회원이에요.`){
           dispatch(LoggedOut())
