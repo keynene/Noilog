@@ -44,8 +44,10 @@ function App() {
     return config
   }
 
-  const isTokenDead = (message) => {
-    if (dispatch(tokenDead(message)) === true){
+  const isTokenDead = async(message) => {
+    await dispatch(tokenDead(message))
+    if (state.isLoggedIn.isDead === true){
+      console.log(1)
       dispatch(LoggedOut())
       navigate("/")
       console.warn = function(){}
@@ -62,14 +64,13 @@ function App() {
       .catch(err => console.log(err))
   }
 
-
   /** 유저데이터 받아오기 (axios) */
   useEffect(()=>{
     if (state.isLoggedIn.value){
       let config = getConfig()
 
       axios
-        .get(`${API_URL}/members`, config)
+        .get(`${API_URL}/members`, config) 
         .then(response => {
           let userInfoCopy = {...response.data.data}
           setUserInfo(userInfoCopy)

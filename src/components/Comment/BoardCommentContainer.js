@@ -56,7 +56,7 @@ function BoardCommentContainer({userInfo, isTokenDead, openBoard, setPostLoading
                 ci={ci} 
                 key={ci} 
                 isCommentOwner={ 
-                  state.isLoggedIn.value ? 
+                  state.isLoggedIn.value === true ? 
                     userInfo.memberNumber === comments[ci].writer.memberNumber 
                   : false
                 } 

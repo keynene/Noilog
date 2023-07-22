@@ -33,6 +33,7 @@ const isLoggedIn = createSlice({
         localStorage.getItem("accessToken") !== null && localStorage.getItem("refreshToken") !== null ?
           true : false //localStorage의 accessToken, refreshToken 둘 다 null이 아닐 때
         : false, //localStorage 길이가 0일때 (access, refresh 둘 다 없을 때)
+    isDead : false
     }
   ,
 
@@ -44,16 +45,20 @@ const isLoggedIn = createSlice({
       localStorage.removeItem("accessToken")
       localStorage.removeItem("refreshToken")
       state.value = false
+      state.isDead = false
+      console.log(2)
     },
     setNewToken(state, action){
       if (state.value && action.payload !== ''){
         localStorage.setItem("accessToken", action.payload)
+        state.value = true
       }
     },
     tokenDead(state, action){
       if (action.payload === '모든 토큰 만료. 로그인 해주세요'){
         alert(`로그인 기간이 만료되었습니다. 다시 로그인 해주세요 😅`)
-        return true
+        state.isDead = true
+        return
       }
     }
   }
