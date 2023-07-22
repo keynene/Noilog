@@ -44,13 +44,12 @@ function App() {
     return config
   }
 
+  /** 모든 토큰 만료 시 로그아웃 */
   const isTokenDead = async(message) => {
     await dispatch(tokenDead(message))
     if (state.isLoggedIn.isDead === true){
-      console.log(1)
-      dispatch(LoggedOut())
       navigate("/")
-      console.warn = function(){}
+      dispatch(LoggedOut())
     }
   }
 

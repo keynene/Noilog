@@ -1,7 +1,7 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit';
 
 const SURVER_URL = createSlice({
-  name : 'SERVER_URL',
+  name : 'SURVER_URL',
   initialState : 'http://3.36.85.194:42988'
 })
 const API_URL = createSlice({
@@ -46,7 +46,6 @@ const isLoggedIn = createSlice({
       localStorage.removeItem("refreshToken")
       state.value = false
       state.isDead = false
-      console.log(2)
     },
     setNewToken(state, action){
       if (state.value && action.payload !== ''){

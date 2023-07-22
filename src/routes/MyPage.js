@@ -11,7 +11,7 @@ import { LoggedOut, setNewToken } from 'store.js';
 
 function MyPage({isTokenDead}){
 	let state = useSelector((state) => state)
-	let SERVER_URL = useSelector((state) => state.SERVER_URL)
+	let SURVER_URL = useSelector((state) => state.SURVER_URL)
 	let MEMBER_URL = useSelector((state) => state.MEMBER_URL)
 
 	let dispatch = useDispatch();
@@ -33,11 +33,11 @@ function MyPage({isTokenDead}){
   /** 로그아웃 요청 (axios-logout) */
   const logoutRequest = (config) => {
     axios
-      .post(`${SERVER_URL}/logout`,{}, config)
+      .post(`${SURVER_URL}/logout`,{}, config)
       .then((response) => {
+        alert('로그아웃 되었습니다 😀')
         navigate('/')
         dispatch(LoggedOut()) 
-        alert('로그아웃 되었습니다 😀')
       })
       .catch(err => console.log(err))
   }
@@ -82,8 +82,9 @@ function MyPage({isTokenDead}){
           dispatch(setNewToken(response.headers.newtoken))
         })
         .catch(err => {
-          isTokenDead()
+          console.log(err)
           dispatch(setNewToken(err.response.headers.newtoken))
+          isTokenDead(err.response.data.message)
         })
     }
   },[MEMBER_URL, dispatch, navigate, state.isLoggedIn.value])
