@@ -12,9 +12,9 @@ import BoardCommentContainer from '../Comment/BoardCommentContainer';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { boardEditingOn, setViewPointNext, setViewPointPrev, setViewPointNull } from 'store';
+import { boardEditingOn, setViewPointNext, setViewPointPrev, setViewPointNull, setNewToken, tokenDead } from 'store';
 
-function BoardDetailObj({ userInfo, isTokenDead, openBoard, isBoardOwner, isLoading, setPostLoading, maxPostNum, setNewToken }){
+function BoardDetailObj({ userInfo, openBoard, isBoardOwner, isLoading, setPostLoading, maxPostNum, setNewToken }){
   let navigate = useNavigate();
 	let dispatch = useDispatch();
   
@@ -56,8 +56,8 @@ function BoardDetailObj({ userInfo, isTokenDead, openBoard, isBoardOwner, isLoad
           console.log(err)
           setPostLoading(false)
           console.log(err.response.headers.newtoken)
-          isTokenDead(err.response.data.message)
           dispatch(setNewToken(err.response.headers.newtoken))
+          dispatch(tokenDead(err.response.data.message))
         })
     }
   }
@@ -119,7 +119,6 @@ function BoardDetailObj({ userInfo, isTokenDead, openBoard, isBoardOwner, isLoad
       <Row>
         <Col style={{alignItems:'baseline'}}>
           <LikeButton 
-            isTokenDead={isTokenDead}
             state={state}
             API_URL={API_URL}
             postNumber={postNumber}
@@ -169,7 +168,6 @@ function BoardDetailObj({ userInfo, isTokenDead, openBoard, isBoardOwner, isLoad
       {/* 댓글출력, 댓글작성 컨테이너 컴포넌트 */}
       <BoardCommentContainer
         userInfo={userInfo}
-        isTokenDead={isTokenDead}
         openBoard={openBoard}
         setPostLoading={setPostLoading} 
       />
@@ -226,7 +224,7 @@ function BoardUpDelInComSpan({ openBoard, isBoardOwner, navigate, onDeleteButton
 }
 
 /** 추천버튼 컴포넌트 */
-function LikeButton({ isTokenDead, openBoard, API_URL, postNumber, state, getConfig, navigate, setPostLoading, dispatch, setNewToken }){
+function LikeButton({ openBoard, API_URL, postNumber, state, getConfig, navigate, setPostLoading, dispatch }){
   /** 추천 요청 (axios) */
   const pushLickRequest = (config) => {
     axios
@@ -238,8 +236,8 @@ function LikeButton({ isTokenDead, openBoard, API_URL, postNumber, state, getCon
       .catch(err => {
         console.log(err)
         setPostLoading(false)
-        isTokenDead(err.response.data.message)
         dispatch(setNewToken(err.response.headers.newtoken))
+        dispatch(tokenDead(err.response.data.message))
       })
   }
 

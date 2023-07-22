@@ -6,13 +6,13 @@ import {useSelector} from "react-redux";
 /* Routes import */
 import Home from 'routes/Home.js';
 import MyPage from 'routes/MyPage.js';
-import Feed from 'routes/Feed.js';
+// import Feed from 'routes/Feed.js';
 import Join from '../routes/Join.js';
 import Login from '../routes/Login.js';
 import BoardFactory from './Board/BoardFactory.js';
 import BoardDetail from './Board/BoardDetail.js';
 
-function AppRouter({boards, userInfo, isTokenDead, setMainPageLoading, lastPage, firstPage, maxPostNum}){
+function AppRouter({boards, userInfo, setMainPageLoading, lastPage, firstPage, maxPostNum}){
 	let state = useSelector((state) => state)
 	return(
 		<Routes>
@@ -24,7 +24,7 @@ function AppRouter({boards, userInfo, isTokenDead, setMainPageLoading, lastPage,
 
 			{/* 마이페이지 */}
 			{ state.isLoggedIn.value === true ? 
-				<Route path="/mypage" element={ <MyPage isTokenDead={isTokenDead} /> } />
+				<Route path="/mypage" element={ <MyPage /> } />
 				:
 				<Route path="/join" element={ <Join /> } />
 			}
@@ -36,10 +36,10 @@ function AppRouter({boards, userInfo, isTokenDead, setMainPageLoading, lastPage,
 			{/* <Route path="/feed" element={ <Feed /> } />  */}
 
 			{/* 게시글작성페이지 */}
-			<Route path="/boardfactory" element={ <BoardFactory isTokenDead={isTokenDead} setMainPageLoading={setMainPageLoading} /> } />
+			<Route path="/boardfactory" element={ <BoardFactory setMainPageLoading={setMainPageLoading} /> } />
 
 			{/* 게시글열람페이지 */}
-			<Route path="/boarddetail/:postNumber" element={ <BoardDetail userInfo={userInfo} isTokenDead={isTokenDead} setMainPageLoading={setMainPageLoading} maxPostNum={maxPostNum} />} /> 
+			<Route path="/boarddetail/:postNumber" element={ <BoardDetail userInfo={userInfo} setMainPageLoading={setMainPageLoading} maxPostNum={maxPostNum} />} /> 
 		</Routes>
 	)
 }

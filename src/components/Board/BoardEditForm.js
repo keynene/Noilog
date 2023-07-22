@@ -5,9 +5,9 @@ import { Button } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { boardEditingOff, setNewToken } from 'store';
+import { boardEditingOff, setNewToken, tokenDead } from 'store';
 
-function BoardEditForm({ isTokenDead, openBoard, setPostLoading }){
+function BoardEditForm({ openBoard, setPostLoading }){
 	let dispatch = useDispatch();
   
   let API_URL = useSelector((state) => state.API_URL)
@@ -54,8 +54,8 @@ function BoardEditForm({ isTokenDead, openBoard, setPostLoading }){
     .catch(err => {
       console.log(err)
       setPostLoading(false)
-      isTokenDead(err.response.data.message)
       dispatch(setNewToken(err.response.headers.newtoken))
+      dispatch(tokenDead(err.response.data.message))
     })
   }
 

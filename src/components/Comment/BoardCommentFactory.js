@@ -6,9 +6,9 @@ import { Row, Col } from 'react-bootstrap';
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setCommentPostedTrue, setNewToken } from 'store';
+import { setCommentPostedTrue, setNewToken, tokenDead } from 'store';
 
-function BoardCommentFactory({ isTokenDead, openBoard, setPostLoading, setCommentLoading }){
+function BoardCommentFactory({ openBoard, setPostLoading, setCommentLoading }){
 	let navigate = useNavigate();
   let dispatch = useDispatch();
   
@@ -51,8 +51,8 @@ function BoardCommentFactory({ isTokenDead, openBoard, setPostLoading, setCommen
         setCommentLoading(false)
         setPostLoading(false)
 
-        isTokenDead(err.response.data.message)
         dispatch(setNewToken(err.response.headers.newtoken))
+        dispatch(tokenDead(err.response.data.message))
       })
   }
 

@@ -8,9 +8,9 @@ import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setNewToken } from 'store';
+import { setNewToken, tokenDead } from 'store';
 
-function BoardFactory({isTokenDead, setMainPageLoading}){
+function BoardFactory({setMainPageLoading}){
 	let state = useSelector((state) => state)
 	let POST_URL = useSelector((state) => state.POST_URL)
 
@@ -47,8 +47,8 @@ function BoardFactory({isTokenDead, setMainPageLoading}){
       .catch(err => {
         console.log(err)
         setMainPageLoading(false)
-        isTokenDead(err.response.data.message)
         dispatch(setNewToken(err.response.headers.newtoken))
+        dispatch(tokenDead(err.response.data.message))
       })
   }
 	

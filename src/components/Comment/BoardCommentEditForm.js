@@ -4,9 +4,9 @@ import { Row, Col } from 'react-bootstrap';
 
 import { useDispatch } from 'react-redux';
 
-import { boardCommentEditingOff, setNewToken } from 'store';
+import { boardCommentEditingOff, setNewToken, tokenDead } from 'store';
 
-function BoardCommentEditForm({ isTokenDead, comments, ci, getConfig, COMMENTS_URL, setCommentLoading, setPostLoading }){
+function BoardCommentEditForm({ comments, ci, getConfig, COMMENTS_URL, setCommentLoading, setPostLoading }){
 	let dispatch = useDispatch();
 
 	let [editComment, setEditComment] = useState('');
@@ -31,8 +31,8 @@ function BoardCommentEditForm({ isTokenDead, comments, ci, getConfig, COMMENTS_U
         setCommentLoading(false)
         setPostLoading(false)
         
-        isTokenDead(err.response.data.message)
         dispatch(setNewToken(err.response.headers.newtoken))
+        dispatch(tokenDead(err.response.data.message))
       })
   }
 

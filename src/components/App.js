@@ -45,13 +45,13 @@ function App() {
   }
 
   /** 모든 토큰 만료 시 로그아웃 */
-  const isTokenDead = async(message) => {
-    await dispatch(tokenDead(message))
+  useEffect((message)=>{
+    dispatch(tokenDead(message))
     if (state.isLoggedIn.isDead === true){
       navigate("/")
       dispatch(LoggedOut())
     }
-  }
+  },[state.isLoggedIn.isDead])
 
   /** 탈퇴대기 회원 복구신청 (axios) */
   const recoveryUserRequest = (config) => {

@@ -7,14 +7,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 /* Redux, State */
 import { useDispatch, useSelector } from 'react-redux';
-import { boardEditingOff, setViewPointNull, setNewToken } from 'store';
+import { boardEditingOff, setViewPointNull, setNewToken, tokenDead } from 'store';
 
 /* Components */
 import BoardEditForm from './BoardEditForm';
 import BoardDetailObj from './BoardDetailObj';
 import axios from 'axios';
 
-function BoardDetail({userInfo, isTokenDead, setMainPageLoading, maxPostNum}){
+function BoardDetail({userInfo, setMainPageLoading, maxPostNum}){
   let {postNumber} = useParams();
   let [openBoard, setOpenBoard] = useState();
 
@@ -60,8 +60,8 @@ function BoardDetail({userInfo, isTokenDead, setMainPageLoading, maxPostNum}){
         .catch(err => {
           //400에러 겁나 찍히긴 하는데 일단 원하는대로 작동함
           setMainPageLoading(false)
-          isTokenDead(err.response.data.message)
           dispatch(setNewToken(err.response.headers.newtoken))
+          dispatch(tokenDead(err.response.data.message))
 
           if (err.response.status === 400 && err.response.data.message === `존재하지 않는 글이에요.`){
             if (state.postViewPoint.value === 'prev'){
@@ -112,7 +112,6 @@ function BoardDetail({userInfo, isTokenDead, setMainPageLoading, maxPostNum}){
       {/* 수정폼 컴포넌트 */}
       { state.isBoardEditing.editState ? (
         <BoardEditForm
-          isTokenDead={isTokenDead}
           openBoard={openBoard}
           setPostLoading={setPostLoading}
         />
@@ -120,7 +119,6 @@ function BoardDetail({userInfo, isTokenDead, setMainPageLoading, maxPostNum}){
       //수정중이 아닐때 게시글 출력
         <BoardDetailObj
           userInfo={userInfo}
-          isTokenDead={isTokenDead}
           openBoard={openBoard}
           isBoardOwner={isBoardOwner}
           setPostLoading={setPostLoading}

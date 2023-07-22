@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import sampleImgUrl from '../img/sample.jpg'
 
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedOut, setNewToken } from 'store.js';
+import { LoggedOut, setNewToken, tokenDead } from 'store.js';
 
 function MyPage({isTokenDead}){
 	let state = useSelector((state) => state)
@@ -84,7 +84,7 @@ function MyPage({isTokenDead}){
         .catch(err => {
           console.log(err)
           dispatch(setNewToken(err.response.headers.newtoken))
-          isTokenDead(err.response.data.message)
+          dispatch(tokenDead(err.response.data.message))
         })
     }
   },[MEMBER_URL, dispatch, navigate, state.isLoggedIn.value])
