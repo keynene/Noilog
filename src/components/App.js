@@ -78,7 +78,7 @@ function App() {
         })
         .catch(err => {
           console.log(err)
-          isTokenDead(err.response.data.message)
+          dispatch(tokenDead(err.response.data.message))
 
           if(err.response.data.message === '탈퇴대기 상태인 회원이에요.'){
             if(window.confirm(`현재 탈퇴대기 상태입니다. 계정 복구를 원하시면 확인을 눌러주세요 😋
@@ -132,7 +132,7 @@ function App() {
 
   return (
     <div className="App">
-      <Navigation isTokenDead={isTokenDead} />
+      <Navigation />
       <Row>
         { state.isLoggedIn.value && userInfo !== undefined ? 
           (<Col style={{color:'gray', marginTop:'10', textAlign:'right', maxWidth:800, marginLeft:'auto', marginRight:'auto'}}>
@@ -143,7 +143,7 @@ function App() {
           )
         }
       </Row>
-      <AppRouter boards={boards} userInfo={userInfo} isTokenDead={isTokenDead} setMainPageLoading={setMainPageLoading} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
+      <AppRouter boards={boards} userInfo={userInfo} setMainPageLoading={setMainPageLoading} lastPage={lastPage} firstPage={firstPage} maxPostNum={maxPostNum} />
     </div>
   );
 }
